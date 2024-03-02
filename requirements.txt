@@ -1,0 +1,5 @@
+streamlit
+gunicorn
+pandas
+openai
+requests
