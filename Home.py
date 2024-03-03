@@ -6,8 +6,7 @@ st.set_page_config(page_title="Candidate.ai")
 st.header("Candidate.ai", divider = 'red')
 
 def main():
-    client = OpenAI()
-     client = OpenAI(
+    client = OpenAI(
                       api_key=st.secrets['OPENAI-API'],
                     )
     completion = client.chat.completions.create(
