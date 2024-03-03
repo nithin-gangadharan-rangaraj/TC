@@ -1,5 +1,6 @@
 from google.oauth2 import service_account
 import streamlit as st
+import gspread
 
 def initiate():
   if 'gsheet' in st.session_state:
