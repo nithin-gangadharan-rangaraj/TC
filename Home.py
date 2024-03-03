@@ -16,10 +16,10 @@ def main():
                         {"role": "user", "content": "Compose a 10 word poem that explains the concept of recursion in programming."}
                       ]
                     )
-    st.write(completion)
-    st.write(completion.choices[0].message)
+    st.write(completion.choices[0].message.content)
     
 # Run the app
 if __name__ == "__main__":
     st.write("Welcome!")
-    main()
+    if st.button('Create'):
+        main()
