@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd 
 from openai import OpenAI
 import gspread
-from auxillaries import gsheet
+from auxillaries import initiate
 
 st.set_page_config(page_title="Candidate.ai")
 st.header("Candidate.ai", divider = 'red')
