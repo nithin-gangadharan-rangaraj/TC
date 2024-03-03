@@ -22,6 +22,6 @@ def initiate():
   
       # Authorize gspread client
       gs = gspread.authorize(credentials)
-      gsheet = gs.open("ABC-SDA-recruitment")
+      gsheet = gs.open(st.secrets['sheet_name'])
       st.session_state['gsheet'] = gsheet
   return gsheet
