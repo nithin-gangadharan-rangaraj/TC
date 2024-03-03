@@ -8,7 +8,7 @@ st.header("Candidate.ai", divider = 'red')
 def main():
     client = OpenAI()
      client = OpenAI(
-                      api_key=st.secrets['keys']['OPENAI-API'],
+                      api_key=st.secrets['OPENAI-API'],
                     )
     completion = client.chat.completions.create(
                       model="gpt-3.5-turbo",
