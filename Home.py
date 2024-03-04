@@ -124,7 +124,7 @@ def read_emails():
 
 # Define a function to apply
 def detect_exchanges(row, email_info):
-    if row['Exchanges'] != email_info['Exchanges']:
+    if int(row['Exchanges']) != int(email_info['Exchanges']):
         row['Exchanges'] = email_info['Exchanges']  
         row['EmailText'] = email_info['EmailText']
     return row
