@@ -76,18 +76,18 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
 
         # Add one to account for the initial email in the thread
         num_exchanges += 1
-
+        
+        if email_message.is_multipart():
+            for part in email_message.walk():
+                if part.get_content_type() == "text/plain":
+                    email_body += part.get_payload(decode=True).decode()
+        else:
+            email_body = email_message.get_payload(decode=True).decode()
+                
         email_info['EmailText'] = email_body
         email_info['Exchanges'] = num_exchanges
 
         if attachment_analysis_needed(email_info['ID'], num_exchanges, df):
-            # Add more fields as needed
-            if email_message.is_multipart():
-                for part in email_message.walk():
-                    if part.get_content_type() == "text/plain":
-                        email_body += part.get_payload(decode=True).decode()
-            else:
-                email_body = email_message.get_payload(decode=True).decode()
     
             # Iterate over the parts of the email message
             for part in email_message.walk():
