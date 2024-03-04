@@ -121,7 +121,7 @@ def detect_exchanges(row, email_info):
     return row
 
 def add_row(candidate_df, email_info):
-    candidate_df = candidate_df.append(email_info)
+    candidate_df = candidate_df.append(email_info, ignore_index = True)
 
 def update_df(candidate_df, emails):
     for email_info in emails:
