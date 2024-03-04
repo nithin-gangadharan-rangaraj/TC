@@ -132,7 +132,7 @@ def update_df(candidate_df, emails):
     for email_info in emails:
         st.dataframe(candidate_df)
         if email_info['ID'] in candidate_df['ID'].values:
-            st.write(pd.series(email_info))
+            st.write(pd.Series(email_info))
             candidate_df.loc[candidate_df['ID'] == email_info['ID']] = pd.Series(email_info) #candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1) = pd.Series(email_info) #candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1)
         else:
             candidate_df = add_row(candidate_df, email_info)
