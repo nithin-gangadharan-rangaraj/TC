@@ -138,10 +138,9 @@ def update_df(candidate_df, emails):
         st.dataframe(candidate_df)
         if email_info['ID'] in candidate_df['ID'].values:
             idx = np.where(candidate_df['ID'].values == email_info['ID'])[0]
-            #pd.Series(email_info) 
             candidate_df.loc[int(idx), ['Exchanges', 'EmailText']] = [email_info['Exchanges'], email_info['EmailText']]
-
-            # candidate_df.loc[int(idx)] = candidate_df.loc[int(idx)].apply(detect_exchanges,  args=(email_info,)) 
+            for info in ['CoverLetter', 'Resume', 'Portfolio']:
+                candidate_df.loc[int(idx), info] += ('\n-----\n' + email_info[info])
         else:
             candidate_df = add_row(candidate_df, email_info)
     return candidate_df
@@ -150,9 +149,6 @@ def update_worksheet(wsheet, candidate_df):
     # Clear the existing content (optional)
     wsheet.clear()
     set_with_dataframe(wsheet, candidate_df)
-    
-    # # Convert DataFrame to a list of lists and update the worksheet
-    # wsheet.update([candidate_df.columns.values.tolist()] + candidate_df.values.tolist())
 
 # Run the app
 if __name__ == "__main__":
