@@ -135,9 +135,9 @@ def add_row(candidate_df, email_info):
 def update_df(candidate_df, emails):
     for email_info in emails:
         if email_info['ID'] in candidate_df['ID'].values:
-            st.write(len(candidate_df.loc[candidate_df['ID'] == email_info['ID']]))
-            st.write(len(email_info))
-            candidate_df.loc[candidate_df['ID'] == email_info['ID']] = pd.Series(email_info) #candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1) = pd.Series(email_info) #candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1)
+            # st.write(len(candidate_df.loc[candidate_df['ID'] == email_info['ID']]))
+            # st.write(len(email_info))
+            candidate_df.loc[candidate_df['ID'] == email_info['ID']] = email_info #candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1) = pd.Series(email_info) #candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1)
         else:
             candidate_df = add_row(candidate_df, email_info)
     return candidate_df
