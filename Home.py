@@ -6,6 +6,7 @@ from auxillaries import initiate
 import imaplib
 import email
 import io
+import gspread-dataframe
 import fitz
 
 st.set_page_config(page_title="Candidate.ai")
@@ -135,9 +136,10 @@ def update_df(candidate_df, emails):
 def update_worksheet(wsheet, candidate_df):
     # Clear the existing content (optional)
     wsheet.clear()
+    set_with_dataframe(wsheet, candidate_df)
     
-    # Convert DataFrame to a list of lists and update the worksheet
-    wsheet.update([candidate_df.columns.values.tolist()] + candidate_df.values.tolist())
+    # # Convert DataFrame to a list of lists and update the worksheet
+    # wsheet.update([candidate_df.columns.values.tolist()] + candidate_df.values.tolist())
 
 # Run the app
 if __name__ == "__main__":
