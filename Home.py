@@ -45,7 +45,7 @@ def fetch_emails_with_subject(email_address, password, subject):
 
         # Extract relevant information from the email
         email_info = {}
-        email_info['From'] = email_message['From']
+        email_info['ID'] = email_message['From']
         email_info['Subject'] = email_message['Subject']
         # Add more fields as needed
         email_body = ""
@@ -72,8 +72,21 @@ def fetch_emails_with_subject(email_address, password, subject):
                     # Append the extracted text to the CV text
                     cv_text += page_text
 
-        email_info['Body'] = email_body
-        email_info['CV'] = cv_text
+        # Get the value of the "References" header field
+        references = email_message.get("References")
+
+        # If the "References" header field exists, count the number of Message-IDs
+        num_exchanges = 0
+        if references:
+            # Split the references by whitespace and count the number of Message-IDs
+            num_exchanges = len(references.split())
+
+        # Add one to account for the initial email in the thread
+        num_exchanges += 1
+
+        email_info['EmailText'] = email_body
+        email_info['CoverLetter'] = cv_text
+        email_info['Exchanges'] = num_exchanges
         # Append email data to the list
         emails.append(email_info)
 
@@ -83,19 +96,56 @@ def fetch_emails_with_subject(email_address, password, subject):
 
     return emails
 
+def get_worksheet(gsheet):
+    wsheet = sheet.sheet1 
+    return wsheet
+
+def get_df(wsheet):
+    values = wsheet.get_all_values()
+    existing_candidate_df = pd.DataFrame(values[1:], columns=values[0])
+    return existing_candidate_df
+
+def read_emails():
+    email_address = st.secrets['email']
+    password = st.secrets['password']
+    subject = 'NAME_APPLICATION_FOR_DATA_ANALYST'
+    
+    emails = fetch_emails_with_subject(email_address, password, subject)
+    return emails
+
+# Define a function to apply
+def detect_exchanges(row, email_info):
+    if row['Exchanges'] != email_info['Exchanges']:
+        row['Exchanges'] = email_info['Exchanges']  
+        row['EmailText'] += ('\n---\n' + email_info['EmailText'])
+    return row
+
+def add_row(candidate_df, email_info):
+    candidate_df = candidate_df.append(email_info)
+
+def update_df(candidate_df, emails):
+    for email_info in emails:
+        if email_info['ID'] in candidate_df[['ID']]:
+            candidate_df.loc[candidate_df['ID'] == email_info['ID']] = candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1)
+        else:
+            candidate_df = add_row(candidate_df, email_info)
+    return candidate_df
+
+def update_worksheet(wsheet, candidate_df):
+    # Clear the existing content (optional)
+    wsheet.clear()
+    
+    # Convert DataFrame to a list of lists and update the worksheet
+    wsheet.update([candidate_df.columns.values.tolist()] + candidate_df.values.tolist())
+
 # Run the app
 if __name__ == "__main__":
     st.write("Welcome!")
     gsheet = initiate()
-    if st.button('Create'):
+    if st.button('Update Candidate Info'):
         #main()
-        email_address = st.secrets['email']
-        password = st.secrets['password']
-        subject = 'NAME_APPLICATION_FOR_DATA_ANALYST'
-        
-        emails = fetch_emails_with_subject(email_address, password, subject)
-        for email_info in emails:
-            st.write("From:", email_info['From'])
-            st.write("Subject:", email_info['Subject'])
-            st.write("Body:", email_info['Body'])
-            st.write("CV:", email_info['CV'])
+        wsheet = get_worksheet(gsheet)
+        candidate_df = get_df(wsheet)
+        emails = read_emails()
+        candidate_df = update_df(candidate_df, emails)
+        update_worksheet(wsheet, candidate_df)
