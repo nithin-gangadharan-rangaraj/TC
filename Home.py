@@ -80,7 +80,7 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
         email_info['EmailText'] = email_body
         email_info['Exchanges'] = num_exchanges
 
-        if attachment_analysis_needed(email_info['ID'], num_exhanges, df):
+        if attachment_analysis_needed(email_info['ID'], num_exchanges, df):
             # Add more fields as needed
             if email_message.is_multipart():
                 for part in email_message.walk():
@@ -121,9 +121,9 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
 
     return emails
 
-def attachment_analysis_needed(email_info_id, num_exhanges, df):
+def attachment_analysis_needed(email_info_id, num_exchanges, df):
     idx = np.where(df['ID'].values == email_info_id)[0]
-    if int(df.loc[int(idx), 'Exchanges']) < int(email_info['Exchanges']):
+    if int(df.loc[int(idx), 'Exchanges']) < int(num_exchanges):
         return True
     else:
         return False
