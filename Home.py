@@ -122,6 +122,7 @@ def detect_exchanges(row, email_info):
 
 def add_row(candidate_df, email_info):
     candidate_df.loc[len(candidate_df)] = email_info
+    return candidate_df
 
 def update_df(candidate_df, emails):
     for email_info in emails:
