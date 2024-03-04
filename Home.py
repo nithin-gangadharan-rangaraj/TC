@@ -149,4 +149,5 @@ if __name__ == "__main__":
         candidate_df = get_df(wsheet)
         emails = read_emails()
         candidate_df = update_df(candidate_df, emails)
+        st.dataframe(candidate_df)
         update_worksheet(wsheet, candidate_df)
