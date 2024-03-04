@@ -5,3 +5,5 @@ openai
 requests
 gspread
 google-auth
+imaplib
+PyMuPDF
