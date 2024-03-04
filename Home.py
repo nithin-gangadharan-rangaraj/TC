@@ -123,11 +123,11 @@ def read_emails():
     return emails
 
 # Define a function to apply
-# def detect_exchanges(row, email_info):
-#     # if row['Exchanges'] != email_info['Exchanges']:
-#     #     row['Exchanges'] = email_info['Exchanges']  
-#     #     row['EmailText'] = email_info['EmailText'])
-#     return email_info
+def detect_exchanges(row, email_info):
+    if row['Exchanges'] != email_info['Exchanges']:
+        row['Exchanges'] = email_info['Exchanges']  
+        row['EmailText'] = email_info['EmailText'])
+    return row
 
 def add_row(candidate_df, email_info):
     candidate_df.loc[len(candidate_df)] = email_info
@@ -137,7 +137,8 @@ def update_df(candidate_df, emails):
     for email_info in emails:
         if email_info['ID'] in candidate_df['ID'].values:
             idx = np.where(candidate_df['ID'].values == email_info['ID'])[0]
-            candidate_df.loc[int(idx)] = pd.Series(email_info) #candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1) = pd.Series(email_info) #candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1)
+            #pd.Series(email_info) 
+            candidate_df.loc[int(idx)] = candidate_df.loc[int(idx)].apply(detect_exchanges, args=(email_info,),  axis=1) 
         else:
             candidate_df = add_row(candidate_df, email_info)
     return candidate_df
