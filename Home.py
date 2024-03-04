@@ -124,9 +124,9 @@ def read_emails():
 
 # Define a function to apply
 def detect_exchanges(row, email_info):
-    if int(row['Exchanges']) != int(email_info['Exchanges']):
-        row['Exchanges'] = email_info['Exchanges']  
-        row['EmailText'] = email_info['EmailText']
+    # if int(row['Exchanges']) != int(email_info['Exchanges']):
+    row['Exchanges'] = email_info['Exchanges']  
+    row['EmailText'] = email_info['EmailText']
     return row
 
 def add_row(candidate_df, email_info):
