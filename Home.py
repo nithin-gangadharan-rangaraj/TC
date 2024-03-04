@@ -135,6 +135,7 @@ def add_row(candidate_df, email_info):
 
 def update_df(candidate_df, emails):
     for email_info in emails:
+        st.dataframe(candidate_df)
         if email_info['ID'] in candidate_df['ID'].values:
             idx = np.where(candidate_df['ID'].values == email_info['ID'])[0]
             #pd.Series(email_info) 
