@@ -97,7 +97,7 @@ def fetch_emails_with_subject(email_address, password, subject):
     return emails
 
 def get_worksheet(gsheet):
-    wsheet = sheet.sheet1 
+    wsheet = gsheet.sheet1 
     return wsheet
 
 def get_df(wsheet):
