@@ -34,7 +34,7 @@ def fetch_emails_with_subject(email_address, password, subject):
     mail.select('inbox')
 
     # Search for emails with the specified subject
-    result, data = mail.search(None, f'(FROM "{email_address}" SUBJECT "{subject}")')
+    result, data = mail.search(None, f'(SUBJECT "{subject}")')
 
     # List to store email data
     emails = []
