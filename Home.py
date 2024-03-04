@@ -122,11 +122,14 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
     return emails
 
 def attachment_analysis_needed(email_info_id, num_exchanges, df):
-    idx = np.where(df['ID'].values == email_info_id)[0]
-    if int(df.loc[int(idx), 'Exchanges']) < int(num_exchanges):
-        return True
+    if email_info_id in df['ID'].values:
+        idx = np.where(df['ID'].values == email_info_id)[0]
+        if int(df.loc[int(idx), 'Exchanges']) < int(num_exchanges):
+            return True
+        else:
+            return False
     else:
-        return False
+        return True
 
 def open_ai_client():
     client = OpenAI(
