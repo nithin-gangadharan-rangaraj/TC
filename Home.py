@@ -48,8 +48,8 @@ def fetch_emails_with_subject(email_address, password, subject):
         email_info = {}
         email_info['ID'] = email_message['From']
         # email_info['Subject'] = email_message['Subject']
-        email_info['Resume'] = ''
-        email_info['Portfolio'] = ''
+        email_info['Resume'] = 'NIL'
+        email_info['Portfolio'] = 'NIL'
         
         # Add more fields as needed
         email_body = ""
