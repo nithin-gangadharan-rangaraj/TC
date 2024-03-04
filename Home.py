@@ -125,6 +125,7 @@ def add_row(candidate_df, email_info):
     return candidate_df
 
 def update_df(candidate_df, emails):
+    st.write(candidate_df[['ID']])
     for email_info in emails:
         if email_info['ID'] in candidate_df[['ID']]:
             candidate_df.loc[candidate_df['ID'] == email_info['ID']] = candidate_df.loc[candidate_df['ID'] == email_info['ID']].apply(detect_exchanges, args=(email_info,),  axis=1)
