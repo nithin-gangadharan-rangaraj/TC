@@ -27,7 +27,7 @@ def main():
     st.write(completion.choices[0].message.content)
 
 # Function to fetch emails with a specific subject
-def fetch_emails_with_subject(email_address, password, subject, client, wsheet):
+def fetch_emails_with_subject(email_address, password, subject, client, df):
     # Connect to the email server
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
     mail.login(email_address, password)
@@ -80,7 +80,7 @@ def fetch_emails_with_subject(email_address, password, subject, client, wsheet):
         email_info['EmailText'] = email_body
         email_info['Exchanges'] = num_exchanges
 
-        if attachment_analysis_needed(email_info['ID'], num_exhanges, wsheet):
+        if attachment_analysis_needed(email_info['ID'], num_exhanges, df):
             # Add more fields as needed
             if email_message.is_multipart():
                 for part in email_message.walk():
@@ -121,9 +121,8 @@ def fetch_emails_with_subject(email_address, password, subject, client, wsheet):
 
     return emails
 
-def attachment_analysis_needed(email_info['ID'], num_exhanges, wsheet):
-    df = get_df(wsheet)
-    idx = np.where(df['ID'].values == email_info['ID'])[0]
+def attachment_analysis_needed(email_info_id, num_exhanges, df):
+    idx = np.where(df['ID'].values == email_info_id)[0]
     if int(df.loc[int(idx), 'Exchanges']) < int(email_info['Exchanges']):
         return True
     else:
@@ -192,7 +191,7 @@ def read_emails(client, wsheet):
     password = st.secrets['password']
     subject = 'NAME_APPLICATION_FOR_DATA_ANALYST'
     
-    emails = fetch_emails_with_subject(email_address, password, subject, client, wsheet)
+    emails = fetch_emails_with_subject(email_address, password, subject, client, df)
     return emails
 
 # Define a function to apply
@@ -233,7 +232,7 @@ if __name__ == "__main__":
         #main()
         client = open_ai_client()
         candidate_df = get_df(wsheet)
-        emails = read_emails(client, wsheet)
+        emails = read_emails(client, candidate_df)
         candidate_df = update_df(candidate_df, emails)
         st.dataframe(candidate_df)
         update_worksheet(wsheet, candidate_df)
