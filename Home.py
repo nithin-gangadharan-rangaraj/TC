@@ -27,7 +27,7 @@ def main():
     st.write(completion.choices[0].message.content)
 
 # Function to fetch emails with a specific subject
-def fetch_emails_with_subject(email_address, password, subject):
+def fetch_emails_with_subject(email_address, password, subject, client):
     # Connect to the email server
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
     mail.login(email_address, password)
@@ -45,17 +45,24 @@ def fetch_emails_with_subject(email_address, password, subject):
         raw_email = data[0][1]
         email_message = email.message_from_bytes(raw_email)
         num_exchanges = 0
-        cv_text = ''
-        email_body = ""
+
+        # cv_text = ''
+        # email_body = ""
+        # resume_text = ""
+        # portfolio_text = ""
+        # other_text = ""
+
+        # #text-type dictionary assignment
+        # text_type = {'CoverLetter': cv_text, 'Resume':resume_text, 'Portfolio': portfolio_text, 'Other': other_text}
+        
         # Extract relevant information from the email
         email_info = {}
         email_info['ID'] = email_message['From']
-        # email_info['Subject'] = email_message['Subject']
         email_info['Exchanges'] = num_exchanges
-        email_info['EmailText'] = email_body
-        email_info['CoverLetter'] = cv_text
-        email_info['Resume'] = ''
-        email_info['Portfolio'] = ''
+        # email_info['EmailText'] = email_body
+        # email_info['CoverLetter'] = cv_text
+        # email_info['Resume'] = resume_text
+        # email_info['Portfolio'] = portfolio_text
         
         
         # Add more fields as needed
@@ -69,6 +76,7 @@ def fetch_emails_with_subject(email_address, password, subject):
         # Iterate over the parts of the email message
         for part in email_message.walk():
             # Check if the part is an attachment
+            text = ''
             if part.get_content_maintype() == 'application' and part.get_content_subtype() == 'pdf':
                 # Read the PDF attachment content into memory
                 pdf_bytes = part.get_payload(decode=True)
@@ -79,8 +87,12 @@ def fetch_emails_with_subject(email_address, password, subject):
                     # Extract text from the current page
                     page_text = pdf_document[page_number].get_text()
                     # Append the extracted text to the CV text
-                    cv_text += page_text
-
+                    text += page_text
+                    
+            type = check_type(client, text)
+            email_info = assign_text(text, type)
+            
+        
         # Get the value of the "References" header field
         references = email_message.get("References")
 
@@ -94,8 +106,11 @@ def fetch_emails_with_subject(email_address, password, subject):
         num_exchanges += 1
 
         email_info['EmailText'] = email_body
-        email_info['CoverLetter'] = cv_text
         email_info['Exchanges'] = num_exchanges
+
+        # email_info['CoverLetter'] = cv_text
+        # email_info['Resume'] = resume_text
+        # email_info['Portfolio'] = portfolio_text
         # Append email data to the list
         emails.append(email_info)
 
@@ -104,6 +119,54 @@ def fetch_emails_with_subject(email_address, password, subject):
     mail.logout()
 
     return emails
+
+def open_ai_client():
+    client = OpenAI(
+                      api_key=st.secrets['OPENAI-API'],
+                    )
+    return client
+    
+def check_type(client, text):
+    if len(text) > 20:
+        completion = client.chat.completions.create(
+                          model="gpt-3.5-turbo",
+                          messages=[
+                            {"role": "system", "content": f"You're a text analyzer. Analyse this \n {text[:700]} \n"},
+                            {"role": "user", "content": '''Analyse the text type: 
+                                                           A for cover letter, 
+                                                           B for resume, 
+                                                           C for portfolio, 
+                                                           D for other. 
+                                                           If confused, choose D. Do not say anything more than the options.'''}
+                          ]
+                        )
+        answer = completion.choices[0].message.content
+        type_answer = map_type(answer)
+    else:
+        type_answer = 'Other'
+    return type_answer
+
+def map_type(answer):
+    answer = answer.upper.strip()
+    if 'A' in answer:
+        return 'CoverLetter'
+    elif 'B' in answer:
+        return 'Resume'
+    elif 'C' in answer:
+        return 'Portfolio'
+    else:
+        return 'Other'
+
+def assign_text(text, type, email_info):
+    if type == "CoverLetter":
+        email_info['CoverLetter'] += ('\n' + text)
+    elif type == "Resume":
+        email_info['Resume'] += ('\n' + text)
+    elif type == "Portfolio":
+        email_info['Portfolio'] += ('\n' + text)
+    elif type == "Other":
+        email_info['Other'] += ('\n' + text)
+    return email_info
 
 def get_worksheet(gsheet):
     wsheet = gsheet.sheet1 
@@ -114,12 +177,12 @@ def get_df(wsheet):
     existing_candidate_df = pd.DataFrame(values[1:], columns=values[0])
     return existing_candidate_df
 
-def read_emails():
+def read_emails(client):
     email_address = st.secrets['email']
     password = st.secrets['password']
     subject = 'NAME_APPLICATION_FOR_DATA_ANALYST'
     
-    emails = fetch_emails_with_subject(email_address, password, subject)
+    emails = fetch_emails_with_subject(email_address, password, subject, client)
     return emails
 
 # Define a function to apply
@@ -157,9 +220,10 @@ if __name__ == "__main__":
     gsheet = initiate()
     if st.button('Update Candidate Info'):
         #main()
+        client = open_ai_client()
         wsheet = get_worksheet(gsheet)
         candidate_df = get_df(wsheet)
-        emails = read_emails()
+        emails = read_emails(client)
         candidate_df = update_df(candidate_df, emails)
         st.dataframe(candidate_df)
         update_worksheet(wsheet, candidate_df)
