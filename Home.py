@@ -138,9 +138,10 @@ def update_df(candidate_df, emails):
         # st.dataframe(candidate_df)
         if email_info['ID'] in candidate_df['ID'].values:
             idx = np.where(candidate_df['ID'].values == email_info['ID'])[0]
-            candidate_df.loc[int(idx), ['Exchanges', 'EmailText']] = [email_info['Exchanges'], email_info['EmailText']]
-            for info in ['CoverLetter', 'Resume', 'Portfolio']:
-                candidate_df.loc[int(idx), info] += ('\n-----\n' + email_info[info])
+            if candidate_df.loc[int(idx), 'Exchanges'] != email_info['Exchanges']:
+                candidate_df.loc[int(idx), ['Exchanges', 'EmailText']] = [email_info['Exchanges'], email_info['EmailText']]
+                for info in ['CoverLetter', 'Resume', 'Portfolio']:
+                    candidate_df.loc[int(idx), info] += ('\n-----\n' + email_info[info])
         else:
             candidate_df = add_row(candidate_df, email_info)
     return candidate_df
