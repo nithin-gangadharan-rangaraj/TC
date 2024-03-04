@@ -149,7 +149,7 @@ def check_type(client, text):
     return type_answer
 
 def map_type(answer):
-    answer = answer.upper.strip()
+    answer = answer.upper().strip()
     if 'A' in answer:
         return 'CoverLetter'
     elif 'B' in answer:
