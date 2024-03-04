@@ -186,7 +186,7 @@ def get_df(wsheet):
     existing_candidate_df = pd.DataFrame(values[1:], columns=values[0])
     return existing_candidate_df
 
-def read_emails(client, wsheet):
+def read_emails(client, wsheet, df):
     email_address = st.secrets['email']
     password = st.secrets['password']
     subject = 'NAME_APPLICATION_FOR_DATA_ANALYST'
