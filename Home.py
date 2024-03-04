@@ -90,7 +90,7 @@ def fetch_emails_with_subject(email_address, password, subject, client):
                     text += page_text
                     
             type = check_type(client, text)
-            email_info = assign_text(text, type)
+            email_info = assign_text(text, type, email_info)
             
         
         # Get the value of the "References" header field
