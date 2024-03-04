@@ -27,7 +27,7 @@ def main():
     st.write(completion.choices[0].message.content)
 
 # Function to fetch emails with a specific subject
-def fetch_emails_with_subject(email_address, password, subject, client):
+def fetch_emails_with_subject(email_address, password, subject, client, wsheet):
     # Connect to the email server
     mail = imaplib.IMAP4_SSL('imap.gmail.com')
     mail.login(email_address, password)
@@ -64,36 +64,7 @@ def fetch_emails_with_subject(email_address, password, subject, client):
         email_info['Resume'] = ''
         email_info['Portfolio'] = ''
         email_info['Other'] = ''
-        
-        
-        # Add more fields as needed
-        if email_message.is_multipart():
-            for part in email_message.walk():
-                if part.get_content_type() == "text/plain":
-                    email_body += part.get_payload(decode=True).decode()
-        else:
-            email_body = email_message.get_payload(decode=True).decode()
 
-        # Iterate over the parts of the email message
-        for part in email_message.walk():
-            # Check if the part is an attachment
-            text = ''
-            if part.get_content_maintype() == 'application' and part.get_content_subtype() == 'pdf':
-                # Read the PDF attachment content into memory
-                pdf_bytes = part.get_payload(decode=True)
-                # Open the PDF attachment using PyMuPDF
-                pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
-                # Iterate over each page of the PDF
-                for page_number in range(len(pdf_document)):
-                    # Extract text from the current page
-                    page_text = pdf_document[page_number].get_text()
-                    # Append the extracted text to the CV text
-                    text += page_text
-                    
-            type = check_type(client, text)
-            email_info = assign_text(text, type, email_info)
-            
-        
         # Get the value of the "References" header field
         references = email_message.get("References")
 
@@ -109,6 +80,35 @@ def fetch_emails_with_subject(email_address, password, subject, client):
         email_info['EmailText'] = email_body
         email_info['Exchanges'] = num_exchanges
 
+        if attachment_analysis_needed(email_info['ID'], num_exhanges, wsheet):
+            # Add more fields as needed
+            if email_message.is_multipart():
+                for part in email_message.walk():
+                    if part.get_content_type() == "text/plain":
+                        email_body += part.get_payload(decode=True).decode()
+            else:
+                email_body = email_message.get_payload(decode=True).decode()
+    
+            # Iterate over the parts of the email message
+            for part in email_message.walk():
+                # Check if the part is an attachment
+                text = ''
+                if part.get_content_maintype() == 'application' and part.get_content_subtype() == 'pdf':
+                    # Read the PDF attachment content into memory
+                    pdf_bytes = part.get_payload(decode=True)
+                    # Open the PDF attachment using PyMuPDF
+                    pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
+                    # Iterate over each page of the PDF
+                    for page_number in range(len(pdf_document)):
+                        # Extract text from the current page
+                        page_text = pdf_document[page_number].get_text()
+                        # Append the extracted text to the CV text
+                        text += page_text
+                        
+                type = check_type(client, text)
+                email_info = assign_text(text, type, email_info)
+            
+        
         # email_info['CoverLetter'] = cv_text
         # email_info['Resume'] = resume_text
         # email_info['Portfolio'] = portfolio_text
@@ -120,6 +120,14 @@ def fetch_emails_with_subject(email_address, password, subject, client):
     mail.logout()
 
     return emails
+
+def attachment_analysis_needed(email_info['ID'], num_exhanges, wsheet):
+    df = get_df(wsheet)
+    idx = np.where(df['ID'].values == email_info['ID'])[0]
+    if int(df.loc[int(idx), 'Exchanges']) < int(email_info['Exchanges']):
+        return True
+    else:
+        return False
 
 def open_ai_client():
     client = OpenAI(
@@ -179,12 +187,12 @@ def get_df(wsheet):
     existing_candidate_df = pd.DataFrame(values[1:], columns=values[0])
     return existing_candidate_df
 
-def read_emails(client):
+def read_emails(client, wsheet):
     email_address = st.secrets['email']
     password = st.secrets['password']
     subject = 'NAME_APPLICATION_FOR_DATA_ANALYST'
     
-    emails = fetch_emails_with_subject(email_address, password, subject, client)
+    emails = fetch_emails_with_subject(email_address, password, subject, client, wsheet)
     return emails
 
 # Define a function to apply
@@ -220,12 +228,12 @@ def update_worksheet(wsheet, candidate_df):
 if __name__ == "__main__":
     st.write("Welcome!")
     gsheet = initiate()
+    wsheet = get_worksheet(gsheet)
     if st.button('Update Candidate Info'):
         #main()
         client = open_ai_client()
-        wsheet = get_worksheet(gsheet)
         candidate_df = get_df(wsheet)
-        emails = read_emails(client)
+        emails = read_emails(client, wsheet)
         candidate_df = update_df(candidate_df, emails)
         st.dataframe(candidate_df)
         update_worksheet(wsheet, candidate_df)
