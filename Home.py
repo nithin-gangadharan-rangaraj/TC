@@ -47,7 +47,7 @@ def fetch_emails_with_subject(email_address, password, subject, client):
         num_exchanges = 0
 
         # cv_text = ''
-        # email_body = ""
+        email_body = ""
         # resume_text = ""
         # portfolio_text = ""
         # other_text = ""
