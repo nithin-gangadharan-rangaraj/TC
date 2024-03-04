@@ -43,16 +43,21 @@ def fetch_emails_with_subject(email_address, password, subject):
         result, data = mail.fetch(num, '(RFC822)')
         raw_email = data[0][1]
         email_message = email.message_from_bytes(raw_email)
-
+        num_exchanges = 0
+        cv_text = ''
+        email_body = ""
         # Extract relevant information from the email
         email_info = {}
         email_info['ID'] = email_message['From']
         # email_info['Subject'] = email_message['Subject']
-        email_info['Resume'] = 'NIL'
-        email_info['Portfolio'] = 'NIL'
+        email_info['Exchanges'] = num_exchanges
+        email_info['EmailText'] = email_body
+        email_info['CoverLetter'] = cv_text
+        email_info['Resume'] = ''
+        email_info['Portfolio'] = ''
+        
         
         # Add more fields as needed
-        email_body = ""
         if email_message.is_multipart():
             for part in email_message.walk():
                 if part.get_content_type() == "text/plain":
@@ -60,7 +65,6 @@ def fetch_emails_with_subject(email_address, password, subject):
         else:
             email_body = email_message.get_payload(decode=True).decode()
 
-        cv_text = ""
         # Iterate over the parts of the email message
         for part in email_message.walk():
             # Check if the part is an attachment
@@ -80,7 +84,7 @@ def fetch_emails_with_subject(email_address, password, subject):
         references = email_message.get("References")
 
         # If the "References" header field exists, count the number of Message-IDs
-        num_exchanges = 0
+        
         if references:
             # Split the references by whitespace and count the number of Message-IDs
             num_exchanges = len(references.split())
