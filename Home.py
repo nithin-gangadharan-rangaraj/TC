@@ -6,7 +6,7 @@ from auxillaries import initiate
 import imaplib
 import email
 import io
-import gspread_dataframe
+from gspread_dataframe import set_with_dataframe
 import fitz
 
 st.set_page_config(page_title="Candidate.ai")
