@@ -237,5 +237,6 @@ if __name__ == "__main__":
         candidate_df = get_df(wsheet)
         emails = read_emails(client, candidate_df)
         candidate_df = update_df(candidate_df, emails)
-        st.dataframe(candidate_df)
+        st.subheader("Applicants so far...")
+        st.dataframe(candidate_df, use_container_width = True)
         update_worksheet(wsheet, candidate_df)
