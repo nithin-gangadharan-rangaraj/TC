@@ -10,7 +10,7 @@ def get_random():
   return random.randint(10000, 99999)
   
 def is_new(df, inputs):
-  existing_recruiters = (df['Name'] == inputs["name"]) & (df['Title'] == inputs["title"])
+  existing_recruiters = (df['Name'] == inputs["Name"]) & (df['Title'] == inputs["Title"])
   return existing_recruiters.any()
 
 
