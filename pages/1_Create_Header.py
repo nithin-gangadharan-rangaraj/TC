@@ -61,7 +61,7 @@ if __name__ == "__main__":
   gsheet = initiate()
   wsheet = open_worksheet(gsheet, "Recruiters")
   recruiter_df = get_recruiter_df(wsheet)
-  inputs = get_inputs()
+  inputs = get_inputs(recruiter_df)
   if inputs:
     if st.button("Add a new job"):
       inputs["Password"] = generate_password(inputs)
