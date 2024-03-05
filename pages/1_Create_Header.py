@@ -23,7 +23,7 @@ def get_inputs(df):
       inputs["JobDescription"] = st.text_area("Paste the job description").strip()
       inputs["FirmWebsite"] = st.text_input("Paste the link to the hiring firm's website").strip()
   else:
-      st.error(f"{inputs['name']} recruiting for {inputs['title']} exists. Please recheck!")
+      st.error(f"{inputs['Name']} recruiting for {inputs['Title']} exists. Please recheck!")
       return False
   return inputs
 
