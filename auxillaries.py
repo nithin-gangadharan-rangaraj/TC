@@ -2,6 +2,9 @@ from google.oauth2 import service_account
 import streamlit as st
 import gspread
 
+def open_worksheet(gsheet, sheet_name):
+    return gsheet.worksheet(sheet_name)
+  
 def initiate():
   if 'gsheet' in st.session_state:
         gsheet = st.session_state['gsheet']
