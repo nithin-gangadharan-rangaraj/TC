@@ -14,13 +14,17 @@ def is_new(df, inputs):
   return existing_recruiters.any()
 
 
-def get_inputs():
+def get_inputs(df):
   inputs = {}
   inputs["Name"] = st.text_input("Enter the Firm Name").strip().capitalize()
   inputs["Title"] = st.text_input("Enter the Job Title").strip().capitalize()
-  inputs["Email"] = st.text_input("Enter the Email address").strip()
-  inputs["JobDescription"] = st.text_area("Paste the job description").strip()
-  inputs["FirmWebsite"] = st.text_input("Paste the link to the hiring firm's website").strip()
+  if is_new(df, inputs):
+      inputs["Email"] = st.text_input("Enter the Email address").strip()
+      inputs["JobDescription"] = st.text_area("Paste the job description").strip()
+      inputs["FirmWebsite"] = st.text_input("Paste the link to the hiring firm's website").strip()
+  else:
+      st.error(f"{inputs['name']} recruiting for {inputs['title']} exists. Please recheck!")
+      return False
   return inputs
 
 def generate_password(df, inputs):
@@ -58,13 +62,14 @@ if __name__ == "__main__":
   wsheet = open_worksheet(gsheet, "Recruiters")
   recruiter_df = get_recruiter_df(wsheet)
   inputs = get_inputs()
-  if st.button("Add a new job"):
-    if is_new(recruiter_df):
+  if inputs:
+    if st.button("Add a new job"):
       inputs["Password"] = generate_password(inputs)
       inputs["Header"] = generate_subject_header(inputs)
       recruiter_df.loc[len(recruiter_df)] = inputs
       display_info(inputs["Password"], inputs["Header"])
       update_worksheet(wsheet, recruiter_df)
-    else:
-      st.error(f"{inputs['name']} recruiting for {inputs['title']} exists. Please recheck!")
+  else:
+    st.error("Please try again.")
+    
   
