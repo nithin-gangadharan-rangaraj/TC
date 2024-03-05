@@ -1,6 +1,6 @@
 import streamlit as st
 from auxillaries import *
-from gspread_dataframe import get_as_dataframe
+from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import random
 
 def get_recruiter_df(wsheet):
