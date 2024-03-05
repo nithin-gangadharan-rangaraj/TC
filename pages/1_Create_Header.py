@@ -2,9 +2,12 @@ import streamlit as st
 from auxillaries import *
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import random
+import pandas as pd
 
 def get_recruiter_df(wsheet):
-  return get_as_dataframe(wsheet)
+    values = wsheet.get_all_values()
+    recruiter_df = pd.DataFrame(values[1:], columns=values[0])
+    return recruiter_df
 
 def get_random():
   return random.randint(10000, 99999)
