@@ -64,8 +64,8 @@ if __name__ == "__main__":
   inputs = get_inputs(recruiter_df)
   if inputs:
     if st.button("Add a new job"):
-      inputs["Password"] = generate_password(inputs)
-      inputs["Header"] = generate_subject_header(inputs)
+      inputs["Password"] = generate_password(recruiter_df, inputs)
+      inputs["Header"] = generate_subject_header(recruiter_df, inputs)
       recruiter_df.loc[len(recruiter_df)] = inputs
       display_info(inputs["Password"], inputs["Header"])
       update_worksheet(wsheet, recruiter_df)
