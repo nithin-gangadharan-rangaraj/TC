@@ -53,7 +53,7 @@ def display_info(password, header):
       st.write("Please save it for future use.")
       st.divider()
       st.subheader(f"Subject Header for this job: {header}")
-      st.write("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
+      st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
       
     
 if __name__ == "__main__":
@@ -61,17 +61,19 @@ if __name__ == "__main__":
   gsheet = initiate()
   wsheet = open_worksheet(gsheet, "Recruiters")
   recruiter_df = get_recruiter_df(wsheet)
+  recruiter_df.dropna()
   st.dataframe(recruiter_df)
   inputs = get_inputs(recruiter_df)
   if inputs:
     if st.button("Add a new job"):
       inputs["Password"] = generate_password(recruiter_df, inputs)
       inputs["Header"] = generate_subject_header(recruiter_df, inputs)
-      st.dataframe(recruiter_df)
+      # st.dataframe(recruiter_df)
       recruiter_df.loc[len(recruiter_df)] = inputs
-      st.dataframe(recruiter_df)
+      # st.dataframe(recruiter_df)
       display_info(inputs["Password"], inputs["Header"])
-      # update_worksheet(wsheet, recruiter_df)
+      update_worksheet(wsheet, recruiter_df)
+      st.success("Successfully registered the job.")
   else:
     st.error("Please try again.")
     
