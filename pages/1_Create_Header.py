@@ -44,7 +44,7 @@ def update_worksheet(wsheet, recruiter_df):
     set_with_dataframe(wsheet, recruiter_df)
 
 def display_info(password, header):
-  with st.container(border = True)
+  with st.container(border = True):
       st.subheader(f"Your unique password is: {password}")
       st.write("Please save it for future use.")
       st.divider()
