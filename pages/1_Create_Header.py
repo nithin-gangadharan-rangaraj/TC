@@ -66,5 +66,5 @@ if __name__ == "__main__":
       display_info(inputs["Password"], inputs["Header"])
       update_worksheet(wsheet, recruiter_df)
     else:
-      st.error(f"{inputs['name']} recruiting for {inputs['title'] exists. Please recheck!}")
+      st.error(f"{inputs['name']} recruiting for {inputs['title']} exists. Please recheck!}")
   
