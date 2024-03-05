@@ -65,7 +65,7 @@ if __name__ == "__main__":
   wsheet = open_worksheet(gsheet, "Recruiters")
   recruiter_df = get_recruiter_df(wsheet)
   recruiter_df.dropna()
-  st.dataframe(recruiter_df)
+  # st.dataframe(recruiter_df)
   inputs = get_inputs(recruiter_df)
   if inputs:
     if st.button("Add a new job"):
