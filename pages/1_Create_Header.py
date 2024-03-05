@@ -16,7 +16,7 @@ def is_new(df, inputs):
 
 def get_inputs(df):
   inputs = {}
-  inputs["Name"] = st.text_input("Enter the Firm Name").strip().capitalize()
+  inputs["Name"] = st.text_input("Enter the Firm Name").strip().upper()
   inputs["Title"] = st.text_input("Enter the Job Title").strip().capitalize()
   if is_new(df, inputs):
       inputs["Email"] = st.text_input("Enter the Email address").strip()
