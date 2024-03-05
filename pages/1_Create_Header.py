@@ -11,7 +11,7 @@ def get_random():
   
 def is_new(df, inputs):
   existing_recruiters = (df['Name'] == inputs["Name"]) & (df['Title'] == inputs["Title"])
-  return existing_recruiters.any()
+  return not existing_recruiters.any()
 
 
 def get_inputs(df):
