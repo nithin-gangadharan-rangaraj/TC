@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from openai import OpenAI
 import gspread
-from auxillaries import initiate
+from auxillaries import *
 import imaplib
 import email
 import io
@@ -181,9 +181,9 @@ def assign_text(text, type, email_info):
         email_info['Other'] += ('\n' + text)
     return email_info
 
-def get_worksheet(gsheet):
-    wsheet = gsheet.sheet1 
-    return wsheet
+# def get_worksheet(gsheet):
+#     wsheet = gsheet.sheet1 
+#     return wsheet
 
 def get_df(wsheet):
     values = wsheet.get_all_values()
@@ -193,7 +193,7 @@ def get_df(wsheet):
 def read_emails(client, df):
     email_address = st.secrets['email']
     password = st.secrets['password']
-    subject = 'NAME_APPLICATION_FOR_DATA_ANALYST'
+    subject = 'ABC_FOR_DATA_ANALYST'
     
     emails = fetch_emails_with_subject(email_address, password, subject, client, df)
     return emails
@@ -231,7 +231,7 @@ def update_worksheet(wsheet, candidate_df):
 if __name__ == "__main__":
     st.write("Welcome!")
     gsheet = initiate()
-    wsheet = get_worksheet(gsheet)
+    wsheet = open_worksheet(gsheet, "ABC_FOR_DATA_ANALYST")
     if st.button('Update Candidate Info'):
         #main()
         client = open_ai_client()
