@@ -22,6 +22,13 @@ def display_existing_jobs(df, name):
   st.write(f"Existing job titles listed for {name.upper()}:")
   st.dataframe(pd.DataFrame(df.loc[df['Name'] == name, 'Title'].values, columns=['Job Title']))
 
+def validate_inputs(inputs):
+    if inputs['Name'] == '' or inputs['Title'] == '' or inputs['Email'] == '':
+        st.error('Please enter valid Name, Title and Email.')
+        return False
+    else:
+        return True
+
 def get_inputs(df):
   inputs = {}
   name = st.text_input("Enter the Firm Name").strip().upper()
@@ -36,7 +43,7 @@ def get_inputs(df):
   else:
       st.error(f"{inputs['Name']} recruiting for {inputs['Title']} exists. Please recheck!")
       return False
-  return inputs
+  return inputs if validate_inputs(inputs) else False
 
 def generate_password(df, inputs):
   unique_flag = False
