@@ -228,6 +228,10 @@ def update_worksheet(wsheet, candidate_df):
     wsheet.clear()
     set_with_dataframe(wsheet, candidate_df)
 
+def get_recruiter(header, recruiter_df):
+    recruiter = recruiter_df.loc[recruiter_df['header'] == header]
+    return recruiter
+
 # Run the app
 if __name__ == "__main__":
     st.write("Welcome!")
@@ -236,6 +240,8 @@ if __name__ == "__main__":
     recruiter_df = get_df(rsheet)
     user = check_password(recruiter_df)
     if user:
+        recruiter = get_recruiter(header, recruiter_df)
+        st.info(f"Job Information: \n Reruiter: ")
         wsheet = open_worksheet(gsheet, "ABC_FOR_DATA_ANALYST")
         if st.button('Update Candidate Info'):
             #main()
