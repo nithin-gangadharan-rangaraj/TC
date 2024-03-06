@@ -59,17 +59,17 @@ def display_info(password, header):
       st.subheader(f"Subject Header for this job: {header}")
       st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
 
-def add_input_header(wsheet):
+def get_header_list():
     with open('inputs.txt', 'r') as f:
         headers = [inp.strip() for inp in f.readlines()]
-    df = pd.DataFrame(columns=headers)
-    return df
+    return headers
 
 def create_worksheet(gsheet, header):
     gsheet.add_worksheet(title = header, rows="1000", cols="26")
     new_sheet = open_worksheet(gsheet, "Recruiters")
-    df = add_input_header(new_sheet)
-    update_worksheet(new_sheet, df)
+    headers = get_header_list()
+    new_sheet.update('A1', [headers])
+    
     
 if __name__ == "__main__":
   st.header("Register with us and discover the ease of modern recruitment!", divider = 'red')
