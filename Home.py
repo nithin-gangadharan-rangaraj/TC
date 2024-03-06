@@ -12,9 +12,9 @@ import fitz
 from user_auth import check_password
 
 st.set_page_config(page_title="Candidate.ai")
-st.image('cai.png', width = 200)
-st.header("Candidate.ai", divider = 'red')
-
+st.image('cai.png', width = 400)
+st.subheader("Future-Focused Hiring", divider = 'red')
+st.caption("Register your job [here](1_Register_Job) to kick start your recruitment.")
 def main():
     client = OpenAI(
                       api_key=st.secrets['OPENAI-API'],
