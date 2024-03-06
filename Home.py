@@ -230,15 +230,14 @@ def update_worksheet(wsheet, candidate_df):
 
 def get_recruiter(header, recruiter_df):
     recruiter = recruiter_df.loc[recruiter_df['Header'] == header]
-    st.write(recruiter.iloc[0])
-    return recruiter
+    return recruiter.iloc[0]
 
 def display_recruiter(user, recruiter):
     with st.container(border = True):
-        st.subheader(f"Recruiter: {recruiter.loc[0, 'Name']}")
+        st.subheader(f"Recruiter: {recruiter['Name']}")
         st.divider()
-        st.write(f"Job Title: {recruiter.loc[0, 'Title']}")
-        st.write(f"Email: {recruiter.loc[0, 'Email']}")
+        st.write(f"Job Title: {recruiter['Title']}")
+        st.write(f"Email: {recruiter['Email']}")
         
 # Run the app
 if __name__ == "__main__":
