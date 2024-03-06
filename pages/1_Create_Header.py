@@ -22,8 +22,10 @@ def display_existing_jobs(df, name):
 
 def get_inputs(df):
   inputs = {}
-  inputs["Name"] = st.text_input("Enter the Firm Name").strip().upper()
-  display_existing_jobs(df, inputs["Name"])
+  name = st.text_input("Enter the Firm Name").strip().upper()
+  if name:
+      display_existing_jobs(df, name)
+  inputs["Name"] = name
   inputs["Title"] = st.text_input("Enter the Job Title").strip().capitalize()
   if is_new(df, inputs):
       inputs["Email"] = st.text_input("Enter the Email address").strip()
