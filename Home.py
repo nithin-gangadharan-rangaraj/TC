@@ -236,9 +236,8 @@ def get_recruiter(header, recruiter_df):
 def display_recruiter(user, recruiter):
     with st.container(border = True):
         st.subheader(f"Recruiter: {recruiter['Name']}")
-        st.divider()
-        st.write(f"Job Title: {recruiter['Title']}")
-        st.write(f"Email: {recruiter['Email']}")
+        st.write(f"Job Title: **{recruiter['Title']}**")
+        st.write(f"Email: **{recruiter['Email']}**")
         
 # Run the app
 if __name__ == "__main__":
