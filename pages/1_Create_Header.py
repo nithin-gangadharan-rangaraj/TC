@@ -17,8 +17,8 @@ def is_new(df, inputs):
   return not existing_recruiters.any()
 
 def display_existing_jobs(df, name):
-  st.write(f"Existing job titles lister for {name.upper()}")
-  st.write(df[df['Name'] == name, 'Title'])
+  st.write(f"Existing job titles listed for {name.upper()}:")
+  st.write(df[df['Name'] == name, 'Title'].values)
 
 def get_inputs(df):
   inputs = {}
