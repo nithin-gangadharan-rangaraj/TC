@@ -10,6 +10,7 @@ import io
 from gspread_dataframe import set_with_dataframe
 import fitz
 from user_auth import check_password
+import time
 
 st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
