@@ -73,7 +73,7 @@ if __name__ == "__main__":
     if st.button("Add a new job"):
       inputs["Password"] = generate_password(recruiter_df, inputs)
       inputs["Header"] = generate_subject_header(recruiter_df, inputs)
-      create_worksheet(gsheet, header)
+      create_worksheet(gsheet, inputs["Header"])
       # st.dataframe(recruiter_df)
       recruiter_df.loc[len(recruiter_df)] = inputs
       # st.dataframe(recruiter_df)
