@@ -191,10 +191,10 @@ def get_df(wsheet):
     existing_candidate_df = pd.DataFrame(values[1:], columns=values[0])
     return existing_candidate_df
 
-def read_emails(client, df):
+def read_emails(client, df, subject):
     email_address = st.secrets['email']
     password = st.secrets['password']
-    subject = 'ABC_FOR_DATA_ANALYST'
+    subject = subject
     
     emails = fetch_emails_with_subject(email_address, password, subject, client, df)
     return emails
@@ -254,7 +254,7 @@ if __name__ == "__main__":
             #main()
             client = open_ai_client()
             candidate_df = get_df(wsheet)
-            emails = read_emails(client, candidate_df)
+            emails = read_emails(client, candidate_df, subject = user)
             candidate_df = update_df(candidate_df, emails)
             st.subheader("Applicants so far...")
             st.dataframe(candidate_df, use_container_width = True)
