@@ -12,7 +12,7 @@ def check_password(df):
     
     def password_entered(df):
         """Checks whether a password entered by the user is correct."""
-        st.session_state["header"] = st.session_state["username"].strip().lower()
+        st.session_state["header"] = st.session_state["header"].strip().lower()
         st.session_state["password"] = st.session_state["password"].strip()
       
         if (
