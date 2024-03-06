@@ -260,3 +260,11 @@ if __name__ == "__main__":
             st.subheader("Applicants so far...")
             st.dataframe(candidate_df, use_container_width = True)
             update_worksheet(wsheet, candidate_df)
+
+        st.sidebar.divider()
+        if st.sidebar.button('Check another job'):
+            with st.spinner('Logging off, please wait...'):
+                st.session_state.clear()  # Clear session state to sign out
+                st.toast('You can check for another job now :)')
+                time.sleep(1)
+                st.experimental_rerun()   # Trigger re-run to refresh the app
