@@ -16,10 +16,14 @@ def is_new(df, inputs):
   existing_recruiters = (df['Name'] == inputs["Name"]) & (df['Title'] == inputs["Title"])
   return not existing_recruiters.any()
 
+def display_existing_jobs(df, name):
+  st.write(f"Existing job titles lister for {name.upper()}")
+  st.write(df[df['Name'] == name, 'Title'])
 
 def get_inputs(df):
   inputs = {}
   inputs["Name"] = st.text_input("Enter the Firm Name").strip().upper()
+  display_existing_jobs(df, inputs["Name"])
   inputs["Title"] = st.text_input("Enter the Job Title").strip().capitalize()
   if is_new(df, inputs):
       inputs["Email"] = st.text_input("Enter the Email address").strip()
