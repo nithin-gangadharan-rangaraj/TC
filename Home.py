@@ -9,6 +9,7 @@ import email
 import io
 from gspread_dataframe import set_with_dataframe
 import fitz
+import user_auth
 
 st.set_page_config(page_title="Candidate.ai")
 st.header("Candidate.ai", divider = 'red')
