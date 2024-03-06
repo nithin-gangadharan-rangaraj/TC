@@ -251,17 +251,24 @@ if __name__ == "__main__":
         recruiter = get_recruiter(user, recruiter_df)
         display_recruiter(user, recruiter)
         wsheet = open_worksheet(gsheet, user)
+        client = open_ai_client()
+        
         st.subheader("Excited to check for applicants?", divider = 'blue')
-        if st.button('Update Candidate Info'):
-            #main()
-            client = open_ai_client()
+        if st.button('Update Candidate Info'):            
             candidate_df = get_df(wsheet)
             emails = read_emails(client, candidate_df, subject = user)
             candidate_df = update_df(candidate_df, emails)
             st.subheader("Applicants so far...")
             st.dataframe(candidate_df, use_container_width = True)
             update_worksheet(wsheet, candidate_df)
+            
+        st.subheader("Rank Applicants", divider = 'blue')
+        if st.button('Start Ranking'): 
+            st.write('Ranking candidates...')
 
+
+
+            
         # st.sidebar.divider()
         if st.sidebar.button('Check another job'):
             with st.spinner('Logging off, please wait...'):
