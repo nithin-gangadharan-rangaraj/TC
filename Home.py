@@ -234,6 +234,7 @@ def get_recruiter(header, recruiter_df):
 
 def display_recruiter(user, recruiter_df):
     recruiter = get_recruiter(user, recruiter_df)
+    st.write(recruiter)
     with st.container(border = True):
         st.header(f"Recruiter: {str(recruiter['Name'])}")
         st.subheader(f"Job Title: {str(recruiter['Title'])}")
