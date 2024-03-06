@@ -11,8 +11,8 @@ def user_pass(header, df):
 
 def check_password(df):
    
-    """Returns `True` if the user had a correct password."""
-    
+    st.write("Enter the job's unique **Subject Header and Password** and you're good to go! 🙂")
+  
     def password_entered():
         """Checks whether a password entered by the user is correct."""
         if "header" in st.session_state and "password" in st.session_state:
@@ -38,6 +38,8 @@ def check_password(df):
         st.text_input(
             "Enter the Job's Password", type="password", on_change=password_entered, key="password", help="Unique password for this job would have been issued during Job Registration."
         )
+        st.caption("New? Register your job under **Register Job** to kick start your recruitment.")
+      
         return False
         
     elif not st.session_state["password_correct"]:
@@ -46,6 +48,7 @@ def check_password(df):
         st.text_input(
             "Enter the Job's Password", type="password", on_change=password_entered, key="password", help="Unique password for this job would have been issued during Job Registration."
         )
+        st.caption("New? Register your job under **Register Job** to kick start your recruitment.")
         st.error("😕 Header not known or password incorrect")
         return False
     else:
