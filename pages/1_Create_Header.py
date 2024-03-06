@@ -58,7 +58,7 @@ def update_worksheet(wsheet, df):
 
 def display_info(password, header):
   with st.container(border = True):
-      st.subheader(f"Your unique password is: {password}")
+      st.subheader(f"Job's unique password is: {password}")
       st.write("Please save it for future use.")
       st.divider()
       st.subheader(f"Subject Header for this job: {header}")
