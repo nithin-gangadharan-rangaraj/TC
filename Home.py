@@ -235,10 +235,10 @@ def get_recruiter(header, recruiter_df):
 def display_recruiter(user, recruiter_df):
     recruiter = get_recruiter(user, recruiter_df)
     with st.container(border = True):
-        st.header(f"Recruiter: {recruiter.loc[0, 'Name']}")
+        st.subheader(f"Recruiter: {recruiter.loc[0, 'Name']}")
         st.divider()
-        st.subheader(f"Job Title: {recruiter.loc[0, 'Title']}")
-        st.subheader(f"Email: {recruiter.loc[0, 'Email']}")
+        st.caption(f"Job Title: {recruiter.loc[0, 'Title']}")
+        st.caption(f"Email: {recruiter.loc[0, 'Email']}")
         
 # Run the app
 if __name__ == "__main__":
