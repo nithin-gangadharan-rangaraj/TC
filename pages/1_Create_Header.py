@@ -46,9 +46,10 @@ def generate_subject_header(df, inputs):
       unique_flag = True
   return header
 
-def update_worksheet(wsheet, recruiter_df):
+def update_worksheet(wsheet, df):
     wsheet.clear()
-    set_with_dataframe(wsheet, recruiter_df)
+    set_with_dataframe(wsheet, df)
+    st.success("set")
 
 def display_info(password, header):
   with st.container(border = True):
@@ -62,7 +63,6 @@ def add_input_header(wsheet):
     with open('inputs.txt', 'r') as f:
         headers = [inp.strip() for inp in f.readlines()]
     df = pd.DataFrame(columns=headers)
-    st.dataframe(df)
     return df
 
 def create_worksheet(gsheet, header):
