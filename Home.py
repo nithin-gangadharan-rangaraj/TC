@@ -261,7 +261,7 @@ if __name__ == "__main__":
             st.dataframe(candidate_df, use_container_width = True)
             update_worksheet(wsheet, candidate_df)
 
-        st.sidebar.divider()
+        # st.sidebar.divider()
         if st.sidebar.button('Check another job'):
             with st.spinner('Logging off, please wait...'):
                 st.session_state.clear()  # Clear session state to sign out
