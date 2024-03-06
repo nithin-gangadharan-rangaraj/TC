@@ -18,7 +18,6 @@ def check_password(df):
         if "header" in st.session_state and "password" in st.session_state:
           header = st.session_state["header"].strip()
           password = st.session_state["password"].strip()
-          st.write(user_pass(header, df))
           if (
               header in df['Header'].values
               and password
