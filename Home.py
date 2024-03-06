@@ -230,7 +230,7 @@ def update_worksheet(wsheet, candidate_df):
 
 def get_recruiter(header, recruiter_df):
     recruiter = recruiter_df.loc[recruiter_df['Header'] == header]
-    st.write(recruiter[0])
+    st.write(recruiter.iloc[0])
     return recruiter
 
 def display_recruiter(user, recruiter):
