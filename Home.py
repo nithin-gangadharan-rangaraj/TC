@@ -240,7 +240,7 @@ if __name__ == "__main__":
     recruiter_df = get_df(rsheet)
     user = check_password(recruiter_df)
     if user:
-        recruiter = get_recruiter(header, recruiter_df)
+        recruiter = get_recruiter(user, recruiter_df)
         st.info(f"Job Information: \n Reruiter: ")
         wsheet = open_worksheet(gsheet, "ABC_FOR_DATA_ANALYST")
         if st.button('Update Candidate Info'):
