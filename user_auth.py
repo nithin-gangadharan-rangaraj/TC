@@ -4,8 +4,10 @@ import os
 
 def user_pass(header, df):
   crct_password = df[df['Header'] == header, 'Password'].values
-  st.write(crct_password)
-  return crct_password
+  if len(crct_password) > 0:
+        return crct_password[0]
+    else:
+        return None
 
 def check_password(df):
    
