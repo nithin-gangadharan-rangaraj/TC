@@ -59,7 +59,7 @@ def display_info(password, header):
       st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
 
 def create_worksheet(gsheet, header):
-    gsheet.add_worksheet(title = header)
+    gsheet.add_worksheet(title = header, rows="1000", cols="26")
     
 if __name__ == "__main__":
   st.header("Register with us and discover the ease of modern recruitment!", divider = 'red')
