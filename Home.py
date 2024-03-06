@@ -232,6 +232,13 @@ def get_recruiter(header, recruiter_df):
     recruiter = recruiter_df.loc[recruiter_df['Header'] == header]
     return recruiter
 
+def display_recruiter(user, recruiter_df):
+    recruiter = get_recruiter(user, recruiter_df)
+    with st.container(border = True):
+        st.header(f"Recruiter: {recruiter['Name']}")
+        st.subheader(f"Job Title: {recruiter['Title']}")
+        st.subheader(f"Email: {recruiter['Email']}")
+        
 # Run the app
 if __name__ == "__main__":
     st.write("Welcome!")
@@ -240,8 +247,7 @@ if __name__ == "__main__":
     recruiter_df = get_df(rsheet)
     user = check_password(recruiter_df)
     if user:
-        recruiter = get_recruiter(user, recruiter_df)
-        st.info(f"Job Information: \n Reruiter: ")
+        display_recruiter(user, recruiter_df)
         wsheet = open_worksheet(gsheet, "ABC_FOR_DATA_ANALYST")
         if st.button('Update Candidate Info'):
             #main()
