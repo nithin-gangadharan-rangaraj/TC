@@ -5,7 +5,6 @@ import os
 def user_pass(header, df):
   crct_password = df.loc[df['Header'] == header, 'Password'].values
   if len(crct_password) > 0:
-    st.write(crct_password[0])
     return crct_password[0]
   else:
     return None
@@ -19,7 +18,7 @@ def check_password(df):
         if "header" in st.session_state and "password" in st.session_state:
           header = st.session_state["header"].strip()
           password = st.session_state["password"].strip()
-      
+          st.write(user_pass(header, df))
           if (
               header in df['Header'].values
               and password
