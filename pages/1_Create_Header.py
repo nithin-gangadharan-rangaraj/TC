@@ -57,7 +57,9 @@ def display_info(password, header):
       st.divider()
       st.subheader(f"Subject Header for this job: {header}")
       st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
-      
+
+def create_worksheet(gsheet, header):
+    gsheet.add_worksheet(title = header)
     
 if __name__ == "__main__":
   st.header("Register with us and discover the ease of modern recruitment!", divider = 'red')
@@ -71,6 +73,7 @@ if __name__ == "__main__":
     if st.button("Add a new job"):
       inputs["Password"] = generate_password(recruiter_df, inputs)
       inputs["Header"] = generate_subject_header(recruiter_df, inputs)
+      create_worksheet(gsheet, header)
       # st.dataframe(recruiter_df)
       recruiter_df.loc[len(recruiter_df)] = inputs
       # st.dataframe(recruiter_df)
