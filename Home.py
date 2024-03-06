@@ -12,6 +12,7 @@ import fitz
 from user_auth import check_password
 
 st.set_page_config(page_title="Candidate.ai")
+st.image('cai.png')
 st.header("Candidate.ai", divider = 'red')
 
 def main():
