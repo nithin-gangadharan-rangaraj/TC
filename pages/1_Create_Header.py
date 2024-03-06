@@ -62,6 +62,7 @@ def add_input_header(wsheet):
     with open('inputs.txt', 'r') as f:
         headers = [inp.strip() for inp in f.readlines()]
     df = pd.DataFrame(columns=headers)
+    st.dataframe(df)
     return df
 
 def create_worksheet(gsheet, header):
