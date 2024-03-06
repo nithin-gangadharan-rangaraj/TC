@@ -232,8 +232,7 @@ def get_recruiter(header, recruiter_df):
     recruiter = recruiter_df.loc[recruiter_df['Header'] == header]
     return recruiter
 
-def display_recruiter(user, recruiter_df):
-    recruiter = get_recruiter(user, recruiter_df)
+def display_recruiter(user, recruiter):
     with st.container(border = True):
         st.subheader(f"Recruiter: {recruiter.loc[0, 'Name']}")
         st.divider()
@@ -248,8 +247,9 @@ if __name__ == "__main__":
     recruiter_df = get_df(rsheet)
     user = check_password(recruiter_df)
     if user:
-        display_recruiter(user, recruiter_df)
-        wsheet = open_worksheet(gsheet, "ABC_FOR_DATA_ANALYST")
+        recruiter = get_recruiter(user, recruiter_df)
+        display_recruiter(user, recruiter)
+        wsheet = open_worksheet(gsheet, user)
         if st.button('Update Candidate Info'):
             #main()
             client = open_ai_client()
