@@ -250,6 +250,7 @@ if __name__ == "__main__":
         recruiter = get_recruiter(user, recruiter_df)
         display_recruiter(user, recruiter)
         wsheet = open_worksheet(gsheet, user)
+        st.subheader("Excited to check for applicants?", divider = 'blue')
         if st.button('Update Candidate Info'):
             #main()
             client = open_ai_client()
