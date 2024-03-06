@@ -49,7 +49,6 @@ def generate_subject_header(df, inputs):
 def update_worksheet(wsheet, df):
     wsheet.clear()
     set_with_dataframe(wsheet, df)
-    st.success("set")
 
 def display_info(password, header):
   with st.container(border = True):
