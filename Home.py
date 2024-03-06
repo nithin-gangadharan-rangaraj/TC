@@ -14,7 +14,7 @@ from user_auth import check_password
 st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
-st.caption("Register your job under **Register Job** to kick start your recruitment.")
+# st.caption("Register your job under **Register Job** to kick start your recruitment.")
 def main():
     client = OpenAI(
                       api_key=st.secrets['OPENAI-API'],
@@ -242,7 +242,7 @@ def display_recruiter(user, recruiter):
         
 # Run the app
 if __name__ == "__main__":
-    st.write("Enter the job's unique **Subject Header and Password** and you're good to go! 🙂")
+    # st.write("Enter the job's unique **Subject Header and Password** and you're good to go! 🙂")
     gsheet = initiate()
     rsheet = open_worksheet(gsheet, "Recruiters")
     recruiter_df = get_df(rsheet)
