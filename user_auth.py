@@ -35,17 +35,17 @@ def check_password(df):
 
     if "password_correct" not in st.session_state:
         # First run, show inputs for username + password.
-        st.text_input("Enter the Subject Header", on_change=password_entered(df), key="header")
+        st.text_input("Enter the Subject Header", on_change=password_entered, key="header")
         st.text_input(
-            "Enter your unique Password", type="password", on_change=password_entered(df), key="password"
+            "Enter your unique Password", type="password", on_change=password_entered, key="password"
         )
         return False
         
     elif not st.session_state["password_correct"]:
         # Password not correct, show input + error.
-        st.text_input("Enter the Subject Header", on_change=password_entered(df), key="header")
+        st.text_input("Enter the Subject Header", on_change=password_entered, key="header")
         st.text_input(
-            "Enter your unique Password", type="password", on_change=password_entered(df), key="password"
+            "Enter your unique Password", type="password", on_change=password_entered, key="password"
         )
         st.error("😕 Header not known or password incorrect")
         return False
