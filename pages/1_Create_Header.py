@@ -66,7 +66,7 @@ def get_header_list():
 
 def create_worksheet(gsheet, header):
     gsheet.add_worksheet(title = header, rows="1000", cols="26")
-    new_sheet = open_worksheet(gsheet, "Recruiters")
+    new_sheet = open_worksheet(gsheet, header)
     headers = get_header_list()
     new_sheet.update('A1', [headers])
     
