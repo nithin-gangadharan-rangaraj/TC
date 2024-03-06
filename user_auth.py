@@ -17,15 +17,17 @@ def check_password(df):
           header = st.session_state["header"].strip()
           password = st.session_state["password"].strip()
       
-        if (
-            header in df['Header'].values
-            and password
-            == user_pass(header, df)
-        ):
-            st.session_state["password_correct"] = True
-            st.session_state['user'] = st.session_state["header"] 
-            del st.session_state["password"]  # don't store username + password
-            del st.session_state["header"]
+          if (
+              header in df['Header'].values
+              and password
+              == user_pass(header, df)
+          ):
+              st.session_state["password_correct"] = True
+              st.session_state['user'] = st.session_state["header"] 
+              del st.session_state["password"]  # don't store username + password
+              del st.session_state["header"]
+          else:
+            st.session_state["password_correct"] = False
         else:
             st.session_state["password_correct"] = False
 
