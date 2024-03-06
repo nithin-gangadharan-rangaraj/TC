@@ -230,14 +230,18 @@ def update_worksheet(wsheet, candidate_df):
 # Run the app
 if __name__ == "__main__":
     st.write("Welcome!")
-    gsheet = initiate()
-    wsheet = open_worksheet(gsheet, "ABC_FOR_DATA_ANALYST")
-    if st.button('Update Candidate Info'):
-        #main()
-        client = open_ai_client()
-        candidate_df = get_df(wsheet)
-        emails = read_emails(client, candidate_df)
-        candidate_df = update_df(candidate_df, emails)
-        st.subheader("Applicants so far...")
+    rsheet = open_worksheet(gsheet, "Recruiters")
+    recruiter_df = get_df(rsheet)
+    user = check_password(recruiter_df)
+    if user:
+        gsheet = initiate()
+        wsheet = open_worksheet(gsheet, "ABC_FOR_DATA_ANALYST")
+        if st.button('Update Candidate Info'):
+            #main()
+            client = open_ai_client()
+            candidate_df = get_df(wsheet)
+            emails = read_emails(client, candidate_df)
+            candidate_df = update_df(candidate_df, emails)
+            st.subheader("Applicants so far...")
         st.dataframe(candidate_df, use_container_width = True)
         update_worksheet(wsheet, candidate_df)
