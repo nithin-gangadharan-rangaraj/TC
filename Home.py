@@ -237,8 +237,8 @@ def display_recruiter(user, recruiter_df):
     with st.container(border = True):
         st.subheader(f"Recruiter: {recruiter.loc[0, 'Name']}")
         st.divider()
-        st.caption(f"Job Title: {recruiter.loc[0, 'Title']}")
-        st.caption(f"Email: {recruiter.loc[0, 'Email']}")
+        st.write(f"Job Title: {recruiter.loc[0, 'Title']}")
+        st.write(f"Email: {recruiter.loc[0, 'Email']}")
         
 # Run the app
 if __name__ == "__main__":
