@@ -242,7 +242,7 @@ def display_recruiter(user, recruiter):
         
 # Run the app
 if __name__ == "__main__":
-    st.write("Enter the job's unique Subject Header and Password and you're good to go! 🙂")
+    st.write("Enter the job's unique **Subject Header and Password** and you're good to go! 🙂")
     gsheet = initiate()
     rsheet = open_worksheet(gsheet, "Recruiters")
     recruiter_df = get_df(rsheet)
