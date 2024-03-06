@@ -60,7 +60,7 @@ def display_info(password, header):
 
 def add_input_header(wsheet):
     with open('inputs.txt', 'r') as f:
-        headers = [inp.strip() for input in f.readlines()]
+        headers = [inp.strip() for inp in f.readlines()]
     df = pd.DataFrame(columns=headers)
     return df
 
