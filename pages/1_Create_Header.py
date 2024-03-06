@@ -18,7 +18,7 @@ def is_new(df, inputs):
 
 def display_existing_jobs(df, name):
   st.write(f"Existing job titles listed for {name.upper()}:")
-  st.dataframe(df.loc[df['Name'] == name, 'Title'].values)
+  st.dataframe(df.loc[df['Name'] == name, 'Title'].values, columns=['Job Title'])
 
 def get_inputs(df):
   inputs = {}
