@@ -3,7 +3,7 @@ from auxillaries import *
 import os
 
 def user_pass(header, df):
-  crct_password = df[df['Header'] == header, 'Password'].values
+  crct_password = df.loc[df['Header'] == header, 'Password'].values
   if len(crct_password) > 0:
     return crct_password[0]
   else:
