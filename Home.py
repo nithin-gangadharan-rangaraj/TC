@@ -229,7 +229,7 @@ def update_worksheet(wsheet, candidate_df):
     set_with_dataframe(wsheet, candidate_df)
 
 def get_recruiter(header, recruiter_df):
-    recruiter = recruiter_df.loc[recruiter_df['header'] == header]
+    recruiter = recruiter_df.loc[recruiter_df['Header'] == header]
     return recruiter
 
 # Run the app
