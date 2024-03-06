@@ -19,7 +19,7 @@ def check_password(df):
         if (
             header in df['Header'].values
             and password
-            == user_pass([header, df)
+            == user_pass(header, df)
         ):
             st.session_state["password_correct"] = True
             st.session_state['user'] = st.session_state["header"] 
