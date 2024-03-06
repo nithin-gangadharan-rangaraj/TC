@@ -36,7 +36,7 @@ def check_password(df):
         # First run, show inputs for username + password.
         st.text_input("Enter the Subject Header", on_change=password_entered, key="header")
         st.text_input(
-            "Enter your unique Password", type="password", on_change=password_entered, key="password"
+            "Enter the Job's Password", type="password", on_change=password_entered, key="password", help="Unique password for this job would have been issued during Job Registration."
         )
         return False
         
@@ -44,7 +44,7 @@ def check_password(df):
         # Password not correct, show input + error.
         st.text_input("Enter the Subject Header", on_change=password_entered, key="header")
         st.text_input(
-            "Enter your unique Password", type="password", on_change=password_entered, key="password"
+            "Enter the Job's Password", type="password", on_change=password_entered, key="password", help="Unique password for this job would have been issued during Job Registration."
         )
         st.error("😕 Header not known or password incorrect")
         return False
