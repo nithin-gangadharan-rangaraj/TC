@@ -21,7 +21,7 @@ def check_password(df):
             == user_pass([st.session_state["header"]], df)
         ):
             st.session_state["password_correct"] = True
-            st.session_state['user'] = st.session_state["username"] 
+            st.session_state['user'] = st.session_state["header"] 
             del st.session_state["password"]  # don't store username + password
             del st.session_state["header"]
         else:
@@ -41,7 +41,7 @@ def check_password(df):
         st.text_input(
             "Enter your unique Password", type="password", on_change=password_entered(df), key="password"
         )
-        st.error("😕 User not known or password incorrect")
+        st.error("😕 Header not known or password incorrect")
         return False
     else:
         # Password correct.
