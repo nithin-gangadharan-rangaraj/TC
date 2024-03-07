@@ -289,10 +289,10 @@ if __name__ == "__main__":
         display_recruiter(user, recruiter)
         wsheet = open_worksheet(gsheet, user)
         client = open_ai_client()
+        candidate_df = get_df(wsheet)
         
         st.subheader("Excited to check for applicants?", divider = 'blue')
         if st.button('Update Candidate Info'):            
-            candidate_df = get_df(wsheet)
             emails = read_emails(client, candidate_df, subject = user)
             candidate_df = update_df(candidate_df, emails)
             st.subheader("Applicants so far...")
