@@ -317,7 +317,7 @@ if __name__ == "__main__":
                 status.update(label="Updated Candidate Info!", state="complete", expanded=True)
             st.subheader("Applicants so far...")
             st.dataframe(candidate_df, use_container_width = True)
-
+            st.info('Next step: Rank the candidates.')
             
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
@@ -328,8 +328,10 @@ if __name__ == "__main__":
                 update_worksheet(rec_sheet, rec_df)
                 status.update(label="Wohoo, analysed everyone.", state="complete", expanded=True)
             st.dataframe(rec_df)
-
+            st.info('Next step: Need a report? Go to the next section.')
+            
         st.subheader("Get Reports", divider = 'blue')
+        st.wawrning("If the earlier sections aren't finished, the report won't show any new applicants, if any.")
         with st.expander("Click here to check the existing candidates."):
             st.dataframe(rec_df)
         if st.button('Send Email'): 
