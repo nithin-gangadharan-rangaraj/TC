@@ -239,10 +239,47 @@ def display_recruiter(user, recruiter):
         st.subheader(f"Recruiter: {recruiter['Name']}")
         st.write(f"Job Title: **{recruiter['Title']}**")
         st.write(f"Email: **{recruiter['Email']}**")
+
+def generate_prompt(candidate):
+    prompt = ""
+    for column, value in candidate.items():
+        if value.isalnum():
+            prompt += ("\n" + f"{column.upper().strip()}" + "\n" + f"{value.strip()}")
+    st.write(prompt)
+    return prompt
+
+def get_recommendation_ai(client, candidate):
+    prompt = generate_prompt(candidate)
+    # if len(text) > 20:
+    #     completion = client.chat.completions.create(
+    #                       model="gpt-3.5-turbo",
+    #                       messages=[
+    #                         {"role": "system", "content": f"You're a text analyzer. Analyse this \n {text[:700]} \n"},
+    #                         {"role": "user", "content": '''Analyse the text type: 
+    #                                                        A for cover letter, 
+    #                                                        B for resume, 
+    #                                                        C for portfolio, 
+    #                                                        D for other. 
+    #                                                        If confused, choose D. Do not say anything more than the options.'''}
+    #                       ]
+    #                     )
+    #     answer = completion.choices[0].message.content
+    #     st.subheader("### AI API Usage checker", divider = 'red')
+    #     st.write(text[:700], answer)
+    #     type_answer = map_type(answer)
+    # else:
+    #     type_answer = 'Other'
+    # return type_answer
+
+def write_recommendation(client, candidate_df):
+    for index, candidate in candidate_df.iterrows():
+        get_recommendation_ai(client, candidate)
+        # write_sorted_df = (candidate, recommendation, score)
+        # update_worksheet()
+
         
 # Run the app
 if __name__ == "__main__":
-    # st.write("Enter the job's unique **Subject Header and Password** and you're good to go! 🙂")
     gsheet = initiate()
     rsheet = open_worksheet(gsheet, "Recruiters")
     recruiter_df = get_df(rsheet)
@@ -265,6 +302,7 @@ if __name__ == "__main__":
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
             st.write('Ranking candidates...')
+            write_recommendation(candidate_df)
 
 
 
