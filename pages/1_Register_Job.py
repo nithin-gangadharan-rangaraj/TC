@@ -74,7 +74,7 @@ def display_info(password, header):
       st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
 
 def get_header_list(header):
-    with open(f'inputs_{header.split('_')[-1]}.txt', 'r') as f:
+    with open(f'inputs_{header.split("_")[-1]}.txt', 'r') as f:
         headers = [inp.strip() for inp in f.readlines()]
     return headers
 
