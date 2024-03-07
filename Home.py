@@ -306,12 +306,18 @@ if __name__ == "__main__":
         rec_df = get_df(rec_sheet)
         
         st.subheader("Excited to check for applicants?", divider = 'blue')
-        if st.button('Update Candidate Info'):            
-            emails = read_emails(client, candidate_df, subject = user)
-            candidate_df = update_df(candidate_df, emails)
-            st.subheader("Applicants so far...")
-            st.dataframe(candidate_df, use_container_width = True)
-            update_worksheet(wsheet, candidate_df)
+        if st.button('Update Candidate Info'): 
+            with st.status("Updating Info...", expanded=True) as status:
+                emails = read_emails(client, candidate_df, subject = user)
+                st.success('Fetched Emails.')
+                candidate_df = update_df(candidate_df, emails)
+                st.success('Fetched Information.')
+                st.subheader("Applicants so far...")
+                st.dataframe(candidate_df, use_container_width = True)
+                update_worksheet(wsheet, candidate_df)
+                st.success('Updated the data.')
+                status.update(label="Updated Candidate Info!", state="complete", expanded=False)
+
             
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
