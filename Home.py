@@ -243,7 +243,7 @@ def display_recruiter(user, recruiter):
 def generate_prompt(candidate):
     prompt = ""
     for column, value in candidate.items():
-        if str(value).isalnum():
+        if len(value) > 0:
             prompt += ("\n" + f"{column.upper().strip()}" + "\n" + f"{value.strip()}")
     st.write(prompt)
     return prompt
