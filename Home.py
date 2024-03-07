@@ -312,19 +312,21 @@ if __name__ == "__main__":
                 st.success('Fetched Emails.')
                 candidate_df = update_df(candidate_df, emails)
                 st.success('Fetched Information.')
-                st.subheader("Applicants so far...")
-                st.dataframe(candidate_df, use_container_width = True)
                 update_worksheet(wsheet, candidate_df)
                 st.success('Updated the data.')
                 status.update(label="Updated Candidate Info!", state="complete", expanded=False)
+            st.subheader("Applicants so far...")
+            st.dataframe(candidate_df, use_container_width = True)
 
             
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
-            st.write('Writing recommendations for candidates...')
-            rec_df = write_recommendation(client, candidate_df, recruiter)
-            update_worksheet(rec_sheet, rec_df)
-            st.success("Wohoo, analysed everyone.")
+            with st.status("Updating Info...", expanded=True) as status:
+                st.write('Writing recommendations for candidates.')
+                rec_df = write_recommendation(client, candidate_df, recruiter)
+                st.write('Updating Data.')
+                update_worksheet(rec_sheet, rec_df)
+                status.update(label="Wohoo, analysed everyone.", state="complete", expanded=False)
             st.dataframe(rec_df)
 
         st.subheader("Get Reports", divider = 'blue')
