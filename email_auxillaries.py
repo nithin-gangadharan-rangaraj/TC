@@ -27,6 +27,6 @@ def send_report(df, recruiter):
         server.login(multipart["From"], st.secrets['password'])
         server.sendmail(multipart["From"], multipart["To"], multipart.as_string())
         server.quit()
-        st.success(f"Email sent to {recruiter['Email'] successfully.}")
+        st.success(f"Email sent to {recruiter['Email']} successfully.")
     except:
         st.error("Error. Please try again later.")
