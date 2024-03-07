@@ -331,7 +331,7 @@ if __name__ == "__main__":
             st.info('Next step: Need a report? Go to the next section.')
             
         st.subheader("Get Reports", divider = 'blue')
-        st.wawrning("If the earlier sections aren't finished, the report won't show any new applicants, if any.")
+        st.warning("If the earlier sections aren't finished, the report won't show any new applicants, if any.")
         with st.expander("Click here to check the existing candidates."):
             st.dataframe(rec_df)
         if st.button('Send Email'): 
