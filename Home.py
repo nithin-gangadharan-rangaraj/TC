@@ -11,6 +11,7 @@ from gspread_dataframe import set_with_dataframe
 import fitz
 from user_auth import check_password
 import time
+import regex
 
 st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
@@ -240,42 +241,44 @@ def display_recruiter(user, recruiter):
         st.write(f"Job Title: **{recruiter['Title']}**")
         st.write(f"Email: **{recruiter['Email']}**")
 
-def generate_prompt(candidate):
+def generate_prompt(candidate, recruiter):
     prompt = ""
     for column, value in candidate.items():
         if len(value) > 0:
             prompt += (f'''\n
                             {column.upper().strip()}\n
-                            {value.strip()}''')
+                            {value.strip()}\n''')
+    if len(prompt) > 20:
+        prompt += (f'''JOB DESCRIPTION:\n
+                        {recruiter['JobDescription']}\n
+                        JOB WEBSITE:\n
+                        {recruiter['FirmWebsite']}\n
+                    ''')
     st.write(prompt)
     return prompt
 
-def get_recommendation_ai(client, candidate):
-    prompt = generate_prompt(candidate)
-    # if len(text) > 20:
-    #     completion = client.chat.completions.create(
-    #                       model="gpt-3.5-turbo",
-    #                       messages=[
-    #                         {"role": "system", "content": f"You're a text analyzer. Analyse this \n {text[:700]} \n"},
-    #                         {"role": "user", "content": '''Analyse the text type: 
-    #                                                        A for cover letter, 
-    #                                                        B for resume, 
-    #                                                        C for portfolio, 
-    #                                                        D for other. 
-    #                                                        If confused, choose D. Do not say anything more than the options.'''}
-    #                       ]
-    #                     )
-    #     answer = completion.choices[0].message.content
-    #     st.subheader("### AI API Usage checker", divider = 'red')
-    #     st.write(text[:700], answer)
-    #     type_answer = map_type(answer)
-    # else:
-    #     type_answer = 'Other'
-    # return type_answer
+def get_recommendation_ai(client, candidate, recruiter):
+    prompt = generate_prompt(candidate, recruiter)
+    if len(prompt) > 20:
+        completion = client.chat.completions.create(
+                          model="gpt-3.5-turbo",
+                          messages=[
+                            {"role": "system", "content": f"{prompt}"},
+                            {"role": "user", "content": '''You are a recruiter now. Analyse how good the candidate is for this job.
+                                                           You have to provide a recommendation in less than 50 words.
+                                                           Answer it in the following format: 
+                                                           Recommendation:
+                                                        '''}
+                          ]
+                        )
+        answer = completion.choices[0].message.content
+    return answer
+        
 
-def write_recommendation(client, candidate_df):
+def write_recommendation(client, candidate_df, recruiter):
     for index, candidate in candidate_df.iterrows():
-        get_recommendation_ai(client, candidate)
+        recommendation = get_recommendation_ai(client, candidate, recruiter)
+        st.write(recommendation)
         # write_sorted_df = (candidate, recommendation, score)
         # update_worksheet()
 
@@ -304,7 +307,7 @@ if __name__ == "__main__":
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
             st.write('Ranking candidates...')
-            write_recommendation(client, candidate_df)
+            write_recommendation(client, candidate_df, recruiter)
 
 
 
