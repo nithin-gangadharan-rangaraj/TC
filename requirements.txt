@@ -7,3 +7,5 @@ gspread
 google-auth
 PyMuPDF
 gspread-dataframe
+pdfkit
+smtplib
