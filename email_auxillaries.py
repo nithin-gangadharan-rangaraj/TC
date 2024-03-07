@@ -8,7 +8,7 @@ def send_report(df, recruiter):
     multipart = MIMEMultipart()
     multipart["From"] = st.secrets['email']
     multipart["To"] = recruiter['Email']
-    multipart["Subject"] = f'Candidate.ai - {recruiter['Header']} Report'  
+    multipart["Subject"] = f'Candidate.ai - {recruiter["Header"]} Report'  
 
     message = """\
     <p><strong>Candidate Report:</strong></p>
