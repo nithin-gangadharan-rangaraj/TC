@@ -244,7 +244,7 @@ def generate_prompt(candidate):
     prompt = ""
     for column, value in candidate.items():
         if len(value) > 0:
-            prompt += ("\n" + f"{column.upper().strip()}" + "\n" + f"{value.strip()}")
+            prompt += (f"\n{column.upper().strip()}\n{value.strip()}")
     st.write(prompt)
     return prompt
 
