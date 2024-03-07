@@ -2,11 +2,19 @@ import streamlit as st
 import pandas as pd
 import smtplib
 from email.message import EmailMessage
-import pdfkit
+import fitz
+import io
 
 # Function to convert DataFrame to PDF
-def df_to_pdf(df, pdf_name):
-    pdfkit.from_string(df.to_html(), pdf_name)
+def df_to_pdf(df):
+    doc = fitz.open()
+    table = doc.new_table(table=df.values.tolist())
+    stream = io.BytesIO()
+    doc.insert_table(table)
+    doc.save(stream, garbage=4, deflate=True)  # Save PDF to stream
+    doc.close()
+    stream.seek(0)
+    return stream.getvalue()  # Return PDF as bytes
 
 # Function to send email with PDF attachment
 def send_email(email, subject, body, attachment_path):
@@ -40,7 +48,7 @@ def send_report(df, recruiter):
   
     # Convert DataFrame to PDF
     pdf_name = f"{recruiter['Header']}.pdf"
-    df_to_pdf(df, pdf_name)
+    pdf_data = df_to_pdf(df)
   
     # Input email address
     email = recruiter['Email']
