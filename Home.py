@@ -253,7 +253,7 @@ def generate_prompt(candidate, recruiter):
                         JOB WEBSITE:\n
                         {recruiter['FirmWebsite']}\n
                     ''')
-    st.write(prompt)
+    # st.write(prompt)
     return prompt
 
 def get_recommendation_ai(client, candidate, recruiter):
@@ -272,15 +272,22 @@ def get_recommendation_ai(client, candidate, recruiter):
                         )
         answer = completion.choices[0].message.content
     return answer
-        
+
 
 def write_recommendation(client, candidate_df, recruiter):
+    rec_df = pd.DataFrame(columns = ['Name', 'Title', 'Email',  'ID', 'Recommendation'])
+    recommendations_info = []
     for index, candidate in candidate_df.iterrows():
+        single = {}
+        single['Name'] = recruiter['Name']
+        single['Title'] = recruiter['Title']
+        single['ID'] = candidate['ID']
         recommendation = get_recommendation_ai(client, candidate, recruiter)
-        st.write(recommendation)
-        # write_sorted_df = (candidate, recommendation, score)
-        # update_worksheet()
-
+        single['Recommendation'] = recommendation
+        recommendations_info.append(single)
+        
+    rec_df = rec_df.append(recommendations_info, ignore_index=True)
+    return rec_df
         
 # Run the app
 if __name__ == "__main__":
@@ -291,7 +298,7 @@ if __name__ == "__main__":
     if user:
         recruiter = get_recruiter(user, recruiter_df)
         display_recruiter(user, recruiter)
-        wsheet = open_worksheet(gsheet, user)
+        wsheet = open_worksheet(gsheet, user + '_candidates')
         client = open_ai_client()
         candidate_df = get_df(wsheet)
         
@@ -305,10 +312,13 @@ if __name__ == "__main__":
             
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
-            st.write('Ranking candidates...')
-            write_recommendation(client, candidate_df, recruiter)
-
-
+            st.write('Writing recommendations for candidates...')
+            rec_df = write_recommendation(client, candidate_df, recruiter)
+            rec_sheet = open_worksheet(gsheet, user + '_recommendation')
+            update_worksheet(rec_sheet, rec_df)
+            st.success("Wohoo, analysed everyone.")
+            st.dataframe(rec_df)
+        
 
             
         # st.sidebar.divider()
