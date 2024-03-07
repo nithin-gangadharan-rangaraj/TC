@@ -11,6 +11,7 @@ from gspread_dataframe import set_with_dataframe
 import fitz
 from user_auth import check_password
 import time
+from email import send_report
 
 st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
@@ -301,6 +302,8 @@ if __name__ == "__main__":
         wsheet = open_worksheet(gsheet, user + '_candidates')
         client = open_ai_client()
         candidate_df = get_df(wsheet)
+        rec_sheet = open_worksheet(gsheet, user + '_recommendation')
+        rec_df = get_df(rec_sheet)
         
         st.subheader("Excited to check for applicants?", divider = 'blue')
         if st.button('Update Candidate Info'):            
@@ -314,11 +317,15 @@ if __name__ == "__main__":
         if st.button('Start Ranking'): 
             st.write('Writing recommendations for candidates...')
             rec_df = write_recommendation(client, candidate_df, recruiter)
-            rec_sheet = open_worksheet(gsheet, user + '_recommendation')
             update_worksheet(rec_sheet, rec_df)
             st.success("Wohoo, analysed everyone.")
             st.dataframe(rec_df)
-        
+
+        st.subheader("Get Reports", divider = 'blue')
+        with st.expander("Click here to check the existing candidates."):
+            st.dataframe(rec_df)
+        if st.button('Send Email'): 
+            send_report(rec_df, recruiter)
 
             
         # st.sidebar.divider()
