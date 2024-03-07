@@ -302,7 +302,7 @@ if __name__ == "__main__":
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
             st.write('Ranking candidates...')
-            write_recommendation(candidate_df)
+            write_recommendation(client, candidate_df)
 
 
 
