@@ -275,7 +275,7 @@ def get_recommendation_ai(client, candidate, recruiter):
 
 
 def write_recommendation(client, candidate_df, recruiter):
-    rec_df = pd.DataFrame(columns = ['Name', 'Title', 'Email',  'ID', 'Recommendation'])
+    # rec_df = pd.DataFrame(columns = ['Name', 'Title', 'Email',  'ID', 'Recommendation'])
     recommendations_info = []
     for index, candidate in candidate_df.iterrows():
         single = {}
@@ -286,7 +286,7 @@ def write_recommendation(client, candidate_df, recruiter):
         single['Recommendation'] = recommendation
         recommendations_info.append(single)
         
-    rec_df = rec_df.append(recommendations_info, ignore_index=True)
+    rec_df = pd.DataFrame(recommendations_info)
     return rec_df
         
 # Run the app
