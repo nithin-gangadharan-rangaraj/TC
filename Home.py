@@ -387,4 +387,4 @@ if __name__ == "__main__":
                 st.session_state.clear()  # Clear session state to sign out
                 st.toast('You can check for another job now :)')
                 time.sleep(1)
-                st.experimental_rerun()   # Trigger re-run to refresh the app
+                st.rerun()   # Trigger re-run to refresh the app
