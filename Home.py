@@ -259,6 +259,7 @@ def generate_prompt(candidate, recruiter):
 
 def get_recommendation_ai(client, candidate, recruiter):
     prompt = generate_prompt(candidate, recruiter)
+    answer = ""
     if len(prompt) > 20:
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
@@ -289,6 +290,46 @@ def write_recommendation(client, candidate_df, recruiter):
         
     rec_df = pd.DataFrame(recommendations_info)
     return rec_df
+
+def get_ai_help(client, all_candidates, recruiter):
+    answer = ""
+    if len(all_candidates) > 20:
+        completion = client.chat.completions.create(
+                          model="gpt-3.5-turbo",
+                          messages=[
+                            {"role": "system", "content": f"{all_candidates}"},
+                            {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
+                                                           Arrange the candidates in the order suitable for this job description.
+                                                           Answer it in the following format where IDs are found in the candidate information,
+                                                           ID is typically in the format Name <Email>: 
+                                                           ['ID1', 'ID2']                                                           
+                                                        '''}
+                          ]
+                        )
+        answer = completion.choices[0].message.content
+    return answer
+
+def arrange_df(ranked_candidates, rec_df):
+    id_order = eval(ranked_candidates)
+    st.write(id_order)
+    if type(id_order) == list: 
+        df_duplicate = rec_df
+        df_duplicate['ID_order'] = df_duplicate['ID'].apply(lambda x: id_order.index(x))
+        df_sorted = df_duplicate.sort_values(by='ID_order')
+        df_sorted = df_sorted.drop(columns='ID_order') 
+        rec_df = df_sorted
+        st.success("Ranked the candidates.")
+    else:
+        st.error("Wrote the recommendations, failed to rank them.")
+    return rec_df
+
+
+def rank_using_ai(rec_df, recruiter, client):
+    all_candidates = '\n'.join([candidate['ID'] + "\n" + candidate['Recommendation'] for index, candidate in rec_df])
+    ranked_candidates = get_ai_help(client, all_candidates, recruiter)
+    rec_df = arrange_df(ranked_candidates, rec_df)
+    return rec_df
+        
         
 # Run the app
 if __name__ == "__main__":
@@ -325,8 +366,9 @@ if __name__ == "__main__":
                 st.success('Writing recommendations for candidates.')
                 rec_df = write_recommendation(client, candidate_df, recruiter)
                 st.success('Updating Data.')
+                rec_df = rank_using_ai(rec_df, recruiter, client)
                 update_worksheet(rec_sheet, rec_df)
-                status.update(label="Wohoo, analysed everyone.", state="complete", expanded=False)
+                status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
             st.dataframe(rec_df)
             st.info('Next step: Need a report? Go to the next section.')
             
