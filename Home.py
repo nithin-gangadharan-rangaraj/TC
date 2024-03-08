@@ -365,7 +365,7 @@ if __name__ == "__main__":
             with st.status("Updating Info...", expanded=True) as status:
                 st.success('Writing recommendations for candidates.')
                 rec_df = write_recommendation(client, candidate_df, recruiter)
-                st.success('Updating Data.')
+                # st.success('Updating Data.')
                 rec_df = rank_using_ai(rec_df, recruiter, client)
                 update_worksheet(rec_sheet, rec_df)
                 status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
