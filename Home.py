@@ -299,7 +299,8 @@ def get_ai_help(client, all_candidates, recruiter):
                           messages=[
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
-                                                           Arrange the candidates in the order suitable for this job description.
+                                                           Arrange the candidates in the order suitable for this job description. Give high weightage
+                                                           to candidates with experience in relevant field.
                                                            Answer it in the following format where IDs are found in the candidate information,
                                                            ID is typically in the format Name <Email>: 
                                                            ['ID1', 'ID2']                                                           
