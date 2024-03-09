@@ -12,6 +12,8 @@ import fitz
 from user_auth import check_password
 import time
 from email_auxillaries import send_report
+from urlextract import URLExtract
+
 
 st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
@@ -30,16 +32,11 @@ def main():
                     )
     st.write(completion.choices[0].message.content)
 
-def extract_links(pdf_document):
-    links = []
-    for page_num in range(len(pdf_document)):
-        page = pdf_document.load_page(page_num)
-        for annot in page.annots():
-            if annot["subtype"] == "/Link":
-                rect = annot.rect
-                links.append((rect, annot.get("A").get("URI")))
-    return links
-
+def get_urls(text):
+    extractor = URLExtract()
+    urls = extractor.find_urls(text)
+    return urls
+    
 # Function to fetch emails with a specific subject
 def fetch_emails_with_subject(email_address, password, subject, client, df):
     # Connect to the email server
@@ -64,6 +61,7 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
 
         # Extract relevant information from the email
         email_info = {}
+        links = []
         email_info['ID'] = email_message['From']
         email_info['Exchanges'] = num_exchanges
         email_info['EmailText'] = email_body
@@ -72,16 +70,9 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
         email_info['Portfolio'] = ''
         email_info['Other'] = ''
 
-        # Get the value of the "References" header field
         references = email_message.get("References")
-
-        # If the "References" header field exists, count the number of Message-IDs
-        
         if references:
-            # Split the references by whitespace and count the number of Message-IDs
             num_exchanges = len(references.split())
-
-        # Add one to account for the initial email in the thread
         num_exchanges += 1
         
         if email_message.is_multipart():
@@ -90,35 +81,28 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                     email_body += part.get_payload(decode=True).decode()
         else:
             email_body = email_message.get_payload(decode=True).decode()
-                
+        links.extend(get_urls(email_body))
+        
         email_info['EmailText'] = email_body
         email_info['Exchanges'] = num_exchanges
 
         if attachment_analysis_needed(email_info['ID'], num_exchanges, df):
-            links = []
-            # Iterate over the parts of the email message
             for part in email_message.walk():
-                # Check if the part is an attachment
                 text = ''
                 if part.get_content_maintype() == 'application' and part.get_content_subtype() == 'pdf':
                     pdf_bytes = part.get_payload(decode=True)
                     pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
-                    links.extend(extract_links(pdf_document))
                     for page_number in range(len(pdf_document)):
-                        # Extract text from the current page
                         page_text = pdf_document[page_number].get_text()
-                        # Append the extracted text to the CV text
                         text += page_text
                         
                 type = check_type(client, text)
                 email_info = assign_text(text, type, email_info)
-            
-        
+                links.extend(get_urls(text))
+                
         st.write(links)
-        # Append email data to the list
         emails.append(email_info)
 
-    # Close the connection
     mail.close()
     mail.logout()
 
