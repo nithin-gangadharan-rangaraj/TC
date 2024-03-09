@@ -30,6 +30,16 @@ def main():
                     )
     st.write(completion.choices[0].message.content)
 
+def extract_links(pdf_document):
+    links = []
+    for page_num in range(len(pdf_document)):
+        page = pdf_document.load_page(page_num)
+        for annot in page.annots():
+            if annot["subtype"] == "/Link":
+                rect = annot.rect
+                links.append((rect, annot.get("A").get("URI")))
+    return links
+
 # Function to fetch emails with a specific subject
 def fetch_emails_with_subject(email_address, password, subject, client, df):
     # Connect to the email server
@@ -50,15 +60,8 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
         email_message = email.message_from_bytes(raw_email)
         num_exchanges = 0
 
-        # cv_text = ''
         email_body = ""
-        # resume_text = ""
-        # portfolio_text = ""
-        # other_text = ""
 
-        # #text-type dictionary assignment
-        # text_type = {'CoverLetter': cv_text, 'Resume':resume_text, 'Portfolio': portfolio_text, 'Other': other_text}
-        
         # Extract relevant information from the email
         email_info = {}
         email_info['ID'] = email_message['From']
@@ -92,17 +95,15 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
         email_info['Exchanges'] = num_exchanges
 
         if attachment_analysis_needed(email_info['ID'], num_exchanges, df):
-    
+            links = []
             # Iterate over the parts of the email message
             for part in email_message.walk():
                 # Check if the part is an attachment
                 text = ''
                 if part.get_content_maintype() == 'application' and part.get_content_subtype() == 'pdf':
-                    # Read the PDF attachment content into memory
                     pdf_bytes = part.get_payload(decode=True)
-                    # Open the PDF attachment using PyMuPDF
                     pdf_document = fitz.open(stream=pdf_bytes, filetype="pdf")
-                    # Iterate over each page of the PDF
+                    links.extend(extract_links(pdf_document))
                     for page_number in range(len(pdf_document)):
                         # Extract text from the current page
                         page_text = pdf_document[page_number].get_text()
@@ -113,9 +114,7 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                 email_info = assign_text(text, type, email_info)
             
         
-        # email_info['CoverLetter'] = cv_text
-        # email_info['Resume'] = resume_text
-        # email_info['Portfolio'] = portfolio_text
+        st.write(links)
         # Append email data to the list
         emails.append(email_info)
 
