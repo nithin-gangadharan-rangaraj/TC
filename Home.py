@@ -100,12 +100,11 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                 email_info = assign_text(text, type, email_info)
                 links.extend(get_urls(text))
                 
-        st.write(links)
         emails.append(email_info)
 
     mail.close()
     mail.logout()
-
+    st.write(links)
     return emails
 
 def attachment_analysis_needed(email_info_id, num_exchanges, df):
