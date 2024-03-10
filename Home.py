@@ -279,7 +279,7 @@ def add_link_info(links, who):
         if len(failed_links) > 0:
             comments = f'The following {who} links are not considered for recommendation: \n{failed_links}\n'
     except:
-        if links:
+        if not links[0] == '':
             comments = f'The following {who} links are not considered for recommendation: \n{links}\n'
     return scraped_content, comments 
         
