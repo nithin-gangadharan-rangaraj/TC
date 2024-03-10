@@ -71,6 +71,7 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
         email_info['CoverLetter'] = ''
         email_info['Resume'] = ''
         email_info['Portfolio'] = ''
+        email_info['Links'] = []
         email_info['Other'] = ''
 
         references = email_message.get("References")
@@ -101,9 +102,10 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                         
                 type = check_type(client, text)
                 email_info = assign_text(text, type, email_info)
+                
                 links.extend(get_urls(text))
-
-        scraped_content, failed_links = scrap_links(links)
+                email_info['Links'] = links
+                
         emails.append(email_info)
         
  
@@ -115,7 +117,6 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
 def scrap_links(links):
     scraped_content = []
     failed_links = []
-    links = ['https://www.remotepython.com/jobs/']
     for link in links:
         try:
             response = requests.get(link)
@@ -130,8 +131,6 @@ def scrap_links(links):
             failed_links.append(link)
 
     scraped_content = '\n'.join(scraped_content)
-    st.write(scraped_content)
-    st.write(failed_links)
     return scraped_content, failed_links
 
 def attachment_analysis_needed(email_info_id, num_exchanges, df):
@@ -221,6 +220,7 @@ def update_df(candidate_df, emails):
             idx = np.where(candidate_df['ID'].values == email_info['ID'])[0]
             if int(candidate_df.loc[int(idx), 'Exchanges']) < int(email_info['Exchanges']):
                 candidate_df.loc[int(idx), ['Exchanges', 'EmailText']] = [email_info['Exchanges'], email_info['EmailText']]
+                candidate_df.loc[int(idx), 'Links'] = list(set(eval(candidate_df.loc[int(idx), 'Links'].strip()) + email_info['Links']))
                 for info in ['CoverLetter', 'Resume', 'Portfolio', 'Other']:
                     candidate_df.loc[int(idx), info] += ('\n-----\n' + email_info[info])
         else:
