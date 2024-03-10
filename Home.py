@@ -255,16 +255,19 @@ def generate_prompt(candidate, recruiter, scraped_candidate_content, scraped_rec
     for column, value in candidate.items():
         if len(value) > 0:
             prompt += (f'''\n
+                            CANDIDATE INFORMATION:
                             {column.upper().strip()}\n
                             {value.strip()}\n''')
     if len(prompt) > 20:
-        prompt += (f'''JOB DESCRIPTION:\n
-                        {recruiter['JobDescription']}\n
+        prompt += (f'''
                         RELEVANT CANDIDATE INFORMATION:\n
                         {scraped_candidate_content}\n
+                        -------------------------------\n
                     ''')
-
-        prompt += ("JOB WEBSITE: \n" + scraped_recruiter_content if len(scraped_recruiter_content) > 10 else '')
+        prompt += (f'''RECRUITING JOB DESCRIPTION:\n
+                        {recruiter['JobDescription']}\n
+                    ''')
+        prompt += ("RECRUITING JOB WEBSITE: \n" + scraped_recruiter_content if len(scraped_recruiter_content) > 10 else '')
     prompt = remove_blank_lines(prompt)
     return prompt
 
@@ -289,7 +292,7 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
                           model="gpt-3.5-turbo",
                           messages=[
                             {"role": "system", "content": f"{prompt}"},
-                            {"role": "user", "content": '''You are a recruiter now. Analyse how good the candidate is for this job.
+                            {"role": "user", "content": '''You are a recruiter now. Analyse how good the candidate information fits the recruiting job description.
                                                            You have to provide a recommendation in less than 50 words.
                                                            Answer it in the following format: 
                                                            Recommendation:
