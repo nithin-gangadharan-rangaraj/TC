@@ -114,7 +114,7 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
 def scrap_links(links):
     scraped_content = []
     failed_links = []
-    
+    links = ['https://www.remotepython.com/jobs/']
     for link in links:
         try:
             response = requests.get(link)
