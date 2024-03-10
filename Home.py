@@ -13,6 +13,9 @@ from user_auth import check_password
 import time
 from email_auxillaries import send_report
 from urlextract import URLExtract
+import requests
+from bs4 import BeautifulSoup
+
 
 
 st.set_page_config(page_title="Candidate.ai")
@@ -126,7 +129,7 @@ def scrap_links(links):
             st.write(e)
             failed_links.append(link)
 
-    # scraped_content = '\n'.join(scraped_content)
+    scraped_content = '\n'.join(scraped_content)
     st.write(scraped_content)
     st.write(failed_links)
     return scraped_content, failed_links
