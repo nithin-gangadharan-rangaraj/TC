@@ -347,8 +347,9 @@ def get_ai_help(client, all_candidates, recruiter):
 
 def arrange_df(ranked_candidates, rec_df):
     id_order = eval(ranked_candidates)
+    st.write(id_order)
     try:
-    # st.write(id_order)
+    
         if type(id_order) == list: 
             df_duplicate = rec_df
             df_duplicate['ID_order'] = df_duplicate['ID'].apply(lambda x: id_order.index(x))
