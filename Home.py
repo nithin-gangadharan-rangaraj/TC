@@ -123,6 +123,7 @@ def scrap_links(links):
             else:
                 failed_links.append(link)
         except Exception as e:
+            st.write(e)
             failed_links.append(link)
 
     # scraped_content = '\n'.join(scraped_content)
