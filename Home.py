@@ -101,10 +101,11 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                 links.extend(get_urls(text))
 
         scrapped_content, failed_links = scrap_links(links)
+        st.write(scrapped_content)
+        st.write(failed_links)
         emails.append(email_info)
         
-    st.write(scrapped_content)
-    st.write(failed_links)
+ 
     mail.close()
     mail.logout()
 
