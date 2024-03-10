@@ -328,6 +328,7 @@ def write_recommendation(client, candidate_df, recruiter):
 
 def get_ai_help(client, all_candidates, recruiter):
     answer = ""
+    st.write(all_candidates)
     if len(all_candidates) > 20:
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
@@ -335,7 +336,7 @@ def get_ai_help(client, all_candidates, recruiter):
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
                                                            Arrange ALL the candidates in the order suitable for this job description. Give high weightage
-                                                           to candidates with experience in relevant field. Include all the candidates.
+                                                           to candidates with experience in relevant field. MUST Include all the candidates.
                                                            Answer it in the following format where IDs are found in the candidate information,
                                                            ID is typically in the format Name <Email>: 
                                                            ['ID1', 'ID2']                                                           
