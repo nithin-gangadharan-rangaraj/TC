@@ -114,7 +114,6 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                 email_info['Links'] = links
                 
         emails.append(email_info)
-        st.write(emails)
  
     mail.close()
     mail.logout()
