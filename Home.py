@@ -259,7 +259,7 @@ def generate_prompt(candidate, recruiter, scraped_content):
                         {scraped_content}\n
                     ''')
         firm_info, failed_links = scrap_links(list(recruiter['FirmWebsite']))
-        prompt += ("JOB WEBSITE: \n" + firm_info if len(failed_links) == 0)
+        prompt += ("JOB WEBSITE: \n" + firm_info if len(failed_links) == 0 else '')
     prompt = remove_blank_lines(prompt)
     st.write(prompt))
     return prompt
