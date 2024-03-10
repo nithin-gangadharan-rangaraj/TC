@@ -347,17 +347,17 @@ def get_ai_help(client, all_candidates, recruiter):
 
 def arrange_df(ranked_candidates, rec_df):
     id_order = eval(ranked_candidates)
-    # try:
-    st.write(id_order)
-    if type(id_order) == list: 
-        df_duplicate = rec_df
-        df_duplicate['ID_order'] = df_duplicate['ID'].apply(lambda x: id_order.index(x))
-        df_sorted = df_duplicate.sort_values(by='ID_order')
-        df_sorted = df_sorted.drop(columns='ID_order') 
-        rec_df = df_sorted
-        st.success('Ranked the candidates.')
-    # except:
-    #     st.error("Wrote the recommendations, failed to rank them.")
+    try:
+    # st.write(id_order)
+        if type(id_order) == list: 
+            df_duplicate = rec_df
+            df_duplicate['ID_order'] = df_duplicate['ID'].apply(lambda x: id_order.index(x))
+            df_sorted = df_duplicate.sort_values(by='ID_order')
+            df_sorted = df_sorted.drop(columns='ID_order') 
+            rec_df = df_sorted
+            st.success('Ranked the candidates.')
+    except:
+        st.error("Wrote the recommendations, failed to rank them.")
     return rec_df
 
 
