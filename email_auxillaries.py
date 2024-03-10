@@ -47,6 +47,8 @@ def send_credentials(recruiter):
         <p>Please save these credentials for future use.</p>
         <p><strong>Regards,</strong><br><strong>Candidate.ai&nbsp;    </strong></p>
         """
+
+        multipart.attach(MIMEText(message, "html"))
         
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
