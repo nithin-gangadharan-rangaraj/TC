@@ -101,8 +101,6 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                 links.extend(get_urls(text))
 
         scrapped_content, failed_links = scrap_links(links)
-        st.write(scrapped_content)
-        st.write(failed_links)
         emails.append(email_info)
         
  
@@ -121,13 +119,15 @@ def scrap_links(links):
             if response.status_code == 200:
                 soup = BeautifulSoup(response.content, "html.parser")
                 page_text = soup.get_text(separator="\n")
-                scraped_content.append(content)
+                scraped_content.append(page_text)
             else:
                 failed_links.append(link)
         except Exception as e:
             failed_links.append(link)
 
     scraped_content = '\n'.join(scraped_content)
+    st.write(scrapped_content)
+    st.write(failed_links)
     return scraped_content, failed_links
 
 def attachment_analysis_needed(email_info_id, num_exchanges, df):
