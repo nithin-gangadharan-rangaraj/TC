@@ -389,10 +389,10 @@ if __name__ == "__main__":
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
             with st.status("Updating Info...", expanded=True) as status:
-                st.success('Writing recommendations for candidates.')
                 rec_df = write_recommendation(client, candidate_df, recruiter)
-                # st.success('Updating Data.')
+                st.success("Analysed candidates' fitness for the role.")
                 rec_df = rank_using_ai(rec_df, recruiter, client)
+                st.success("Ranked candidates")
                 update_worksheet(rec_sheet, rec_df)
                 status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
             st.dataframe(rec_df)
