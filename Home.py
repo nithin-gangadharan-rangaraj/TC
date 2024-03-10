@@ -15,6 +15,7 @@ from email_auxillaries import send_report
 from urlextract import URLExtract
 import requests
 from bs4 import BeautifulSoup
+import docx2txt
 
 
 
@@ -99,6 +100,12 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                     for page_number in range(len(pdf_document)):
                         page_text = pdf_document[page_number].get_text()
                         text += page_text
+
+                # DOCX attachment
+                elif part.get_content_subtype() == 'vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    docx_bytes = part.get_payload(decode=True)
+                    docx_text = docx2txt.process(io.BytesIO(docx_bytes))
+                    text += docx_text
                         
                 type = check_type(client, text)
                 email_info = assign_text(text, type, email_info)
