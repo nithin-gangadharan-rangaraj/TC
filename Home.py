@@ -99,13 +99,35 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                 type = check_type(client, text)
                 email_info = assign_text(text, type, email_info)
                 links.extend(get_urls(text))
-                
-        emails.append(email_info)
 
+        scrapped_content, failed_links = scrap_links(links)
+        emails.append(email_info)
+        
+    st.write(scrapped_content)
+    st.write(failed_links)
     mail.close()
     mail.logout()
-    st.write(links)
+
     return emails
+
+def scrap_links(links):
+    scraped_content = []
+    failed_links = []
+    
+    for link in links:
+        try:
+            response = requests.get(link)
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.content, "html.parser")
+                page_text = soup.get_text(separator="\n")
+                scraped_content.append(content)
+            else:
+                failed_links.append(link)
+        except Exception as e:
+            failed_links.append(link)
+
+    scraped_content = '\n'.join(scraped_content)
+    return scraped_content, failed_links
 
 def attachment_analysis_needed(email_info_id, num_exchanges, df):
     if email_info_id in df['ID'].values:
@@ -157,6 +179,7 @@ def map_type(answer):
         return 'Other'
 
 def assign_text(text, type, email_info):
+    text = text.replace("\n\n", "")
     if type == "CoverLetter":
         email_info['CoverLetter'] += ('\n' + text)
     elif type == "Resume":
@@ -167,9 +190,6 @@ def assign_text(text, type, email_info):
         email_info['Other'] += ('\n' + text)
     return email_info
 
-# def get_worksheet(gsheet):
-#     wsheet = gsheet.sheet1 
-#     return wsheet
 
 def get_df(wsheet):
     values = wsheet.get_all_values()
@@ -184,12 +204,6 @@ def read_emails(client, df, subject):
     emails = fetch_emails_with_subject(email_address, password, subject, client, df)
     return emails
 
-# Define a function to apply
-# def detect_exchanges(row, email_info):
-#     # if int(row['Exchanges']) != int(email_info['Exchanges']):
-#     row['Exchanges'] = email_info['Exchanges']  
-#     row['EmailText'] = email_info['EmailText']
-#     return row
 
 def add_row(candidate_df, email_info):
     candidate_df.loc[len(candidate_df)] = email_info
