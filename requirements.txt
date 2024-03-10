@@ -9,3 +9,5 @@ PyMuPDF
 gspread-dataframe
 urlextract
 beautifulsoup4
+validate-email-address
+py3DNS
