@@ -127,7 +127,6 @@ def scrap_links(links):
             else:
                 failed_links.append(link)
         except Exception as e:
-            st.write(e)
             failed_links.append(link)
 
     scraped_content = '\n'.join(scraped_content)
@@ -245,7 +244,7 @@ def display_recruiter(user, recruiter):
 def remove_blank_lines(text):
     return '\n'.join([line for line in text.split('\n') if line.strip()])
 
-def generate_prompt(candidate, recruiter, scraped_content):
+def generate_prompt(candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
     prompt = ""
     for column, value in candidate.items():
         if len(value) > 0:
@@ -256,27 +255,27 @@ def generate_prompt(candidate, recruiter, scraped_content):
         prompt += (f'''JOB DESCRIPTION:\n
                         {recruiter['JobDescription']}\n
                         RELEVANT CANDIDATE INFORMATION:\n
-                        {scraped_content}\n
+                        {scraped_candidate_content}\n
                     ''')
-        firm_info, failed_links = scrap_links(list(recruiter['FirmWebsite']))
-        prompt += ("JOB WEBSITE: \n" + firm_info if len(failed_links) == 0 else '')
+
+        prompt += ("JOB WEBSITE: \n" + scraped_recruiter_content if len(scraped_recruiter_content) > 10 else '')
     prompt = remove_blank_lines(prompt)
-    st.write(prompt)
     return prompt
 
-def add_link_info(candidate, recruiter):
+def add_link_info(links, who):
     scraped_content = ''
+    comments = ''
     try:
-        scraped_content, failed_links = scrap_links(eval(candidate['Links']))
+        scraped_content, failed_links = scrap_links(eval(links))
         if len(failed_links) > 0:
-            comments = f'Please note that the following links are not considered for recommendation: \n{failed_links}\n'
+            comments = f'The following {who} links are not considered for recommendation: \n{failed_links}\n'
     except:
-        comments = f'Please note that the following links are not considered for recommendation: \n{failed_links}\n'
+        comments = f'The following {who} links are not considered for recommendation: \n{failed_links}\n'
     return scraped_content, comments 
         
 
-def get_recommendation_ai(client, candidate, recruiter, scraped_content):
-    prompt = generate_prompt(candidate, recruiter, scraped_content)
+def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
+    prompt = generate_prompt(candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
     
     answer = ""
     if len(prompt) > 20:
@@ -298,16 +297,19 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_content):
 def write_recommendation(client, candidate_df, recruiter):
     # rec_df = pd.DataFrame(columns = ['Name', 'Title', 'Email',  'ID', 'Recommendation'])
     recommendations_info = []
+    
     for index, candidate in candidate_df.iterrows():
         single = {}
         single['Name'] = recruiter['Name']
         single['Title'] = recruiter['Title']
         single['ID'] = candidate['ID']
 
-        scraped_content, comments = add_link_info(candidate, recruiter)
-        recommendation = get_recommendation_ai(client, candidate, recruiter, scraped_content)
+        scraped_candidate_content, comments_candidate = add_link_info(candidate['Links'], 'CANDIDATE')
+        scraped_recruiter_content, comments_recruiter = add_link_info(list(recruiter['FirmWebsite']), 'RECRUITER')
+        
+        recommendation = get_recommendation_ai(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
         single['Recommendation'] = recommendation
-        single['Comments'] = comments
+        single['Comments'] = (comments_candidate + '\n' +  comments_recruiter)
         recommendations_info.append(single)
         
     rec_df = pd.DataFrame(recommendations_info)
