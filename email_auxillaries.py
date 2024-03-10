@@ -55,4 +55,4 @@ def send_credentials(recruiter):
         server.quit()
         st.success(f"Credentials sent to {recruiter['Email']} successfully.")
     except:
-        st.error("Error. Please try again later.")
+        st.error("Unable to send credentials to your email. Please save the displayed credentials for future use.")
