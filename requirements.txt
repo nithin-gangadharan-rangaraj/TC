@@ -8,3 +8,4 @@ google-auth
 PyMuPDF
 gspread-dataframe
 urlextract
+beautifulsoup4
