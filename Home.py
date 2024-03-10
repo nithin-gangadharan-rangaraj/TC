@@ -354,6 +354,7 @@ def arrange_df(ranked_candidates, rec_df):
             df_sorted = df_duplicate.sort_values(by='ID_order')
             df_sorted = df_sorted.drop(columns='ID_order') 
             rec_df = df_sorted
+            st.success('Ranked the candidates.')
     except:
         st.error("Wrote the recommendations, failed to rank them.")
     return rec_df
@@ -402,7 +403,6 @@ if __name__ == "__main__":
                 rec_df = write_recommendation(client, candidate_df, recruiter)
                 st.success("Analysed candidates' fitness for the role.")
                 rec_df = rank_using_ai(rec_df, recruiter, client)
-                st.success("Ranked candidates")
                 update_worksheet(rec_sheet, rec_df)
                 status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
             st.dataframe(rec_df)
