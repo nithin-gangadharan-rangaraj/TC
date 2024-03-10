@@ -1,5 +1,6 @@
 import streamlit as st
 from auxillaries import *
+from email_auxillaries import *
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import random
 import pandas as pd
@@ -104,6 +105,7 @@ if __name__ == "__main__":
       # st.dataframe(recruiter_df)
       display_info(inputs["Password"], inputs["Header"])
       update_worksheet(wsheet, recruiter_df)
+      send_credentials(inputs)
       st.success("Successfully registered the job.")
   else:
     st.error("Please try again.")
