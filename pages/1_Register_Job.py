@@ -4,6 +4,7 @@ from email_auxillaries import *
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import random
 import pandas as pd
+from validate_email_address import validate_email
 
 st.image('cai.png', width = 400)
 
@@ -23,8 +24,12 @@ def display_existing_jobs(df, name):
   st.write(f"Existing job titles listed for {name.upper()}:")
   st.dataframe(pd.DataFrame(df.loc[df['Name'] == name, 'Title'].values, columns=['Job Title']))
 
+def check_email(email):
+    isExists = validate_email(email, verify=True)
+    return isExists
+    
 def validate_inputs(inputs):
-    if inputs['Name'] == '' or inputs['Title'] == '' or inputs['Email'] == '':
+    if inputs['Name'] == '' or inputs['Title'] == '' or inputs['Email'] == '' or check_email(inputs['Email']) == None:
         st.error('Please enter valid Name, Title and Email.')
         return False
     else:
