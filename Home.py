@@ -325,7 +325,7 @@ def write_recommendation(client, candidate_df, recruiter):
     rec_df = pd.DataFrame(recommendations_info)
     return rec_df
 
-def get_ai_help(client, all_candidates, recruiter):
+def get_ai_help(client, all_candidates, recruiter, num_candidates):
     answer = ""
     # st.write(all_candidates)
     if len(all_candidates) > 20:
@@ -335,10 +335,11 @@ def get_ai_help(client, all_candidates, recruiter):
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
                                                            Arrange ALL the candidates in the order suitable for this job description. Give high weightage
-                                                           to candidates with experience in relevant field. MUST Include all the candidates.
-                                                           Answer it in the following format where IDs are found in the candidate information,
-                                                           ID is typically in the format Name <Email>: 
-                                                           ['ID1', 'ID2']                                                           
+                                                           to candidates with experience in relevant field. MUST Include all {num_candidates} candidates.
+                                                           Answer it in the following example format where IDs are found in the candidate information,
+                                                           ID is typically in the format Name <Email>:
+                                                           ['ID1', 'ID2']    
+                                                           In this example, there are 2 candidates
                                                         '''}
                           ]
                         )
@@ -365,7 +366,7 @@ def rank_using_ai(rec_df, recruiter, client):
     if len(rec_df) > 1:
         all_candidates = f"Total Number of candidates: {len(rec_df)}\n"
         all_candidates += '\n'.join([candidate['ID'] + "\n" + candidate['Recommendation'] for index, candidate in rec_df.iterrows()])
-        ranked_candidates = get_ai_help(client, all_candidates, recruiter)
+        ranked_candidates = get_ai_help(client, all_candidates, recruiter, len(rec_df))
         rec_df = arrange_df(ranked_candidates, rec_df)
     return rec_df
         
