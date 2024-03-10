@@ -328,7 +328,7 @@ def write_recommendation(client, candidate_df, recruiter):
 
 def get_ai_help(client, all_candidates, recruiter):
     answer = ""
-    st.write(all_candidates)
+    # st.write(all_candidates)
     if len(all_candidates) > 20:
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
@@ -348,9 +348,8 @@ def get_ai_help(client, all_candidates, recruiter):
 
 def arrange_df(ranked_candidates, rec_df):
     id_order = eval(ranked_candidates)
-    st.write(id_order)
+    # st.write(id_order)
     try:
-    
         if type(id_order) == list: 
             df_duplicate = rec_df
             df_duplicate['ID_order'] = df_duplicate['ID'].apply(lambda x: id_order.index(x))
