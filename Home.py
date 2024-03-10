@@ -305,7 +305,7 @@ def write_recommendation(client, candidate_df, recruiter):
         single['ID'] = candidate['ID']
 
         scraped_candidate_content, comments_candidate = add_link_info(candidate['Links'], 'CANDIDATE')
-        scraped_recruiter_content, comments_recruiter = add_link_info(list(recruiter['FirmWebsite']), 'RECRUITER')
+        scraped_recruiter_content, comments_recruiter = add_link_info([recruiter['FirmWebsite']], 'RECRUITER')
         
         recommendation = get_recommendation_ai(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
         single['Recommendation'] = recommendation
