@@ -30,3 +30,29 @@ def send_report(df, recruiter):
         st.success(f"Email sent to {recruiter['Email']} successfully.")
     except:
         st.error("Error. Please try again later.")
+
+def send_credentials(recruiter):
+    try:
+        multipart = MIMEMultipart()
+        multipart["From"] = st.secrets['email']
+        multipart["To"] = recruiter['Email']
+        multipart["Subject"] = f'Candidate.ai - {recruiter["Header"]} Login Credentials'  
+    
+        message = f"""\
+        <p>Greetings,</p>
+        <p>Credentials for the role: {recruiter["Header"]}.</p><br>
+        <p><strong>Recruiter's name: {recruiter['Name']}</strong></p>
+        <p><strong>Role: {recruiter['Title']}</strong></p>
+        <p><strong>Password: {recruiter['Password']}</strong></p>
+        <p>Please save these credentials for future use.</p>
+        <p><strong>Regards,</strong><br><strong>Candidate.ai&nbsp;    </strong></p>
+        """
+        
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(multipart["From"], st.secrets['password'])
+        server.sendmail(multipart["From"], multipart["To"], multipart.as_string())
+        server.quit()
+        st.success(f"Credentials sent to {recruiter['Email']} successfully.")
+    except:
+        st.error("Error. Please try again later.")
