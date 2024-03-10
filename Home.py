@@ -364,7 +364,8 @@ def arrange_df(ranked_candidates, rec_df):
 
 def rank_using_ai(rec_df, recruiter, client):
     if len(rec_df) > 1:
-        all_candidates = '\n'.join([candidate['ID'] + "\n" + candidate['Recommendation'] for index, candidate in rec_df.iterrows()])
+        all_candidates = f"Total Number of candidates: {len(rec_df)}\n"
+        all_candidates += '\n'.join([candidate['ID'] + "\n" + candidate['Recommendation'] for index, candidate in rec_df.iterrows()])
         ranked_candidates = get_ai_help(client, all_candidates, recruiter)
         rec_df = arrange_df(ranked_candidates, rec_df)
     return rec_df
