@@ -125,7 +125,7 @@ def scrap_links(links):
         except Exception as e:
             failed_links.append(link)
 
-    scraped_content = '\n'.join(scraped_content)
+    # scraped_content = '\n'.join(scraped_content)
     st.write(scraped_content)
     st.write(failed_links)
     return scraped_content, failed_links
