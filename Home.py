@@ -100,7 +100,7 @@ def fetch_emails_with_subject(email_address, password, subject, client, df):
                 email_info = assign_text(text, type, email_info)
                 links.extend(get_urls(text))
 
-        scrapped_content, failed_links = scrap_links(links)
+        scraped_content, failed_links = scrap_links(links)
         emails.append(email_info)
         
  
@@ -126,7 +126,7 @@ def scrap_links(links):
             failed_links.append(link)
 
     scraped_content = '\n'.join(scraped_content)
-    st.write(scrapped_content)
+    st.write(scraped_content)
     st.write(failed_links)
     return scraped_content, failed_links
 
