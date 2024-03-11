@@ -377,7 +377,6 @@ if __name__ == "__main__":
     recruiter_df = get_df(rsheet)
     user = check_password(recruiter_df)
     if user:
-        tab1, tab2 = st.tabs(["Check for candidates", "Update Job Details"])
         recruiter = get_recruiter(user, recruiter_df)
         display_recruiter(user, recruiter)
         wsheet = open_worksheet(gsheet, user + '_candidates')
@@ -386,6 +385,7 @@ if __name__ == "__main__":
         rec_sheet = open_worksheet(gsheet, user + '_recommendation')
         rec_df = get_df(rec_sheet)
         
+        tab1, tab2 = st.tabs(["Check for candidates", "Update Job Details"])
         with tab1: 
         
             st.subheader("Excited to check for applicants?", divider = 'blue')
@@ -410,7 +410,7 @@ if __name__ == "__main__":
                         st.success("Analysed candidates' fitness for the role.")
                         rec_df = rank_using_ai(rec_df, recruiter, client)
                         update_worksheet(rec_sheet, rec_df)
-                        status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
+                        status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=True)
                         st.dataframe(rec_df)
                         st.info('Next step: Need a report? Go to the next section.')
                     else:
