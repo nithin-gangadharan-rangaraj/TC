@@ -23,18 +23,6 @@ st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
 # st.caption("Register your job under **Register Job** to kick start your recruitment.")
-def main():
-    client = OpenAI(
-                      api_key=st.secrets['OPENAI-API'],
-                    )
-    completion = client.chat.completions.create(
-                      model="gpt-3.5-turbo",
-                      messages=[
-                        {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
-                        {"role": "user", "content": "Compose a 10 word poem that explains the concept of recursion in programming."}
-                      ]
-                    )
-    st.write(completion.choices[0].message.content)
 
 def get_urls(text):
     extractor = URLExtract()
@@ -277,10 +265,10 @@ def add_link_info(links, who):
     try:
         scraped_content, failed_links = scrap_links(eval(links))
         if len(failed_links) > 0:
-            comments = f'The following {who} links are not considered for recommendation: \n{failed_links}\n'
+            comments = f'We were unable to consider these links on account of technical constraints: \n\n{failed_links}\n'
     except:
         if not links[0] == '':
-            comments = f'The following {who} links are not considered for recommendation: \n{links}\n'
+            comments = f'We were unable to consider these links on account of technical constraints: \n\n{links}\n'
     return scraped_content, comments 
         
 
@@ -403,13 +391,16 @@ if __name__ == "__main__":
         st.subheader("Rank Applicants", divider = 'blue')
         if st.button('Start Ranking'): 
             with st.status("Updating Info...", expanded=True) as status:
-                rec_df = write_recommendation(client, candidate_df, recruiter)
-                st.success("Analysed candidates' fitness for the role.")
-                rec_df = rank_using_ai(rec_df, recruiter, client)
-                update_worksheet(rec_sheet, rec_df)
-                status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
-            st.dataframe(rec_df)
-            st.info('Next step: Need a report? Go to the next section.')
+                if len(candidate_df) > 0:
+                    rec_df = write_recommendation(client, candidate_df, recruiter)
+                    st.success("Analysed candidates' fitness for the role.")
+                    rec_df = rank_using_ai(rec_df, recruiter, client)
+                    update_worksheet(rec_sheet, rec_df)
+                    status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
+                    st.dataframe(rec_df)
+                    st.info('Next step: Need a report? Go to the next section.')
+                else:
+                    st.error("There are no candidates. Please check with the previous section.")
             
         st.subheader("Get Reports", divider = 'blue')
         st.warning("If the earlier sections aren't finished, the report won't show any new applicants, if any.")
