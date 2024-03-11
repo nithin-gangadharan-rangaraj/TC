@@ -368,8 +368,8 @@ def rank_using_ai(rec_df, recruiter, client):
 if __name__ == "__main__":
     show_pages(
     [
-        Page("Home.py", "Home"),
         Page("pages/1_Register_Job.py", "Register Job"),
+        Page("Home.py", "Home"),
     ]
     )
     gsheet = initiate()
