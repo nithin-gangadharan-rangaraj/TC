@@ -361,6 +361,8 @@ def rank_using_ai(rec_df, recruiter, client):
         
 # Run the app
 if __name__ == "__main__":
+    st.sidebar.image('cai.png', width = 50)
+    st.sidebar.divider()
     gsheet = initiate()
     rsheet = open_worksheet(gsheet, "Recruiters")
     recruiter_df = get_df(rsheet)
