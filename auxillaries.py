@@ -27,3 +27,14 @@ def initiate():
       gsheet = gs.open(st.secrets['sheet_name'])
       st.session_state['gsheet'] = gsheet
   return gsheet
+
+def get_recruiter_headers():
+    with open('inputs_recruiters.txt', 'r') as f:
+        lines = f.readlines()
+    headers = []
+    disabilities = []
+    for line in lines:
+        h, d = line.split('-')
+        headers.append(h)
+        disabilities.append(d)
+    return headers, disabilities
