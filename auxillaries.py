@@ -34,7 +34,7 @@ def get_recruiter_headers():
     headers = []
     disabilities = []
     for line in lines:
-        h, d = line.split('-')
+        h, d = line.strip().split('-')
         headers.append(h)
         disabilities.append(d)
     return headers, disabilities
