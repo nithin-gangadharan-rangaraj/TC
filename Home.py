@@ -377,6 +377,7 @@ if __name__ == "__main__":
     recruiter_df = get_df(rsheet)
     user = check_password(recruiter_df)
     if user:
+        tab1, tab2 = st.tabs(["Check for candidates", "Update Job Details"])
         recruiter = get_recruiter(user, recruiter_df)
         display_recruiter(user, recruiter)
         wsheet = open_worksheet(gsheet, user + '_candidates')
@@ -385,40 +386,45 @@ if __name__ == "__main__":
         rec_sheet = open_worksheet(gsheet, user + '_recommendation')
         rec_df = get_df(rec_sheet)
         
-        st.subheader("Excited to check for applicants?", divider = 'blue')
-        if st.button('Update Candidate Info'): 
-            with st.status("Updating Info...", expanded=True) as status:
-                emails = read_emails(client, candidate_df, subject = user)
-                st.success('Fetched Emails.')
-                candidate_df = update_df(candidate_df, emails)
-                st.success('Fetched Information.')
-                update_worksheet(wsheet, candidate_df)
-                st.success('Updated the data.')
-                status.update(label="Updated Candidate Info!", state="complete", expanded=False)
-            st.subheader("Applicants so far...")
-            st.dataframe(candidate_df, use_container_width = True)
-            st.info('Next step: Rank the candidates.')
-            
-        st.subheader("Rank Applicants", divider = 'blue')
-        if st.button('Start Ranking'): 
-            with st.status("Updating Info...", expanded=True) as status:
-                if len(candidate_df) > 0:
-                    rec_df = write_recommendation(client, candidate_df, recruiter)
-                    st.success("Analysed candidates' fitness for the role.")
-                    rec_df = rank_using_ai(rec_df, recruiter, client)
-                    update_worksheet(rec_sheet, rec_df)
-                    status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
-                    st.dataframe(rec_df)
-                    st.info('Next step: Need a report? Go to the next section.')
-                else:
-                    st.error("There are no candidates. Please check with the previous section.")
-            
-        st.subheader("Get Reports", divider = 'blue')
-        st.warning("If the earlier sections aren't finished, the report won't show any new applicants, if any.")
-        with st.expander("Click here to check the existing candidates."):
-            st.dataframe(rec_df)
-        if st.button('Send Email'): 
-            send_report(rec_df, recruiter)
+        with tab1: 
+        
+            st.subheader("Excited to check for applicants?", divider = 'blue')
+            if st.button('Update Candidate Info'): 
+                with st.status("Updating Info...", expanded=True) as status:
+                    emails = read_emails(client, candidate_df, subject = user)
+                    st.success('Fetched Emails.')
+                    candidate_df = update_df(candidate_df, emails)
+                    st.success('Fetched Information.')
+                    update_worksheet(wsheet, candidate_df)
+                    st.success('Updated the data.')
+                    status.update(label="Updated Candidate Info!", state="complete", expanded=False)
+                st.subheader("Applicants so far...")
+                st.dataframe(candidate_df, use_container_width = True)
+                st.info('Next step: Rank the candidates.')
+                
+            st.subheader("Rank Applicants", divider = 'blue')
+            if st.button('Start Ranking'): 
+                with st.status("Updating Info...", expanded=True) as status:
+                    if len(candidate_df) > 0:
+                        rec_df = write_recommendation(client, candidate_df, recruiter)
+                        st.success("Analysed candidates' fitness for the role.")
+                        rec_df = rank_using_ai(rec_df, recruiter, client)
+                        update_worksheet(rec_sheet, rec_df)
+                        status.update(label="Wohoo, analysed and ranked everyone.", state="complete", expanded=False)
+                        st.dataframe(rec_df)
+                        st.info('Next step: Need a report? Go to the next section.')
+                    else:
+                        st.error("There are no candidates. Please check with the previous section.")
+                
+            st.subheader("Get Reports", divider = 'blue')
+            st.warning("If the earlier sections aren't finished, the report won't show any new applicants, if any.")
+            with st.expander("Click here to check the existing candidates."):
+                st.dataframe(rec_df)
+            if st.button('Send Email'): 
+                send_report(rec_df, recruiter)
+
+        with tab2:
+            st.write("Update details")
 
             
         # st.sidebar.divider()
