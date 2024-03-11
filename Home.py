@@ -431,8 +431,9 @@ if __name__ == "__main__":
             for header, disability in zip(headers, disabilities):
                 if not header == 'Password':
                     recruiter[header] = st.text_input(f"{header.capitalize()}", disabled = bool(disability)).strip()
-            update_recruiter(recruiter, recruiter_df, rsheet)
-            st.success("Updated the job details successfully.")
+            if st.button('Update'):
+                update_recruiter(recruiter, recruiter_df, rsheet)
+                st.success("Updated the job details successfully.")
 
             
         # st.sidebar.divider()
