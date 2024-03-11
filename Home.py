@@ -169,8 +169,8 @@ def check_type(client, text):
                           ]
                         )
         answer = completion.choices[0].message.content
-        st.subheader("### AI API Usage checker", divider = 'red')
-        st.write(text[:700], answer)
+        # st.subheader("### AI API Usage checker", divider = 'red')
+        # st.write(text[:700], answer)
         type_answer = map_type(answer)
     else:
         type_answer = 'Other'
