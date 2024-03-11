@@ -23,7 +23,7 @@ def initiate():
   
       # Authorize gspread client
       gs = gspread.authorize(credentials)
-      st.write(st.secrets['sheet_name'])
+      st.write(gs.openall())
       gsheet = gs.open(st.secrets['sheet_name'])
       st.session_state['gsheet'] = gsheet
   return gsheet
