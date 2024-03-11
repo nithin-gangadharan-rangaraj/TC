@@ -7,13 +7,11 @@ def open_worksheet(gsheet, sheet_name):
   
 def initiate():
   if 'gsheet' in st.session_state:
-        gsheet = st.session_state['gsheet']
+      gsheet = st.session_state['gsheet']
   else:
       # Load service account credential
-      try:
-          service_acc = st.secrets["gcp_service_account"]
-      except KeyError:
-          service_acc = dict(eval(os.environ.get("gcp_service_account")))
+      service_acc = st.secrets["gcp_service_account"]
+      
           
       credentials = service_account.Credentials.from_service_account_info(
       service_acc,
@@ -25,6 +23,7 @@ def initiate():
   
       # Authorize gspread client
       gs = gspread.authorize(credentials)
+      st.write(st.secrets['sheet_name'])
       gsheet = gs.open(st.secrets['sheet_name'])
       st.session_state['gsheet'] = gsheet
   return gsheet
