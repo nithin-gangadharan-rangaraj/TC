@@ -19,7 +19,12 @@ import docx2txt
 from st_pages import Page, show_pages, add_page_title
 
 
-
+show_pages(
+    [
+        Page("pages/1_Register_Job.py", "Register Job"),
+        Page("Home.py", "Home"),
+    ]
+    )
 
     
 st.set_page_config(page_title="Candidate.ai")
@@ -366,12 +371,7 @@ def rank_using_ai(rec_df, recruiter, client):
         
 # Run the app
 if __name__ == "__main__":
-    show_pages(
-    [
-        Page("pages/1_Register_Job.py", "Register Job"),
-        Page("Home.py", "Home"),
-    ]
-    )
+    
     gsheet = initiate()
     rsheet = open_worksheet(gsheet, "Recruiters")
     recruiter_df = get_df(rsheet)
