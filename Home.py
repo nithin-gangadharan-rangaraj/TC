@@ -23,7 +23,7 @@ st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
 st.sidebar.image('cai.png', width = 150)
-st.sidebar.divider())
+st.sidebar.divider()
 
 def get_urls(text):
     extractor = URLExtract()
