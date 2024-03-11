@@ -12,3 +12,4 @@ beautifulsoup4
 validate-email-address
 py3DNS
 docx2txt
+st-pages
