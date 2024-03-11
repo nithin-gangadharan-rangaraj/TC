@@ -26,12 +26,7 @@ st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
 
-show_pages(
-    [
-        Page("Home.py", "Home"),
-        Page("pages/1_Register_Job.py", "Register Job"),
-    ]
-)
+
 
 
 def get_urls(text):
@@ -371,6 +366,12 @@ def rank_using_ai(rec_df, recruiter, client):
         
 # Run the app
 if __name__ == "__main__":
+    show_pages(
+    [
+        Page("Home.py", "Home"),
+        Page("pages/1_Register_Job.py", "Register Job"),
+    ]
+    )
     gsheet = initiate()
     rsheet = open_worksheet(gsheet, "Recruiters")
     recruiter_df = get_df(rsheet)
