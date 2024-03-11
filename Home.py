@@ -22,8 +22,10 @@ import docx2txt
 st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
-st.sidebar.image('cai.png', width = 150)
-st.sidebar.divider()
+
+# Add pages to the sidebar in the desired order
+st.sidebar.add_sidebar_page("Register Job", page="Register_Job")
+st.sidebar.add_sidebar_page("Home", page="Home")
 
 def get_urls(text):
     extractor = URLExtract()
