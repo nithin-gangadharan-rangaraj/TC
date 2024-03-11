@@ -16,6 +16,9 @@ from urlextract import URLExtract
 import requests
 from bs4 import BeautifulSoup
 import docx2txt
+from st_pages import Page, show_pages, add_page_title
+
+
 
 
     
@@ -23,9 +26,13 @@ st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
 
-# Add pages to the sidebar in the desired order
-st.sidebar.add_sidebar_page("Register Job", page="Register_Job")
-st.sidebar.add_sidebar_page("Home", page="Home")
+show_pages(
+    [
+        Page("Home.py", "Home"),
+        Page("pages/1_Register_Job.py", "Register Job"),
+    ]
+)
+
 
 def get_urls(text):
     extractor = URLExtract()
