@@ -367,7 +367,10 @@ def rank_using_ai(rec_df, recruiter, client):
         ranked_candidates = get_ai_help(client, all_candidates, recruiter, len(rec_df))
         rec_df = arrange_df(ranked_candidates, rec_df)
     return rec_df
-        
+
+def update_recruiter(recruiter, recruiter_df, rsheet):
+    recruiter_df.loc[recruiter_df['Header'] == recruiter['Header']] = recruiter
+    update_worksheet(recruiter_df, rsheet)
         
 # Run the app
 if __name__ == "__main__":
@@ -424,7 +427,12 @@ if __name__ == "__main__":
                 send_report(rec_df, recruiter)
 
         with tab2:
-            st.write("Update details")
+            headers, disabilities = get_recruiter_headers()
+            for header, disability in (headers, disabilities):
+                if not header == 'Password':
+                    recruiter[header] = st.text_input(f"{header.capitalize()}", disabled = disability).strip()
+            update_recruiter(recruiter, recruiter_df, rsheet)
+            st.success("Updated the job details successfully.")
 
             
         # st.sidebar.divider()
