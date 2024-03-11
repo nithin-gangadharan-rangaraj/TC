@@ -29,6 +29,7 @@ def initiate():
   return gsheet
 
 def get_recruiter_headers():
+    bool_dict = {'True': True, 'False': False}
     with open('inputs_recruiters.txt', 'r') as f:
         lines = f.readlines()
     headers = []
@@ -36,5 +37,5 @@ def get_recruiter_headers():
     for line in lines:
         h, d = line.strip().split('-')
         headers.append(h)
-        disabilities.append(d)
+        disabilities.append(bool_dict[d])
     return headers, disabilities
