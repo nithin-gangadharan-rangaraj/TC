@@ -18,11 +18,12 @@ from bs4 import BeautifulSoup
 import docx2txt
 
 
-
+    
 st.set_page_config(page_title="Candidate.ai")
 st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
-# st.caption("Register your job under **Register Job** to kick start your recruitment.")
+st.sidebar.image('cai.png', width = 150)
+st.sidebar.divider())
 
 def get_urls(text):
     extractor = URLExtract()
@@ -361,8 +362,6 @@ def rank_using_ai(rec_df, recruiter, client):
         
 # Run the app
 if __name__ == "__main__":
-    st.sidebar.image('cai.png', width = 50)
-    st.sidebar.divider()
     gsheet = initiate()
     rsheet = open_worksheet(gsheet, "Recruiters")
     recruiter_df = get_df(rsheet)
