@@ -428,7 +428,7 @@ if __name__ == "__main__":
 
         with tab2:
             headers, disabilities = get_recruiter_headers()
-            for header, disability in (headers, disabilities):
+            for header, disability in zip(headers, disabilities):
                 if not header == 'Password':
                     recruiter[header] = st.text_input(f"{header.capitalize()}", disabled = disability).strip()
             update_recruiter(recruiter, recruiter_df, rsheet)
