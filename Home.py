@@ -374,7 +374,8 @@ def update_recruiter(recruiter, recruiter_df, rsheet):
     try:
         index_to_update = recruiter_df.index[recruiter_df['Header'] == recruiter['Header']].tolist()
         recruiter_df.loc[index_to_update] = recruiter
-        assert(prior == len(recruiter_df.dropna(inplace=True)))
+        recruiter_df.dropna(inplace=True)
+        assert(prior == len(recruiter_df))
         update_worksheet(rsheet, recruiter_df)
         st.success('Updated the job details successfully.')
     except AssertionError:
