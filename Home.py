@@ -370,7 +370,7 @@ def rank_using_ai(rec_df, recruiter, client):
 
 def update_recruiter(recruiter, recruiter_df, rsheet):
     recruiter_df.loc[recruiter_df['Header'] == recruiter['Header']] = recruiter
-    update_worksheet(recruiter_df, rsheet)
+    update_worksheet(rsheet, recruiter_df)
         
 # Run the app
 if __name__ == "__main__":
