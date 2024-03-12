@@ -1,6 +1,7 @@
 from google.oauth2 import service_account
 import streamlit as st
 import gspread
+from email_auxillaries import *
 
 def open_worksheet(gsheet, sheet_name):
     return gsheet.worksheet(sheet_name)
