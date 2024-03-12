@@ -370,10 +370,16 @@ def rank_using_ai(rec_df, recruiter, client):
 
 def update_recruiter(recruiter, recruiter_df, rsheet):
     # st.write(recruiter)
-    # st.write((recruiter_df['Header'] == recruiter['Header']).any())
-    recruiter_df.loc[recruiter_df['Header'] == recruiter['Header']] = recruiter
-    st.dataframe(recruiter_df)
-    # update_worksheet(rsheet, recruiter_df)
+    prior = len(recruiter_df)
+    try:
+        index_to_update = recruiter_df.index[recruiter_df['Header'] == recruiter['Header']].tolist()
+        recruiter_df.loc[index_to_update] = recruiter
+        assert(prior == len(recruiter_df))
+        update_worksheet(rsheet, recruiter_df)
+        st.success('Updated the job details successfully.')
+    except AssertionError:
+        st.error('Error in updating the details :(')
+        
         
 # Run the app
 if __name__ == "__main__":
@@ -436,7 +442,6 @@ if __name__ == "__main__":
                     recruiter[header] = st.text_input(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
             if st.button('Update'):
                 update_recruiter(recruiter, recruiter_df, rsheet)
-                st.success("Updated the job details successfully.")
 
             
         # st.sidebar.divider()
