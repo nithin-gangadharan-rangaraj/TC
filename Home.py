@@ -445,7 +445,7 @@ if __name__ == "__main__":
                         recruiter[header] = st.text_area(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
                     else:
                         recruiter[header] = st.text_input(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
-            if validate_inputs(recruiter) and (prior != recruiter):
+            if validate_inputs(recruiter) and not (prior == recruiter):
                 if st.button('Update'):
                     update_recruiter(recruiter, recruiter_df, rsheet)
                     display_recruiter(user, recruiter, recruiter_container)
