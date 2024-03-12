@@ -39,3 +39,10 @@ def get_recruiter_headers():
         headers.append(h)
         disabilities.append(bool_dict[d])
     return headers, disabilities
+
+def validate_inputs(inputs):
+    if inputs['Name'] == '' or inputs['Title'] == '' or inputs['Email'] == '' or check_email(inputs['Email']) == None:
+        st.error('Please enter valid Name, Title and Email.')
+        return False
+    else:
+        return True
