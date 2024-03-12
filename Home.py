@@ -449,6 +449,8 @@ if __name__ == "__main__":
                 if st.button('Update'):
                     update_recruiter(recruiter, recruiter_df, rsheet)
                     display_recruiter(user, recruiter, recruiter_container)
+                else:
+                    st.error('No updates detected.')
             
         # st.sidebar.divider()
         if st.sidebar.button('Check another job'):
