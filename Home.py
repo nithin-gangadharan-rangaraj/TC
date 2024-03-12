@@ -239,11 +239,10 @@ def get_recruiter(header, recruiter_df):
     recruiter = recruiter_df.loc[recruiter_df['Header'] == header]
     return recruiter.iloc[0]
 
-def display_recruiter(user, recruiter):
-    with st.container(border = True):
-        st.subheader(f"Recruiter: {recruiter['Name']}")
-        st.write(f"Job Title: **{recruiter['Title']}**")
-        st.write(f"Email: **{recruiter['Email']}**")
+def display_recruiter(user, recruiter, container):
+    container.subheader(f"Recruiter: {recruiter['Name']}")
+    container.write(f"Job Title: **{recruiter['Title']}**")
+    container.write(f"Email: **{recruiter['Email']}**")
 
 def remove_blank_lines(text):
     return '\n'.join([line for line in text.split('\n') if line.strip()])
@@ -390,7 +389,10 @@ if __name__ == "__main__":
     recruiter_df = get_df(rsheet)
     user = check_password(recruiter_df)
     if user:
-        
+        recruiter_container = st.empty()
+        st.divider()
+        recruiter = get_recruiter(user, recruiter_df)
+        display_recruiter(user, recruiter, recruiter_container)
         wsheet = open_worksheet(gsheet, user + '_candidates')
         client = open_ai_client()
         candidate_df = get_df(wsheet)
@@ -399,8 +401,6 @@ if __name__ == "__main__":
         
         tab1, tab2 = st.tabs(["Check for candidates", "Update Job Details"])
         with tab1: 
-            recruiter = get_recruiter(user, recruiter_df)
-            display_recruiter(user, recruiter)
             st.subheader("Excited to check for applicants?", divider = 'blue')
             if st.button('Update Candidate Info'): 
                 with st.status("Updating Info...", expanded=True) as status:
@@ -437,8 +437,6 @@ if __name__ == "__main__":
                 send_report(rec_df, recruiter)
 
         with tab2:
-            recruiter = get_recruiter(user, recruiter_df)
-            display_recruiter(user, recruiter)
             headers, disabilities = get_recruiter_headers()
             for header, disability in zip(headers, disabilities):
                 if not header == 'Password':
@@ -449,7 +447,7 @@ if __name__ == "__main__":
             if validate_inputs(recruiter):
                 if st.button('Update'):
                     update_recruiter(recruiter, recruiter_df, rsheet)
-
+                    display_recruiter(user, recruiter, recruiter_container)
             
         # st.sidebar.divider()
         if st.sidebar.button('Check another job'):
