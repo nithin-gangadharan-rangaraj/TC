@@ -24,9 +24,6 @@ def display_existing_jobs(df, name):
   st.write(f"Existing job titles listed for {name.upper()}:")
   st.dataframe(pd.DataFrame(df.loc[df['Name'] == name, 'Title'].values, columns=['Job Title']))
 
-def check_email(email):
-    isExists = validate_email(email, verify=True)
-    return isExists
     
 def validate_inputs(inputs):
     if inputs['Name'] == '' or inputs['Title'] == '' or inputs['Email'] == '' or check_email(inputs['Email']) == None:
