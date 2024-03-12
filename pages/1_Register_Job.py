@@ -23,13 +23,6 @@ def display_existing_jobs(df, name):
   st.write(f"Existing job titles listed for {name.upper()}:")
   st.dataframe(pd.DataFrame(df.loc[df['Name'] == name, 'Title'].values, columns=['Job Title']))
 
-    
-def validate_inputs(inputs):
-    if inputs['Name'] == '' or inputs['Title'] == '' or inputs['Email'] == '' or check_email(inputs['Email']) == None:
-        st.error('Please enter valid Name, Title and Email.')
-        return False
-    else:
-        return True
 
 def get_inputs(df):
   inputs = {}
