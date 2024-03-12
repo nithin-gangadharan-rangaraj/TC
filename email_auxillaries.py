@@ -3,6 +3,7 @@ from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
+from validate_email_address import validate_email
 
 def check_email(email):
     isExists = validate_email(email, verify=True)
