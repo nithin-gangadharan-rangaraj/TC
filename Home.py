@@ -390,8 +390,7 @@ if __name__ == "__main__":
     recruiter_df = get_df(rsheet)
     user = check_password(recruiter_df)
     if user:
-        recruiter = get_recruiter(user, recruiter_df)
-        display_recruiter(user, recruiter)
+        
         wsheet = open_worksheet(gsheet, user + '_candidates')
         client = open_ai_client()
         candidate_df = get_df(wsheet)
@@ -400,7 +399,8 @@ if __name__ == "__main__":
         
         tab1, tab2 = st.tabs(["Check for candidates", "Update Job Details"])
         with tab1: 
-        
+            recruiter = get_recruiter(user, recruiter_df)
+            display_recruiter(user, recruiter)
             st.subheader("Excited to check for applicants?", divider = 'blue')
             if st.button('Update Candidate Info'): 
                 with st.status("Updating Info...", expanded=True) as status:
@@ -437,6 +437,8 @@ if __name__ == "__main__":
                 send_report(rec_df, recruiter)
 
         with tab2:
+            recruiter = get_recruiter(user, recruiter_df)
+            display_recruiter(user, recruiter)
             headers, disabilities = get_recruiter_headers()
             for header, disability in zip(headers, disabilities):
                 if not header == 'Password':
