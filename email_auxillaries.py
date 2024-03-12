@@ -4,6 +4,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 
+def check_email(email):
+    isExists = validate_email(email, verify=True)
+    return isExists
+
 def send_report(df, recruiter):
     try:
         multipart = MIMEMultipart()
