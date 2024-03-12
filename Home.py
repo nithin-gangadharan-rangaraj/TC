@@ -438,13 +438,14 @@ if __name__ == "__main__":
 
         with tab2:
             headers, disabilities = get_recruiter_headers()
+            prior = recruiter.copy()
             for header, disability in zip(headers, disabilities):
                 if not header == 'Password':
                     if header == 'JobDescription':
                         recruiter[header] = st.text_area(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
                     else:
                         recruiter[header] = st.text_input(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
-            if validate_inputs(recruiter):
+            if validate_inputs(recruiter) and prior != recruiter:
                 if st.button('Update'):
                     update_recruiter(recruiter, recruiter_df, rsheet)
                     display_recruiter(user, recruiter, recruiter_container)
