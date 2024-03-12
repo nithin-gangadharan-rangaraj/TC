@@ -11,7 +11,7 @@ from gspread_dataframe import set_with_dataframe
 import fitz
 from user_auth import check_password
 import time
-from email_auxillaries import send_report
+from email_auxillaries import *
 from urlextract import URLExtract
 import requests
 from bs4 import BeautifulSoup
@@ -444,8 +444,9 @@ if __name__ == "__main__":
                         recruiter[header] = st.text_area(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
                     else:
                         recruiter[header] = st.text_input(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
-            if st.button('Update'):
-                update_recruiter(recruiter, recruiter_df, rsheet)
+            if validate_inputs(recruiter):
+                if st.button('Update'):
+                    update_recruiter(recruiter, recruiter_df, rsheet)
 
             
         # st.sidebar.divider()
