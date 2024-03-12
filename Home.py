@@ -239,10 +239,11 @@ def get_recruiter(header, recruiter_df):
     recruiter = recruiter_df.loc[recruiter_df['Header'] == header]
     return recruiter.iloc[0]
 
-def display_recruiter(user, recruiter, container):
-    container.subheader(f"Recruiter: {recruiter['Name']}")
-    container.write(f"Job Title: **{recruiter['Title']}**")
-    container.write(f"Email: **{recruiter['Email']}**")
+def display_recruiter(user, recruiter, recruiter_container):
+    with recruiter_container.container(border = True):
+        st.subheader(f"Recruiter: {recruiter['Name']}")
+        st.write(f"Job Title: **{recruiter['Title']}**")
+        st.write(f"Email: **{recruiter['Email']}**")
 
 def remove_blank_lines(text):
     return '\n'.join([line for line in text.split('\n') if line.strip()])
@@ -390,7 +391,6 @@ if __name__ == "__main__":
     user = check_password(recruiter_df)
     if user:
         recruiter_container = st.empty()
-        st.divider()
         recruiter = get_recruiter(user, recruiter_df)
         display_recruiter(user, recruiter, recruiter_container)
         wsheet = open_worksheet(gsheet, user + '_candidates')
