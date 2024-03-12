@@ -438,7 +438,7 @@ if __name__ == "__main__":
 
         with tab2:
             headers, disabilities = get_recruiter_headers()
-            prior = recruiter.copy()
+            prior = dict(recruiter)
             for header, disability in zip(headers, disabilities):
                 if not header == 'Password':
                     if header == 'JobDescription':
