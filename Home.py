@@ -369,8 +369,11 @@ def rank_using_ai(rec_df, recruiter, client):
     return rec_df
 
 def update_recruiter(recruiter, recruiter_df, rsheet):
-    recruiter_df.loc[recruiter_df['Header'] == recruiter['Header']] = recruiter
-    update_worksheet(rsheet, recruiter_df)
+    st.write(recruiter)
+    st.dataframe(recruiter_df)
+    st.write((recruiter_df['Header'] == recruiter['Header']).any())
+    # recruiter_df.loc[recruiter_df['Header'] == recruiter['Header']] = recruiter
+    # update_worksheet(rsheet, recruiter_df)
         
 # Run the app
 if __name__ == "__main__":
