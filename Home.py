@@ -372,7 +372,7 @@ def update_recruiter(recruiter, recruiter_df, rsheet):
     # st.write(recruiter)
     prior = len(recruiter_df)
     try:
-        index_to_update = recruiter_df.index[recruiter_df['Header'] == recruiter['Header']].tolist()
+        index_to_update = recruiter_df.index[recruiter_df['Header'] == recruiter['Header']].tolist()[0]
         recruiter_df.loc[index_to_update] = recruiter
         recruiter_df.dropna(inplace=True)
         assert(prior == len(recruiter_df))
