@@ -4,7 +4,6 @@ from email_auxillaries import *
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 import random
 import pandas as pd
-from validate_email_address import validate_email
 
 st.image('cai.png', width = 400)
 
