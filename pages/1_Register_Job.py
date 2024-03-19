@@ -41,7 +41,7 @@ def get_inputs(df):
       inputs["FirmWebsite"] = st.text_input("Paste the link to the hiring firm's website").strip()
       inputs["RankingParams"] = st.multiselect("Do you want us to consider specific parameters to rank the applicants?",
                                                 options = get_ranking_params(),
-                                                help = "These parameters would be considered first when ranking the applicants."
+                                                help = "These parameters would be considered first when ranking the applicants.",
                                                 placeholder = "May choose upto 5 parameters",
                                                 max_selections = 5)
   else:
