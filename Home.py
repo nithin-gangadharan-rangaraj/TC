@@ -444,7 +444,7 @@ if __name__ == "__main__":
         with tab2:
             headers, disabilities = get_recruiter_headers()
             prior = dict(recruiter)
-            prior['RankingParameters'] = list(eval(recruiter[header])) if not recruiter[header] == '' else None
+            prior['RankingParameters'] = list(eval(prior['RankingParameters'])) if not prior['RankingParameters'] == '' else None
             for header, disability in zip(headers, disabilities):
                 if not header == 'Password':
                     if header == 'JobDescription':
