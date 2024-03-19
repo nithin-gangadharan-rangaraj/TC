@@ -221,7 +221,7 @@ def update_df(candidate_df, emails):
         # st.dataframe(candidate_df)
         if email_info['ID'] in candidate_df['ID'].values:
             idx = np.where(candidate_df['ID'].values == email_info['ID'])[0]
-            if int(candidate_df.loc[int(idx), 'Exchanges'].item()) < int(email_info['Exchanges']):
+            if int(candidate_df.loc[int(idx), 'Exchanges']) < int(email_info['Exchanges']):
                 candidate_df.loc[int(idx), ['Exchanges', 'EmailText']] = [email_info['Exchanges'], email_info['EmailText']]
                 candidate_df.loc[int(idx), 'Links'] = str(list(set(eval(str(candidate_df.loc[int(idx), 'Links']).strip()) + email_info['Links'])))
                 for info in ['CoverLetter', 'Resume', 'Portfolio', 'Other']:
