@@ -47,3 +47,8 @@ def validate_inputs(inputs):
         return False
     else:
         return True
+
+def get_ranking_params():
+    with open(f'ranking_params.txt', 'r') as f:
+        params = [inp.strip() for inp in f.readlines()]
+    return params
