@@ -139,7 +139,7 @@ def scrap_links(links):
 def attachment_analysis_needed(email_info_id, num_exchanges, df):
     if email_info_id in df['ID'].values:
         idx = np.where(df['ID'].values == email_info_id)[0]
-        if int(df.loc[int(idx), 'Exchanges']) < int(num_exchanges):
+        if int(df.loc[int(idx), 'Exchanges'].item()) < int(num_exchanges):
             return True
         else:
             return False
