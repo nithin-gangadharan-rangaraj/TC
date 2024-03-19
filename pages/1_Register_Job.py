@@ -23,10 +23,6 @@ def display_existing_jobs(df, name):
   st.write(f"Existing job titles listed for {name.upper()}:")
   st.dataframe(pd.DataFrame(df.loc[df['Name'] == name, 'Title'].values, columns=['Job Title']))
 
-def get_ranking_params():
-    with open(f'ranking_params.txt', 'r') as f:
-        params = [inp.strip() for inp in f.readlines()]
-    return params
 
 def get_inputs(df):
   inputs = {}
