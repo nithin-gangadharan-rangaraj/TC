@@ -326,16 +326,6 @@ def write_recommendation(client, candidate_df, recruiter):
 
 def get_ai_help(client, all_candidates, recruiter, num_candidates):
     answer = ""
-    # st.write(all_candidates)
-    st.write(f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
-                                                           Arrange ALL the candidates in the order suitable for this job description. 
-                                                           {("Do consider the following parameters first:" + ' '.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
-                                                           MUST Include all {num_candidates} candidates.
-                                                           Answer it in the following example format,
-                                                           ['ID1', 'ID2'] 
-                                                           where IDs are found in the candidate information, ID is in the format: Name <Email>
-                                                           In this example, there are 2 candidates.
-                                                        ''')
     if len(all_candidates) > 20:
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
@@ -343,11 +333,11 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
                                                            Arrange ALL the candidates in the order suitable for this job description. 
-                                                           {("Do consider the following parameters first:" + ' '.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
+                                                           {("Do consider the following parameters first:" + ','.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
                                                            MUST Include all {num_candidates} candidates.
                                                            Answer it in the following example format,
                                                            ['ID1', 'ID2'] 
-                                                           where IDs are found in the candidate information, ID is in the format: Name <Email>
+                                                           where IDs are found in the candidate information, ID is in the format: Name <Email>.
                                                            In this example, there are 2 candidates.
                                                         '''}
                           ]
