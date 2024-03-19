@@ -332,7 +332,8 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                           messages=[
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
-                                                           Arrange ALL the candidates in the order suitable for this job description. 
+                                                           Arrange ALL the candidates in the order suitable for this job description. Consider the general
+                                                           recruiting strategies.
                                                            {("Do consider the following parameters first:" + ','.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
                                                            MUST Include all {num_candidates} candidates.
                                                            Answer it in the following example format,
@@ -448,10 +449,10 @@ if __name__ == "__main__":
                     if header == 'JobDescription':
                         recruiter[header] = st.text_area(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
                     elif header == 'RankingParameters':
-                        recruiter[header] = st.multiselect("Do you want us to consider specific parameters to rank the applicants?",
+                        recruiter[header] = st.multiselect("Do you have any specific parameters to rank the applicants?",
                                                 options = get_ranking_params(),
                                                 default = list(eval(recruiter[header])) if not recruiter[header] == '' else None,
-                                                help = "These parameters would be considered first when ranking the applicants.",
+                                                help = "Along with the general recruiting consideration, these parameters would be considered first when ranking the applicants.",
                                                 placeholder = "May choose upto 5 parameters",
                                                 max_selections = 5)
                     else:
