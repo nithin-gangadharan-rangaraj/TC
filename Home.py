@@ -403,6 +403,7 @@ if __name__ == "__main__":
         tab1, tab2 = st.tabs(["Check for candidates", "Update Job Details"])
         with tab1: 
             st.subheader("Excited to check for applicants?", divider = 'blue')
+            st.write("This section helps us to extract the candidates' application emails and interprets them.")
             if st.button('Update Candidate Info'): 
                 with st.status("Updating Info...", expanded=True) as status:
                     emails = read_emails(client, candidate_df, subject = user)
@@ -417,6 +418,7 @@ if __name__ == "__main__":
                 st.info('Next step: Rank the candidates.')
                 
             st.subheader("Rank Applicants", divider = 'blue')
+            st.write("This is the main part, where the extracted candidate emails are ranked based on the desired criteria.")
             if st.button('Start Ranking'): 
                 with st.status("Updating Info...", expanded=True) as status:
                     if len(candidate_df) > 0:
@@ -431,7 +433,8 @@ if __name__ == "__main__":
                         st.error("There are no candidates. Please check with the previous section.")
                 
             st.subheader("Get Reports", divider = 'blue')
-            st.warning("If the earlier sections aren't finished, the report won't show any new applicants, if any.")
+            st.write("Need a Report? Don't worry, we can email you.")
+            st.warning("Please note that if the earlier sections aren't finished, the report won't show any new applicants, if any.")
             with st.expander("Click here to check the existing candidates."):
                 st.dataframe(rec_df)
             if st.button('Send Email'): 
