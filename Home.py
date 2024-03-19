@@ -291,7 +291,8 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
                           model="gpt-3.5-turbo",
                           messages=[
                             {"role": "system", "content": f"{prompt}"},
-                            {"role": "user", "content": '''You are a recruiter now. Analyse how good the candidate information fits the recruiting job description.
+                            {"role": "user", "content": f'''You are a recruiter now. Analyse how good the candidate information fits the recruiting job description.
+                                                           {("Do consider the following parameters first:" + ' '.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
                                                            You have to provide a recommendation in less than 50 words.
                                                            Answer it in the following format: 
                                                            Recommendation:
@@ -326,18 +327,28 @@ def write_recommendation(client, candidate_df, recruiter):
 def get_ai_help(client, all_candidates, recruiter, num_candidates):
     answer = ""
     # st.write(all_candidates)
+    st.write(f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
+                                                           Arrange ALL the candidates in the order suitable for this job description. 
+                                                           {("Do consider the following parameters first:" + ' '.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
+                                                           MUST Include all {num_candidates} candidates.
+                                                           Answer it in the following example format,
+                                                           ['ID1', 'ID2'] 
+                                                           where IDs are found in the candidate information, ID is in the format: Name <Email>
+                                                           In this example, there are 2 candidates.
+                                                        '''})
     if len(all_candidates) > 20:
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
                           messages=[
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
-                                                           Arrange ALL the candidates in the order suitable for this job description. Give high weightage
-                                                           to candidates with experience in relevant field. MUST Include all {num_candidates} candidates.
-                                                           Answer it in the following example format where IDs are found in the candidate information,
-                                                           ID is typically in the format Name <Email>:
-                                                           ['ID1', 'ID2']    
-                                                           In this example, there are 2 candidates
+                                                           Arrange ALL the candidates in the order suitable for this job description. 
+                                                           {("Do consider the following parameters first:" + ' '.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
+                                                           MUST Include all {num_candidates} candidates.
+                                                           Answer it in the following example format,
+                                                           ['ID1', 'ID2'] 
+                                                           where IDs are found in the candidate information, ID is in the format: Name <Email>
+                                                           In this example, there are 2 candidates.
                                                         '''}
                           ]
                         )
@@ -443,6 +454,13 @@ if __name__ == "__main__":
                 if not header == 'Password':
                     if header == 'JobDescription':
                         recruiter[header] = st.text_area(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
+                    elif header == 'RankingParameters':
+                        recruiter[header] = st.multiselect("Do you want us to consider specific parameters to rank the applicants?",
+                                                options = get_ranking_params(),
+                                                default = recruiter[header],
+                                                help = "These parameters would be considered first when ranking the applicants."
+                                                placeholder = "May choose upto 5 parameters",
+                                                max_selections = 5)
                     else:
                         recruiter[header] = st.text_input(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
             if validate_inputs(recruiter) and not (prior == dict(recruiter)):
