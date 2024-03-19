@@ -23,6 +23,10 @@ def display_existing_jobs(df, name):
   st.write(f"Existing job titles listed for {name.upper()}:")
   st.dataframe(pd.DataFrame(df.loc[df['Name'] == name, 'Title'].values, columns=['Job Title']))
 
+def get_ranking_params():
+    with open(f'ranking_params.txt', 'r') as f:
+        params = [inp.strip() for inp in f.readlines()]
+    return params
 
 def get_inputs(df):
   inputs = {}
@@ -35,6 +39,11 @@ def get_inputs(df):
       inputs["Email"] = st.text_input("Enter the Email address").strip()
       inputs["JobDescription"] = st.text_area("Paste the job description").strip()
       inputs["FirmWebsite"] = st.text_input("Paste the link to the hiring firm's website").strip()
+      inputs["RankingParams"] = st.multiselect("Do you want us to consider specific parameters to rank the applicants?",
+                                                options = get_ranking_params(),
+                                                help = "These parameters would be considered first when ranking the applicants."
+                                                placeholder = "May choose upto 5 parameters",
+                                                max_selections = 5)
   else:
       st.error(f"{inputs['Name']} recruiting for {inputs['Title']} exists. Please recheck!")
       return False
