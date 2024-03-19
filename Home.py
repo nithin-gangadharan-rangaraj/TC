@@ -335,7 +335,7 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                            ['ID1', 'ID2'] 
                                                            where IDs are found in the candidate information, ID is in the format: Name <Email>
                                                            In this example, there are 2 candidates.
-                                                        '''})
+                                                        ''')
     if len(all_candidates) > 20:
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
