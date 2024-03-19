@@ -458,7 +458,7 @@ if __name__ == "__main__":
                         recruiter[header] = st.multiselect("Do you want us to consider specific parameters to rank the applicants?",
                                                 options = get_ranking_params(),
                                                 default = recruiter[header],
-                                                help = "These parameters would be considered first when ranking the applicants."
+                                                help = "These parameters would be considered first when ranking the applicants.",
                                                 placeholder = "May choose upto 5 parameters",
                                                 max_selections = 5)
                     else:
