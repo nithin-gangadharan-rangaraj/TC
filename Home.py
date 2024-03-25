@@ -384,6 +384,7 @@ def update_recruiter(recruiter, recruiter_df, rsheet):
         st.error('Error in updating the details :(')
 
 def delete_job(recruiter):
+    delete = False
     st.subheader("Delete job", divider = 'red')
     st.warning("Please read the instructions carefully before deleting.")
     with st.popover("Deletion Warning"):
@@ -397,8 +398,7 @@ def delete_job(recruiter):
         delete = st.checkbox("I acknowledge that I have read and understood the instructions for deleting a job.")
     
     if delete:
-        st.divider()
-        st.info("You may now delete the job...")
+        st.info("You can delete the job now.")
         if st.button("Click here to delete"):
             with st.status("Deletion in progress...", expanded=True) as status:
                 st.error('Deleted')
