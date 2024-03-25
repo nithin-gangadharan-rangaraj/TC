@@ -397,7 +397,9 @@ def delete_job(recruiter):
         delete = st.checkbox("I acknowledge that I have read and understood the instructions for deleting a job.")
     
     if delete:
-        if st.button("DELETE"):
+        st.divider()
+        st.info("You may now delete the job...")
+        if st.button("Click here to delete"):
             with st.status("Deletion in progress...", expanded=True) as status:
                 st.error('Deleted')
                 # delete_worksheets(recruiter)
