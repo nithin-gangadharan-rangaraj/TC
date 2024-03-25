@@ -16,15 +16,6 @@ from urlextract import URLExtract
 import requests
 from bs4 import BeautifulSoup
 import docx2txt
-from st_pages import Page, show_pages, add_page_title
-
-
-show_pages(
-    [
-        Page("pages/1_Register_Job.py", "Register Job"),
-        Page("Home.py", "Home"),
-    ]
-    )
 
     
 st.set_page_config(page_title="Candidate.ai")
