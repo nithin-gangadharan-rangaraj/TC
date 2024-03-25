@@ -27,7 +27,7 @@ def initiate():
       # st.write(gs.openall())
       gsheet = gs.open(st.secrets['sheet_name'])
       st.session_state['gsheet'] = gsheet
-  return gs, gsheet
+  return gsheet
 
 def get_recruiter_headers():
     bool_dict = {'True': True, 'False': False}
