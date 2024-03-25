@@ -387,11 +387,13 @@ def delete_job(recruiter):
     st.subheader("Delete job", divider = 'red')
     st.warning("Please read the instructions carefully before deleting.")
     with st.popover("Deletion Warning"):
-        st.write("**Before deleting a job, please consider the following**")
-        st.write("All **candidate emails** associated with this job will be **permanently deleted and cannot be recovered**.")
-        st.write("The job itself will be permanently deleted and cannot be recovered.")
-        st.write("If you require a final report, you can obtain one by visiting the 'Check for Candidates' section and requesting a report to be sent to your email,")
-        st.write("**Deleting a job is irreversible**. You may need to restart the entire recruiting process, so please ensure you are certain before proceeding with deletion.")
+        st.markdown("""
+                        **Before deleting a job, please consider the following**
+                        - All **candidate emails** associated with this job will be **permanently deleted and cannot be recovered**.
+                        - The job itself will be permanently deleted and cannot be recovered.
+                        - If you require a final report, you can obtain one by visiting the 'Check for Candidates' section and requesting a report to be sent to your email.
+                        - **Deleting a job is irreversible**. You may need to restart the entire recruiting process, so please ensure you are certain before proceeding with deletion.
+                        """)
         delete = st.checkbox("I acknowledge that I have read and understood the instructions for deleting a job.")
     
     if delete:
