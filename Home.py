@@ -385,8 +385,8 @@ def update_recruiter(recruiter, recruiter_df, rsheet):
 
 def delete_worksheets(gsheet, recruiter):
     try:
-        gsheet.del_worksheet(f'{recruiter['Header']_candidates}')
-        gsheet.del_worksheet(f'{recruiter['Header']_recommendation}')
+        gsheet.del_worksheet(f'{recruiter['Header']}_candidates')
+        gsheet.del_worksheet(f'{recruiter['Header']}_recommendation')
         st.success("Deleted the candidate data.")
     except:
         st.error("Unable to delete worksheets")
