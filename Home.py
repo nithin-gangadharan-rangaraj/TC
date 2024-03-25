@@ -419,12 +419,12 @@ def delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter):
                 st.rerun()   # Trigger re-run to refresh the app
 
 
-def display_top3(rec_df):
-    col1, col2, col3 = st.columns(3)
+# def display_top3(rec_df):
+#     col1, col2, col3 = st.columns(3)
     
-    # col1.metric("Temperature", "70 °F", "1.2 °F")
-    col2.metric("Candidate count", f"{len(rec_df)}")
-    # col3.metric("Humidity", "86%", "4%")
+#     # col1.metric("Temperature", "70 °F", "1.2 °F")
+#     col2.metric("Candidate count", f"{len(rec_df)}")
+#     # col3.metric("Humidity", "86%", "4%")
             
 # Run the app
 if __name__ == "__main__":
@@ -477,7 +477,6 @@ if __name__ == "__main__":
                 
             st.subheader("Analysis", divider = 'blue')
             st.write("You can check for the existing candidates here - The candidates displayed are ranked based on the desired criteria.")
-            display_top3(rec_df)
             st.warning("Please note that if the earlier sections aren't finished, the report won't show any new applicants, if any.")
             with st.expander("Click here to check the existing candidates."):
                 st.dataframe(rec_df)
