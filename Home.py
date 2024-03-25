@@ -382,6 +382,17 @@ def update_recruiter(recruiter, recruiter_df, rsheet):
         st.success('Updated the job details successfully.')
     except AssertionError:
         st.error('Error in updating the details :(')
+
+def delete_job(recruiter):
+    st.subheader("Delete job", divider = 'red')
+    with st.container(border = True):
+        st.write("Warning!")
+        if st.button("DELETE"):
+            with st.status("Deletion in progress...", expanded=True) as status:
+                st.error('Deleted')
+                # delete_worksheets(recruiter)
+                # update_recruiter_sheet(recruiter)
+                # delete_emails(recruiter)
         
         
 # Run the app
@@ -464,6 +475,9 @@ if __name__ == "__main__":
                     display_recruiter(user, recruiter, recruiter_container)
             else:
                 st.error('No updates detected.')
+
+            st.divider()
+            delete_job(recruiter)
             
         # st.sidebar.divider()
         if st.sidebar.button('Check another job'):
