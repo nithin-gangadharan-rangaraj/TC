@@ -30,10 +30,10 @@ def get_inputs(df):
   if name:
       display_existing_jobs(df, name)
   inputs["Name"] = name
-  inputs["Title"] = st.text_input("Enter the Job Title*").strip().capitalize()
+  inputs["Title"] = st.text_input("Enter the **Job Title**\*").strip().capitalize()
   if is_new(df, inputs):
-      inputs["Email"] = st.text_input("Enter the Email address*").strip()
-      inputs["JobDescription"] = st.text_area("Paste the job description").strip()
+      inputs["Email"] = st.text_input("Enter the **Email address**\*").strip()
+      inputs["JobDescription"] = st.text_area("Paste the **job description**").strip()
       inputs["FirmWebsite"] = st.text_input("Paste the link to the hiring firm's website").strip()
       inputs["RankingParameters"] = st.multiselect("Do you have any specific parameters to rank the applicants?",
                                                 options = get_ranking_params(),
