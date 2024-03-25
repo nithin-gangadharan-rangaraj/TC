@@ -383,10 +383,24 @@ def update_recruiter(recruiter, recruiter_df, rsheet):
     except AssertionError:
         st.error('Error in updating the details :(')
 
-def delete_worksheets(recruiter):
-    pass
+def delete_worksheets(gsheet, recruiter):
+    try:
+        gsheet.del_worksheet(f'{recruiter['Header']_candidates}')
+        gsheet.del_worksheet(f'{recruiter['Header']_recommendation}')
+        st.success("Deleted the candidate data.")
+    except:
+        st.error("Unable to delete worksheets")
 
-def delete_job(recruiter):
+def update_recruiter_sheet(rsheet, recruiter_df, recruiter):
+    try:
+        recruiter_df = recruiter_df.drop(recruiter_df[recruiter_df['Header'] == recruiter['Header']].index)
+        update_worksheet(rsheet, recruiter_df)
+        st.success("Deleted the job data")
+    except:
+        st.error("Error in removing the recruiter data")  
+
+
+def delete_job(gsheet, rsheet, recruiter_df, recruiter):
     delete = False
     st.subheader("Delete job", divider = 'red')
     st.warning("Please read the instructions carefully before deleting.")
@@ -404,9 +418,9 @@ def delete_job(recruiter):
         st.info("You can delete the job now.")
         if st.button("Click here to delete"):
             with st.status("Deletion in progress...", expanded=True) as status:
-                delete_worksheets(recruiter)
-                # update_recruiter_sheet(recruiter)
-                # delete_emails(recruiter)
+                delete_worksheets(gsheet, recruiter)
+                update_recruiter_sheet(rsheet, recruiter_df, recruiter)
+                delete_emails(recruiter)
         
         
 # Run the app
@@ -491,7 +505,7 @@ if __name__ == "__main__":
                 st.error('No updates detected.')
 
         with tab3:
-            delete_job(recruiter)
+            delete_job(gsheet, rsheet, recruiter_df, recruiter)
             
         # st.sidebar.divider()
         if st.sidebar.button('Check another job'):
