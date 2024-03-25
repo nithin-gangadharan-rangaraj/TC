@@ -409,9 +409,9 @@ def delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter):
         st.info("You can delete the job now.")
         if st.button("Click here to delete"):
             with st.status("Deletion in progress...", expanded=True) as status:
-                delete_worksheets(gsheet, wsheet, rec_sheet, recruiter)
-                update_recruiter_sheet(rsheet, recruiter_df, recruiter)
-                delete_emails(recruiter)
+                # delete_worksheets(gsheet, wsheet, rec_sheet, recruiter)
+                # update_recruiter_sheet(rsheet, recruiter_df, recruiter)
+                delete_emails(recruiter['Header'])
         
         
 # Run the app
