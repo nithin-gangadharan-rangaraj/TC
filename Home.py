@@ -412,9 +412,10 @@ def delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter):
                 delete_worksheets(gsheet, wsheet, rec_sheet, recruiter)
                 update_recruiter_sheet(rsheet, recruiter_df, recruiter)
                 delete_emails(recruiter['Header'])
+                st.info("Please wait...")
                 st.session_state.clear()  # Clear session state to sign out
                 st.toast('Successfully deleted :)')
-                time.sleep(1)
+                time.sleep(3)
                 st.rerun()   # Trigger re-run to refresh the app
         
         
