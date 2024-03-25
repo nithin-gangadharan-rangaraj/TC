@@ -417,8 +417,15 @@ def delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter):
                 time.sleep(3)
                 st.toast('Successfully deleted :)')
                 st.rerun()   # Trigger re-run to refresh the app
-        
-        
+
+
+def display_top3(rec_df):
+    col1, col2, col3 = st.columns(3)
+    
+    # col1.metric("Temperature", "70 °F", "1.2 °F")
+    col2.metric("Total candidates", f"{len(rec_df)}")
+    # col3.metric("Humidity", "86%", "4%")
+            
 # Run the app
 if __name__ == "__main__":
     
@@ -440,7 +447,7 @@ if __name__ == "__main__":
         with tab1: 
             st.subheader("Excited to check for applicants?", divider = 'blue')
             st.write("This section helps us to extract the candidates' application emails and interprets them.")
-            if st.button('Update Candidate Info', use_container_width = True): 
+            if st.button('Fetch Candidate Info', use_container_width = True): 
                 with st.status("Updating Info...", expanded=True) as status:
                     emails = read_emails(client, candidate_df, subject = user)
                     st.success('Fetched Emails.')
@@ -468,8 +475,9 @@ if __name__ == "__main__":
                     else:
                         st.error("There are no candidates. Please check with the previous section.")
                 
-            st.subheader("Get Reports", divider = 'blue')
+            st.subheader("Analysis", divider = 'blue')
             st.write("You can check for the existing candidates here - The candidates displayed are ranked based on the desired criteria.")
+            display_top3(rec_df)
             st.warning("Please note that if the earlier sections aren't finished, the report won't show any new applicants, if any.")
             with st.expander("Click here to check the existing candidates."):
                 st.dataframe(rec_df)
