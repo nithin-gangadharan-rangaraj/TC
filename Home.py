@@ -423,7 +423,7 @@ def display_top3(rec_df):
     col1, col2, col3 = st.columns(3)
     
     # col1.metric("Temperature", "70 °F", "1.2 °F")
-    col2.metric("Total candidates", f"{len(rec_df)}")
+    col2.metric("Candidate count", f"{len(rec_df)}")
     # col3.metric("Humidity", "86%", "4%")
             
 # Run the app
