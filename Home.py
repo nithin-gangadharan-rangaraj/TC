@@ -383,13 +383,13 @@ def update_recruiter(recruiter, recruiter_df, rsheet):
     except AssertionError:
         st.error('Error in updating the details :(')
 
-def delete_worksheets(gsheet, recruiter):
-    # try:
-    gsheet.del_worksheet(f'{recruiter["Header"]}_candidates')
-    gsheet.del_worksheet(f'{recruiter["Header"]}_recommendation')
-    st.success("Deleted the candidate data.")
-    # except:
-    #     st.error("Unable to delete worksheets")
+def delete_worksheets(gsheet, wsheet, rec_sheet, recruiter):
+    try:
+        gsheet.del_worksheet(wsheet)
+        gsheet.del_worksheet(rec_sheet)
+        st.success("Deleted the candidate data.")
+    except:
+        st.error("Unable to delete worksheets")
 
 def update_recruiter_sheet(rsheet, recruiter_df, recruiter):
     try:
@@ -400,7 +400,7 @@ def update_recruiter_sheet(rsheet, recruiter_df, recruiter):
         st.error("Error in removing the recruiter data")  
 
 
-def delete_job(gsheet, rsheet, recruiter_df, recruiter):
+def delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter):
     delete = False
     st.subheader("Delete job", divider = 'red')
     st.warning("Please read the instructions carefully before deleting.")
@@ -418,7 +418,7 @@ def delete_job(gsheet, rsheet, recruiter_df, recruiter):
         st.info("You can delete the job now.")
         if st.button("Click here to delete"):
             with st.status("Deletion in progress...", expanded=True) as status:
-                delete_worksheets(gsheet, recruiter)
+                delete_worksheets(gsheet, wsheet, rec_sheet, recruiter)
                 update_recruiter_sheet(rsheet, recruiter_df, recruiter)
                 delete_emails(recruiter)
         
@@ -505,7 +505,7 @@ if __name__ == "__main__":
                 st.error('No updates detected.')
 
         with tab3:
-            delete_job(gsheet, rsheet, recruiter_df, recruiter)
+            delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter)
             
         # st.sidebar.divider()
         if st.sidebar.button('Check another job'):
