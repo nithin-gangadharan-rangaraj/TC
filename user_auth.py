@@ -38,12 +38,12 @@ def check_password(df):
         st.text_input(
             "Enter the Job's Password", type="password", on_change=password_entered, key="password", help="Unique password for this job would have been issued during Job Registration."
         )
-        # st.caption("New? Register your job under **Register Job** to kick start your recruitment.")
-        st.markdown("""
-                      <a href="/Register_Job" target="_self"> 
-                          New Job? Register your job under <b>Register Job</b> to kick start your recruitment.
-                      </a>
-                  """, unsafe_allow_html=True)
+        st.page_link("pages/1_Register_Job.py", "New? Register your job under **Register Job** to kick start your recruitment.")
+        # st.markdown("""
+        #               <a href="/Register_Job" target="_self"> 
+        #                   New Job? Register your job under <b>Register Job</b> to kick start your recruitment.
+        #               </a>
+        #           """, unsafe_allow_html=True)
       
         return False
         
@@ -53,12 +53,12 @@ def check_password(df):
         st.text_input(
             "Enter the Job's Password", type="password", on_change=password_entered, key="password", help="Unique password for this job would have been issued during Job Registration."
         )
-        # st.caption("New? Register your job under **Register Job** to kick start your recruitment.")
-        st.markdown("""
-                      <a href="/Register_Job" target="_self"> 
-                          New Job? Register your job under <b>Register Job</b> to kick start your recruitment.
-                      </a>
-                  """, unsafe_allow_html=True)
+        st.page_link("pages/1_Register_Job.py", "New? Register your job under **Register Job** to kick start your recruitment.")
+        # st.markdown("""
+        #               <a href="/Register_Job" target="_self"> 
+        #                   New Job? Register your job under <b>Register Job</b> to kick start your recruitment.
+        #               </a>
+        #           """, unsafe_allow_html=True)
         st.error("😕 Header not known or password incorrect")
         return False
     else:
