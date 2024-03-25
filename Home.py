@@ -395,7 +395,7 @@ def delete_job(recruiter):
                         - If you require a final report, you can obtain one by visiting the 'Check for Candidates' section and requesting a report to be sent to your email.
                         - **Deleting a job is irreversible**. You may need to restart the entire recruiting process, so please ensure you are certain before proceeding with deletion.
                         """)
-        delete = st.checkbox("I acknowledge that I have read and understood the instructions for deleting a job.")
+        delete = st.checkbox("I acknowledge that I have read and understood the instructions for deleting a job.", value = False)
     
     if delete:
         st.info("You can delete the job now.")
