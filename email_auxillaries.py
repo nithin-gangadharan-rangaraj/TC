@@ -27,10 +27,11 @@ def delete_emails(subject):
         
             # Search for emails with a specific subject
             messages = client.search(['SUBJECT', subject])
-            print(len(messages))
+
             # Iterate through the messages and delete them
-            for uid, message_data in client.fetch(messages, 'RFC822').items():
-                client.delete_messages(uid)
+            if len(messages) > 0:
+                for uid, message_data in client.fetch(messages, 'RFC822').items():
+                    client.delete_messages(uid)
         
             # Commit the changes
             client.expunge()
