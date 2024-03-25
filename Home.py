@@ -412,7 +412,7 @@ if __name__ == "__main__":
         rec_sheet = open_worksheet(gsheet, user + '_recommendation')
         rec_df = get_df(rec_sheet)
         
-        tab1, tab2 = st.tabs(["Check for candidates", "Update Job Details"])
+        tab1, tab2, tab3 = st.tabs(["Check for Candidates", "Update Job Details", "Delete Job"])
         with tab1: 
             st.subheader("Excited to check for applicants?", divider = 'blue')
             st.write("This section helps us to extract the candidates' application emails and interprets them.")
@@ -476,7 +476,7 @@ if __name__ == "__main__":
             else:
                 st.error('No updates detected.')
 
-            st.divider()
+        with tab3:
             delete_job(recruiter)
             
         # st.sidebar.divider()
