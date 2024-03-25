@@ -473,7 +473,16 @@ if __name__ == "__main__":
             st.warning("Please note that if the earlier sections aren't finished, the report won't show any new applicants, if any.")
             with st.expander("Click here to check the existing candidates."):
                 st.dataframe(rec_df)
-            if st.button('Send Email'): 
+            st.write("**Need a copy of the recommendation as a report?**")
+            st.write("Download:")
+            st.download_button(
+                                label="Download report ⬇️",
+                                data = convert_df(rec_df),
+                                file_name=f'{recruiter["Header"]}_report.csv',
+                                mime='text/csv',
+                              )
+            st.write("Email:")
+            if st.button('Send Email ✉️'): 
                 send_report(rec_df, recruiter)
 
         with tab2:
