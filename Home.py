@@ -383,6 +383,9 @@ def update_recruiter(recruiter, recruiter_df, rsheet):
     except AssertionError:
         st.error('Error in updating the details :(')
 
+def delete_worksheets(recruiter):
+    pass
+
 def delete_job(recruiter):
     delete = False
     st.subheader("Delete job", divider = 'red')
@@ -401,8 +404,7 @@ def delete_job(recruiter):
         st.info("You can delete the job now.")
         if st.button("Click here to delete"):
             with st.status("Deletion in progress...", expanded=True) as status:
-                st.error('Deleted')
-                # delete_worksheets(recruiter)
+                delete_worksheets(recruiter)
                 # update_recruiter_sheet(recruiter)
                 # delete_emails(recruiter)
         
