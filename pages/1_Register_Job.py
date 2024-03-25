@@ -8,6 +8,7 @@ import pandas as pd
 st.image('cai.png', width = 400)
 from streamlit_modal import Modal
 import streamlit.components.v1 as components
+value = False
 modal = Modal(
     "Demo Modal", 
     key="demo-modal",
@@ -35,7 +36,8 @@ if modal.is_open():
 
         st.write("Some fancy text")
         value = st.checkbox("Check me")
-        st.write(f"Checkbox checked: {value}")
+
+st.write(f"Checkbox checked: {value}")
 
 def get_recruiter_df(wsheet):
     values = wsheet.get_all_values()
