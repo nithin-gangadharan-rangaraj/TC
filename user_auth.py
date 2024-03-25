@@ -38,7 +38,7 @@ def check_password(df):
         st.text_input(
             "Enter the Job's Password", type="password", on_change=password_entered, key="password", help="Unique password for this job would have been issued during Job Registration."
         )
-        st.page_link("pages/1_Register_Job.py", "New? Register your job under **Register Job** to kick start your recruitment.")
+        st.page_link("pages/1_Register_Job.py", label = "New? Register your job under **Register Job** to kick start your recruitment.")
         # st.markdown("""
         #               <a href="/Register_Job" target="_self"> 
         #                   New Job? Register your job under <b>Register Job</b> to kick start your recruitment.
@@ -53,7 +53,7 @@ def check_password(df):
         st.text_input(
             "Enter the Job's Password", type="password", on_change=password_entered, key="password", help="Unique password for this job would have been issued during Job Registration."
         )
-        st.page_link("pages/1_Register_Job.py", "New? Register your job under **Register Job** to kick start your recruitment.")
+        st.page_link("pages/1_Register_Job.py", label = "New? Register your job under **Register Job** to kick start your recruitment.")
         # st.markdown("""
         #               <a href="/Register_Job" target="_self"> 
         #                   New Job? Register your job under <b>Register Job</b> to kick start your recruitment.
