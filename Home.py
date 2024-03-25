@@ -387,7 +387,7 @@ def delete_job(recruiter):
     delete = False
     st.subheader("Delete job", divider = 'red')
     st.warning("Please read the instructions carefully before deleting.")
-    with st.popover("Deletion Warning"):
+    with st.expander("Deletion Warning", expanded = True):
         st.markdown("""
                         **Before deleting a job, please consider the following**
                         - All **candidate emails** associated with this job will be **permanently deleted and cannot be recovered**.
