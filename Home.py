@@ -469,20 +469,19 @@ if __name__ == "__main__":
                         st.error("There are no candidates. Please check with the previous section.")
                 
             st.subheader("Get Reports", divider = 'blue')
-            st.write("Need a Report? Don't worry, we can email you.")
+            st.write("Need a Report? Don't worry, We can send it to you at your convenience. Please choose your preferred method.")
             st.warning("Please note that if the earlier sections aren't finished, the report won't show any new applicants, if any.")
             with st.expander("Click here to check the existing candidates."):
                 st.dataframe(rec_df)
             st.write("**Need a copy of the recommendation as a report?**")
-            st.write("Download:")
             st.download_button(
                                 label="Download report ⬇️",
                                 data = convert_df(rec_df),
                                 file_name=f'{recruiter["Header"]}_report.csv',
                                 mime='text/csv',
+                                use_container_width = True,
                               )
-            st.write("Email:")
-            if st.button('Send Email ✉️'): 
+            if st.button('Send Email ✉️', use_container_width = True): 
                 send_report(rec_df, recruiter)
 
         with tab2:
