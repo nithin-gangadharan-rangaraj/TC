@@ -41,7 +41,7 @@ def check_password(df):
         # st.caption("New? Register your job under **Register Job** to kick start your recruitment.")
         st.markdown("""
                       <a href="/Register_Job" target="_self"> 
-                          Register your job under <b>Register Job</b> to kick start your recruitment.
+                          New Job? Register your job under <b>Register Job</b> to kick start your recruitment.
                       </a>
                   """, unsafe_allow_html=True)
       
@@ -56,7 +56,7 @@ def check_password(df):
         # st.caption("New? Register your job under **Register Job** to kick start your recruitment.")
         st.markdown("""
                       <a href="/Register_Job" target="_self"> 
-                          Register your job under <b>Register Job</b> to kick start your recruitment.
+                          New Job? Register your job under <b>Register Job</b> to kick start your recruitment.
                       </a>
                   """, unsafe_allow_html=True)
         st.error("😕 Header not known or password incorrect")
