@@ -440,7 +440,7 @@ if __name__ == "__main__":
         with tab1: 
             st.subheader("Excited to check for applicants?", divider = 'blue')
             st.write("This section helps us to extract the candidates' application emails and interprets them.")
-            if st.button('Update Candidate Info'): 
+            if st.button('Update Candidate Info', use_container_width = True): 
                 with st.status("Updating Info...", expanded=True) as status:
                     emails = read_emails(client, candidate_df, subject = user)
                     st.success('Fetched Emails.')
@@ -455,7 +455,7 @@ if __name__ == "__main__":
                 
             st.subheader("Rank Applicants", divider = 'blue')
             st.write("This is the main part, where the extracted candidate emails are ranked based on the desired criteria.")
-            if st.button('Start Ranking'): 
+            if st.button('Start Ranking', use_container_width = True): 
                 with st.status("Updating Info...", expanded=True) as status:
                     if len(candidate_df) > 0:
                         rec_df = write_recommendation(client, candidate_df, recruiter)
@@ -469,11 +469,11 @@ if __name__ == "__main__":
                         st.error("There are no candidates. Please check with the previous section.")
                 
             st.subheader("Get Reports", divider = 'blue')
-            st.write("Need a Report? Don't worry, We can send it to you at your convenience. Please choose your preferred method.")
+            st.write("You can check for the existing candidates here - The candidates displayed are ranked based on the desired criteria.")
             st.warning("Please note that if the earlier sections aren't finished, the report won't show any new applicants, if any.")
             with st.expander("Click here to check the existing candidates."):
                 st.dataframe(rec_df)
-            st.write("**Need a copy of the recommendation as a report?**")
+            st.write("**Need a copy of the recommendation as a report?** Don't worry, We can send it to you at your convenience. Please choose your preferred method.")
             st.download_button(
                                 label="Download report ⬇️",
                                 data = convert_df(rec_df),
