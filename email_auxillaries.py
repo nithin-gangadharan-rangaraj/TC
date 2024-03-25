@@ -12,32 +12,32 @@ def check_email(email):
     return isExists
 
 def delete_emails(subject):
-    try:
-        # Connect to your IMAP server
-        server = 'imap.gmail.com'
-        username = st.secrets['email']
-        password = st.secrets['password']
+    # try:
+    # Connect to your IMAP server
+    server = 'imap.gmail.com'
+    username = st.secrets['email']
+    password = st.secrets['password']
+    
+    # Connect to the IMAP server
+    with IMAPClient(server) as client:
+        client.login(username, password)
         
-        # Connect to the IMAP server
-        with IMAPClient(server) as client:
-            client.login(username, password)
-            
-            # Select the mailbox (e.g., INBOX)
-            client.select_folder('INBOX')
-        
-            # Search for emails with a specific subject
-            messages = client.search(['SUBJECT', subject])
+        # Select the mailbox (e.g., INBOX)
+        client.select_folder('INBOX')
+    
+        # Search for emails with a specific subject
+        messages = client.search(['SUBJECT', subject])
 
-            # Iterate through the messages and delete them
-            if len(messages) > 0:
-                for uid, message_data in client.fetch(messages, 'RFC822').items():
-                    client.delete_messages(uid)
-        
-            # Commit the changes
-            client.expunge()
-        st.success("Deleted candidate emails.")
-    except:
-        st.error("Could not delete the candidate emails. Please report.")
+        # Iterate through the messages and delete them
+        if len(messages) > 0:
+            for uid, message_data in client.fetch(messages, 'RFC822').items():
+                client.delete_messages(uid)
+    
+        # Commit the changes
+        client.expunge()
+    st.success("Deleted candidate emails.")
+    # except:
+    #     st.error("Could not delete the candidate emails. Please report.")
 
 def send_report(df, recruiter):
     try:
