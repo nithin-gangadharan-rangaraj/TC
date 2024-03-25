@@ -2,6 +2,7 @@ from google.oauth2 import service_account
 import streamlit as st
 import gspread
 from email_auxillaries import *
+import pandas as pd
 
 def open_worksheet(gsheet, sheet_name):
     return gsheet.worksheet(sheet_name)
@@ -52,3 +53,6 @@ def get_ranking_params():
     with open(f'ranking_params.txt', 'r') as f:
         params = [inp.strip() for inp in f.readlines()]
     return params
+
+def convert_df(df):
+    return df.to_csv().encode('utf-8')
