@@ -497,6 +497,10 @@ if __name__ == "__main__":
 
         with tab3:
             delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter)
+            st.session_state.clear()  # Clear session state to sign out
+            st.toast('Successfully deleted :)')
+            time.sleep(1)
+            st.rerun()   # Trigger re-run to refresh the app
             
         # st.sidebar.divider()
         if st.sidebar.button('Check another job'):
