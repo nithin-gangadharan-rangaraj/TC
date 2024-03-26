@@ -427,7 +427,7 @@ def display_top(rec_df):
         if count > 0:
             st.subheader(f"Top {count} candidate{'s' if count > 1 else ''}:")
             for idx in range(count):
-                name = re.sub(r'([^<]+)\s*<(.+?)>', r'<b>\1</b>: \2', rec_df.loc[idx, 'ID']).strip()
+                name = re.sub(r'([^<]+)\s*<(.+?)>', r'**\1**: \2', rec_df.loc[idx, 'ID']).strip()
                 with st.popover(f"{idx + 1}. {name}"):
                     st.write(rec_df.loc[idx, 'Recommendation'])
         st.divider()
