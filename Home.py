@@ -425,9 +425,8 @@ def display_top(rec_df):
         count = st.slider("Pick top candidates", min_value=0, max_value = min(5, len(rec_df)), value=min(3, len(rec_df)), step=1)
         st.header(f"Top {count} candidates:")
         for idx in range(count):
-            col1, col2 = st.columns([1, 3])
-            col1.subheader(rec_df.loc[idx, 'ID'])
-            col2.write(f"**{rec_df.loc[idx, 'Recommendation']}**")
+            with st.popover(f"**{idx + 1} {rec_df.loc[idx, 'ID']}**"):
+                st.write(rec_df.loc[idx, 'Recommendation'])
             
 # Run the app
 if __name__ == "__main__":
