@@ -66,12 +66,16 @@ def update_worksheet(wsheet, df):
     set_with_dataframe(wsheet, df)
 
 def display_info(password, header):
-  with st.container(border = True):
-      st.subheader(f"Job's unique password is: {password}")
-      st.write("Please save it for future use.")
-      st.divider()
-      st.subheader(f"Subject Header for this job: {header}")
-      st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
+    col1, col2 = st.columns(2)
+    col1.metric("Job's unique password", f"{password}")
+    col2.metric("Subject Header", f"{header}", "Subject Header")
+    st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
+  # with st.container(border = True):
+  #     st.subheader(f"Job's unique password is: {password}")
+  #     st.write("Please save it for future use.")
+  #     # st.divider()
+  #     st.subheader(f"Subject Header for this job: {header}")
+  #     st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
 
 def get_header_list(header):
     with open(f'inputs_{header.split("_")[-1]}.txt', 'r') as f:
