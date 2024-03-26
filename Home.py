@@ -422,7 +422,7 @@ def delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter):
 def display_top(rec_df):
     st.metric(label="Total candidates", value=len(rec_df))
     if len(rec_df) > 0:
-        st.write("**Wish to check the top ranking candidates?**")
+        st.write("**Wish to check the :blue[top ranking] candidates?**")
         count = st.slider("Pick top candidates", min_value=0, max_value = min(5, len(rec_df)), value=min(3, len(rec_df)), step=1)
         if count > 0:
             with st.container(border = True):
