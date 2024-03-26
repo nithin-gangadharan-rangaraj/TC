@@ -15,6 +15,7 @@ from email_auxillaries import *
 from urlextract import URLExtract
 import requests
 from bs4 import BeautifulSoup
+import re
 import docx2txt
 
     
@@ -426,7 +427,8 @@ def display_top(rec_df):
         if count > 0:
             st.subheader(f"Top {count} candidate{'' if count > 1 else ''}:")
             for idx in range(count):
-                with st.popover(f"**{idx + 1} {rec_df.loc[idx, 'ID']}**"):
+                name = re.sub(r'<.*?>', '', rec_df.loc[idx, 'ID'])
+                with st.popover(f"**{idx + 1}. {name}**"):
                     st.write(rec_df.loc[idx, 'Recommendation'])
         st.divider()
             
