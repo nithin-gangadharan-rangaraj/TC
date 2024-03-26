@@ -418,13 +418,16 @@ def delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter):
                 st.toast('Successfully deleted :)')
                 st.rerun()   # Trigger re-run to refresh the app
 
-
-# def display_top3(rec_df):
-#     col1, col2, col3 = st.columns(3)
-    
-#     # col1.metric("Temperature", "70 °F", "1.2 °F")
-#     col2.metric("Candidate count", f"{len(rec_df)}")
-#     # col3.metric("Humidity", "86%", "4%")
+def display_top(rec_df):
+    st.metric(label="Total candidates", value=len(rec_df))
+    st.write("**Wish to check the top ranking candidates?**")
+    count = st.slider("Pick top candidates", min_value=0, max_value = min(5, len(rec_df)), value=min(3, len(rec_df)), step=1)
+    st.header(f"Top {count} candidates:")
+    if count > 0:
+        for idx in range(count):
+            col1, col2 = st.columns([1, 3])
+            col1.subheader(rec_df.loc[idx, 'ID'])
+            col2.write(f"**{rec_df.loc[idx, 'Recommendation']}**")
             
 # Run the app
 if __name__ == "__main__":
@@ -476,10 +479,12 @@ if __name__ == "__main__":
                         st.error("There are no candidates. Please check with the previous section.")
                 
             st.subheader("Analysis", divider = 'blue')
-            st.write("You can check for the existing candidates here - The candidates displayed are ranked based on the desired criteria.")
             st.warning("Please note that if the earlier sections aren't finished, the report won't show any new applicants, if any.")
-            with st.expander("Click here to check the existing candidates."):
+            st.write("You can check for the existing candidates here - The candidates displayed are ranked based on the desired criteria.")
+            display_top(rec_df)
+            with st.expander("Click here to check all existing candidates."):
                 st.dataframe(rec_df)
+            st.divider()
             st.write("**Need a copy of the recommendation as a report?** Don't worry, We can send it to you at your convenience. Please choose your preferred method.")
             st.download_button(
                                 label="Download report ⬇️",
