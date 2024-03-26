@@ -42,7 +42,7 @@ def delete_emails(subject):
 def send_report(df, recruiter):
     try:
         multipart = MIMEMultipart()
-        multipart["From"] = f'Candidate.ai <{st.secrets['email']}>'
+        multipart["From"] = f"Candidate.ai <{st.secrets['email']}>"
         multipart["To"] = recruiter['Email']
         multipart["Subject"] = f'Candidate.ai - {recruiter["Header"]} Report'  
     
@@ -69,7 +69,7 @@ def send_report(df, recruiter):
 def send_credentials(recruiter):
     try:
         multipart = MIMEMultipart()
-        multipart["From"] = f'Candidate.ai <{st.secrets['email']}>' 
+        multipart["From"] = f"Candidate.ai <{st.secrets['email']}>"
         multipart["To"] = recruiter['Email']
         multipart["Subject"] = f'Candidate.ai - {recruiter["Header"]} Login Credentials'  
     
