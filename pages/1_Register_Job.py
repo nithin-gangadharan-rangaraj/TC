@@ -69,7 +69,8 @@ def display_info(password, header):
     col1, col2 = st.columns(2)
     col1.metric("Subject Header", f"{header}", "Subject Header")
     col2.metric("Job's unique password", f"{password}", "For you to access")
-    st.info(f"PLEASE REQUEST THE APPLICANTS TO QUOTE {header} AS THE SUBJECT HEADER.")
+    st.info(f'''⚠️**Important:**
+            Please request the applicants to quote **{header}** as the subject.''')
   # with st.container(border = True):
   #     st.subheader(f"Job's unique password is: {password}")
   #     st.write("Please save it for future use.")
@@ -91,8 +92,6 @@ def create_worksheet(gsheet, header):
     
 if __name__ == "__main__":
   st.header("Register with us and discover the ease of modern recruitment!", divider = 'red')
-  st.info(f'''**Important:**
-            Please request the applicants to quote **HEADER** as the subject.''')
   gsheet = initiate()
   wsheet = open_worksheet(gsheet, "Recruiters")
   recruiter_df = get_recruiter_df(wsheet)
