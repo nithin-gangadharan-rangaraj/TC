@@ -420,10 +420,10 @@ def delete_job(gsheet, wsheet, rec_sheet, rsheet, recruiter_df, recruiter):
 
 def display_top(rec_df):
     st.metric(label="Total candidates", value=len(rec_df))
-    st.write("**Wish to check the top ranking candidates?**")
-    count = st.slider("Pick top candidates", min_value=0, max_value = min(5, len(rec_df)), value=min(3, len(rec_df)), step=1)
-    st.header(f"Top {count} candidates:")
-    if count > 0:
+    if len(rec_df) > 0:
+        st.write("**Wish to check the top ranking candidates?**")
+        count = st.slider("Pick top candidates", min_value=0, max_value = min(5, len(rec_df)), value=min(3, len(rec_df)), step=1)
+        st.header(f"Top {count} candidates:")
         for idx in range(count):
             col1, col2 = st.columns([1, 3])
             col1.subheader(rec_df.loc[idx, 'ID'])
