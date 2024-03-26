@@ -481,8 +481,8 @@ if __name__ == "__main__":
                 
             st.subheader("Analysis", divider = 'blue')
             st.warning("Please note that if the earlier sections aren't finished, the report won't show any new applicants, if any.")
-            st.write("You can check for the existing candidates here - The candidates displayed are ranked based on the desired criteria.")
             display_top(rec_df)
+            st.write("You can check for all existing candidates here - The candidates displayed are ranked based on the desired criteria.")
             with st.expander("Click here to check all existing candidates."):
                 st.dataframe(rec_df, use_container_width = True)
             st.divider()
