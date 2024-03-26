@@ -425,11 +425,12 @@ def display_top(rec_df):
         st.write("**Wish to check the top ranking candidates?**")
         count = st.slider("Pick top candidates", min_value=0, max_value = min(5, len(rec_df)), value=min(3, len(rec_df)), step=1)
         if count > 0:
-            st.subheader(f"Top {count} candidate{'s' if count > 1 else ''}:")
-            for idx in range(count):
-                name = re.sub(r'([^<]+)\s*<(.+?)>', r'\1: \2', rec_df.loc[idx, 'ID']).strip()
-                with st.popover(f"**{idx + 1}**. {name}"):
-                    st.write(rec_df.loc[idx, 'Recommendation'])
+            with st.container(border = True):
+                st.subheader(f"Top {count} candidate{'s' if count > 1 else ''}:")
+                for idx in range(count):
+                    name = re.sub(r'([^<]+)\s*<(.+?)>', r'\1: \2', rec_df.loc[idx, 'ID']).strip()
+                    with st.popover(f"**{idx + 1}**. {name}"):
+                        st.write(rec_df.loc[idx, 'Recommendation'])
         st.divider()
             
 # Run the app
