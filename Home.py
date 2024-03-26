@@ -483,7 +483,7 @@ if __name__ == "__main__":
             st.write("You can check for the existing candidates here - The candidates displayed are ranked based on the desired criteria.")
             display_top(rec_df)
             with st.expander("Click here to check all existing candidates."):
-                st.dataframe(rec_df, use_column_width = True)
+                st.dataframe(rec_df, use_container_width = True)
             st.divider()
             st.write("**Need a copy of the recommendation as a report?** Don't worry, We can send it to you at your convenience. Please choose your preferred method.")
             st.download_button(
