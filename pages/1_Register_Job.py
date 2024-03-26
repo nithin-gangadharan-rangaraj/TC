@@ -91,6 +91,7 @@ def create_worksheet(gsheet, header):
     
 if __name__ == "__main__":
   st.header("Register with us and discover the ease of modern recruitment!", divider = 'red')
+  st.info(f"Important:\n PLEASE REQUEST THE APPLICANTS TO QUOTE **HEADER** AS THE SUBJECT HEADER.")
   gsheet = initiate()
   wsheet = open_worksheet(gsheet, "Recruiters")
   recruiter_df = get_recruiter_df(wsheet)
