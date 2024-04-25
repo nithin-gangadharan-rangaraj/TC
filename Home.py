@@ -251,9 +251,9 @@ def get_info_summary(client, category, info, job):
     completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
                           messages=[
-                            {"role": "system", "content": f"{prompt}"},
-                            {"role": "user", "content": f'''Pick out the relevant information from this {category} that would help to check if 
-                                                            it would suit the job description in a maximum of 100 words. Consider only the provided
+                            {"role": "user", "content": f"{prompt}"},
+                            {"role": "system", "content": f'''Pick out the relevant information from this {category} that would help to check if 
+                                                            it would suit the job description in a maximum of 100 words. Consider only the user provided
                                                             candidate information.
                                                         '''}
                           ]
@@ -272,7 +272,7 @@ def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scr
      Email conversations are unchanged. Resume, Cover letter, Portfolio, Other texts are summarized.
 
     Returns: 
-        str: Prompt with Summarized candidate info and the Job description
+        str: Prompt with Summarized candidate info
     '''
     
     prompt = "CANDIDATE INFORMATION:\n"
@@ -290,8 +290,8 @@ def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scr
                                 {info.strip()}\n''')
     if len(prompt) > 20:
         prompt += (f"RELEVANT CANDIDATE INFORMATION: {scraped_candidate_content}" if len(scraped_candidate_content) > 10 else '')
-        prompt += (f"RECRUITING JOB DESCRIPTION: {recruiter['JobDescription']}")
-        prompt += ("RECRUITING JOB WEBSITE: \n" + scraped_recruiter_content if len(scraped_recruiter_content) > 10 else '')
+        # prompt += (f"RECRUITING JOB DESCRIPTION: {recruiter['JobDescription']}")
+        # prompt += ("RECRUITING JOB WEBSITE: \n" + scraped_recruiter_content if len(scraped_recruiter_content) > 10 else '')
     prompt = remove_blank_lines(prompt)
     return prompt
 
@@ -327,12 +327,13 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
                           messages=[
-                            {"role": "system", "content": f"{prompt}"},
-                            {"role": "user", "content": f'''You are a recruiter now. Analyse how good the candidate information fits the recruiting job description.
-                                                           You have to provide a recommendation in less than 50 words. Consider only the provided CANDIDATE INFORMATION.
-                                                           Answer it in the following format: 
+                            {"role": "system", "content": f'''You are a recruiter now. Analyse how good the candidate information fits the following recruiting job description.
+                                                            {recruiter['JobDescription']}. {("RECRUITING JOB WEBSITE: \n" + scraped_recruiter_content) if len(scraped_recruiter_content) > 10 else ''}
+                                                           You have to provide a recommendation for this candidate in less than 50 words. Consider only the user provided CANDIDATE INFORMATION.
+                                                           Must answer it in the following format: 
                                                            Recommendation:
-                                                        '''}
+                                                        '''},
+                            {"role": "user", "content": f"{prompt}"}
                           ]
                         )
         recommendation = completion.choices[0].message.content
