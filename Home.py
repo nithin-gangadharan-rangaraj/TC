@@ -257,7 +257,7 @@ def get_info_summary(client, category, info, job):
 def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
     prompt = "CANDIDATE INFORMATION:\n"
     for category, info in candidate.items():
-        if len(value) > 0:
+        if len(info) > 0:
             info_summary = get_info_summary(client, category, info, recruiter['JobDescription'])
             prompt += (f'''\n              
                             {category.upper().strip()}\n
