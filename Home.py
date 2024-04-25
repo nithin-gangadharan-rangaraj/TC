@@ -332,7 +332,7 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
                                                            You have to provide a recommendation for this candidate in less than 50 words. Consider only the user provided CANDIDATE INFORMATION.
                                                            Must answer it in the following format: 
                                                            Recommendation:
-                                                        '''},
+                                                          '''},
                             {"role": "user", "content": f"{prompt}"}
                           ]
                         )
