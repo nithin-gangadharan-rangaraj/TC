@@ -320,8 +320,7 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
         str: Recommendation for the particular candidate.
     '''
     prompt = generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
-    st.write(candidate['ID'])
-    st.write(prompt)
+    
     recommendation = ""
     if len(prompt) > 20:
         completion = client.chat.completions.create(
