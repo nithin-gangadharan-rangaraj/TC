@@ -327,13 +327,13 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
                           messages=[
+                            {"role": "user", "content": f"{prompt}"},
                             {"role": "system", "content": f'''You are a recruiter now. Analyse how good the candidate information fits the following recruiting job description.
                                                             {recruiter['JobDescription']}. {("RECRUITING JOB WEBSITE: \n" + scraped_recruiter_content) if len(scraped_recruiter_content) > 10 else ''}
                                                            You have to provide a recommendation for this candidate in less than 50 words. Consider only the user provided CANDIDATE INFORMATION.
                                                            Must answer it in the following format: 
                                                            Recommendation:
-                                                          '''},
-                            {"role": "user", "content": f"{prompt}"}
+                                                          '''}
                           ]
                         )
         recommendation = completion.choices[0].message.content
