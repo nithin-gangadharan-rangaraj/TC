@@ -377,7 +377,6 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
                                                            Arrange ALL the candidates in the order suitable for this job description. Consider the general
                                                            recruiting strategies.
-                                                           {("Do consider the following parameters first:" + ','.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
                                                            MUST Include all {num_candidates} candidates.
                                                            Answer it in the following example format,
                                                            ['ID1', 'ID2'] 
