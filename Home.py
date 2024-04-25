@@ -247,7 +247,7 @@ def get_info_summary(client, category, info, job):
                           messages=[
                             {"role": "system", "content": f"{prompt}"},
                             {"role": "user", "content": f'''Pick out the relevant information from this {category} that would help to check if 
-                                                            it would suit the job description in a maximum of 450 words. Consider only the candidate
+                                                            it would suit the job description in a maximum of 50 words. Consider only the candidate
                                                             information provided.
                                                         '''}
                           ]
@@ -297,6 +297,7 @@ def add_link_info(links, who):
 
 def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
     prompt = generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
+    st.write(candidate['ID'])
     st.write(prompt)
     answer = ""
     if len(prompt) > 20:
