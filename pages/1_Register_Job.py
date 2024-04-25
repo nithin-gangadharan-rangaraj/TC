@@ -35,11 +35,11 @@ def get_inputs(df):
       inputs["Email"] = st.text_input("Enter the **Email address**\*").strip()
       inputs["JobDescription"] = st.text_area("Paste the **job description**").strip()
       inputs["FirmWebsite"] = st.text_input("Paste the link to the hiring firm's website").strip()
-      inputs["RankingParameters"] = st.multiselect("Do you have any specific parameters to rank the applicants?",
-                                                options = get_ranking_params(),
-                                                help = "Along with the general recruiting consideration, these parameters would be considered first when ranking the applicants.",
-                                                placeholder = "May choose upto 5 parameters",
-                                                max_selections = 5)
+      # inputs["RankingParameters"] = st.multiselect("Do you have any specific parameters to rank the applicants?",
+      #                                           options = get_ranking_params(),
+      #                                           help = "Along with the general recruiting consideration, these parameters would be considered first when ranking the applicants.",
+      #                                           placeholder = "May choose upto 5 parameters",
+      #                                           max_selections = 5)
   else:
       st.error(f"{inputs['Name']} recruiting for {inputs['Title']} exists. Please recheck!")
       return False
@@ -71,12 +71,6 @@ def display_info(password, header):
     col2.metric("Job's unique password", f"{password}", "For you to access")
     st.info(f'''⚠️**Important:**
             Please request the applicants to quote **{header}** as the subject.''')
-  # with st.container(border = True):
-  #     st.subheader(f"Job's unique password is: {password}")
-  #     st.write("Please save it for future use.")
-  #     # st.divider()
-  #     st.subheader(f"Subject Header for this job: {header}")
-  #     st.info("PLEASE REQUEST THE APPLICANTS TO QUOTE THIS AS THE SUBJECT HEADER.")
 
 def get_header_list(header):
     with open(f'inputs_{header.split("_")[-1]}.txt', 'r') as f:
