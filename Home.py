@@ -328,7 +328,6 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
                           messages=[
                             {"role": "system", "content": f"{prompt}"},
                             {"role": "user", "content": f'''You are a recruiter now. Analyse how good the candidate information fits the recruiting job description.
-                                                           {("Do consider the following parameters first:" + ' '.join(list(eval(recruiter["RankingParameters"])))) if not recruiter["RankingParameters"] == [] else ''}
                                                            You have to provide a recommendation in less than 50 words.
                                                            Answer it in the following format: 
                                                            Recommendation:
