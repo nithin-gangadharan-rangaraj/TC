@@ -560,13 +560,13 @@ if __name__ == "__main__":
                 if not header == 'Password':
                     if header == 'JobDescription':
                         recruiter[header] = st.text_area(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
-                    elif header == 'RankingParameters':
-                        recruiter[header] = st.multiselect("Do you have any specific parameters to rank the applicants?",
-                                                options = get_ranking_params(),
-                                                default = list(eval(recruiter[header])) if not recruiter[header] == '' else None,
-                                                help = "Along with the general recruiting consideration, these parameters would be considered first when ranking the applicants.",
-                                                placeholder = "May choose upto 5 parameters",
-                                                max_selections = 5)
+                    # elif header == 'RankingParameters':
+                    #     recruiter[header] = st.multiselect("Do you have any specific parameters to rank the applicants?",
+                    #                             options = get_ranking_params(),
+                    #                             default = list(eval(recruiter[header])) if not recruiter[header] == '' else None,
+                    #                             help = "Along with the general recruiting consideration, these parameters would be considered first when ranking the applicants.",
+                    #                             placeholder = "May choose upto 5 parameters",
+                    #                             max_selections = 5)
                     else:
                         recruiter[header] = st.text_input(f"{header.capitalize()}", value = recruiter[header], disabled = bool(disability)).strip()
             if validate_inputs(recruiter) and not (prior == dict(recruiter)):
