@@ -259,25 +259,19 @@ def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scr
     prompt = "CANDIDATE INFORMATION:\n"
     for category, info in candidate.items():
         if category in ['CoverLetter', 'Resume', 'Portfolio', 'Other']:
-            if len(info) > 0:
+            if len(info) > 20:
                 info_summary = get_info_summary(client, category, info, recruiter['JobDescription'])
                 prompt += (f'''\n              
                                 {category.upper().strip()}:\n
                                 {info_summary.strip()}\n''')
         if category == 'EmailText':
-            if len(info) > 0:
+            if len(info) > 5:
                 prompt += (f'''\n              
                                 APPLICATION EMAIL CONVERSATION:\n
                                 {info.strip()}\n''')
     if len(prompt) > 20:
-        prompt += (f'''
-                        RELEVANT CANDIDATE INFORMATION:\n
-                        {scraped_candidate_content}\n
-                        -------------------------------\n
-                    ''')
-        prompt += (f'''RECRUITING JOB DESCRIPTION:\n
-                        {recruiter['JobDescription']}\n
-                    ''')
+        prompt += (f"RELEVANT CANDIDATE INFORMATION: {scraped_candidate_content}" if len(scraped_candidate_content) > 10 else '')
+        prompt += (f"RECRUITING JOB DESCRIPTION: {recruiter['JobDescription']}")
         prompt += ("RECRUITING JOB WEBSITE: \n" + scraped_recruiter_content if len(scraped_recruiter_content) > 10 else '')
     prompt = remove_blank_lines(prompt)
     return prompt
