@@ -240,14 +240,28 @@ def display_recruiter(user, recruiter, recruiter_container):
 def remove_blank_lines(text):
     return '\n'.join([line for line in text.split('\n') if line.strip()])
 
-def generate_prompt(candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
-    prompt = ""
-    for column, value in candidate.items():
+def get_info_summary(client, category, info, job):
+    prompt = f'{category.upper().strip()} \n {info.strip()} \n RECRUITING JOB DESCRIPTION: \n {job.strip()}'
+    completion = client.chat.completions.create(
+                          model="gpt-3.5-turbo",
+                          messages=[
+                            {"role": "system", "content": f"{prompt}"},
+                            {"role": "user", "content": f'''Pick out the relevant information from this {category} that would help to check if 
+                                                            it would suit the job description in a maximum of 450 words.
+                                                        '''}
+                          ]
+                        )
+    info_summary = completion.choices[0].message.content
+    return info_summary
+
+def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
+    prompt = "CANDIDATE INFORMATION:\n"
+    for category, info in candidate.items():
         if len(value) > 0:
-            prompt += (f'''\n
-                            CANDIDATE INFORMATION:
-                            {column.upper().strip()}\n
-                            {value.strip()}\n''')
+            info_summary = get_info_summary(client, category, info, recruiter['JobDescription'])
+            prompt += (f'''\n              
+                            {category.upper().strip()}\n
+                            {info_summary.strip()}\n''')
     if len(prompt) > 20:
         prompt += (f'''
                         RELEVANT CANDIDATE INFORMATION:\n
@@ -275,8 +289,8 @@ def add_link_info(links, who):
         
 
 def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
-    prompt = generate_prompt(candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
-    
+    prompt = generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
+    st.write(prompt)
     answer = ""
     if len(prompt) > 20:
         completion = client.chat.completions.create(
