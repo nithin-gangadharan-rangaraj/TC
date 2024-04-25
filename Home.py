@@ -247,7 +247,8 @@ def get_info_summary(client, category, info, job):
                           messages=[
                             {"role": "system", "content": f"{prompt}"},
                             {"role": "user", "content": f'''Pick out the relevant information from this {category} that would help to check if 
-                                                            it would suit the job description in a maximum of 450 words.
+                                                            it would suit the job description in a maximum of 450 words. Consider only the candidate
+                                                            information provided.
                                                         '''}
                           ]
                         )
@@ -257,11 +258,17 @@ def get_info_summary(client, category, info, job):
 def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
     prompt = "CANDIDATE INFORMATION:\n"
     for category, info in candidate.items():
-        if len(info) > 0:
-            info_summary = get_info_summary(client, category, info, recruiter['JobDescription'])
-            prompt += (f'''\n              
-                            {category.upper().strip()}\n
-                            {info_summary.strip()}\n''')
+        if category in ['CoverLetter', 'Resume', 'Portfolio', 'Other']:
+            if len(info) > 0:
+                info_summary = get_info_summary(client, category, info, recruiter['JobDescription'])
+                prompt += (f'''\n              
+                                {category.upper().strip()}:\n
+                                {info_summary.strip()}\n''')
+        if category == 'EmailText':
+            if len(info) > 0:
+                prompt += (f'''\n              
+                                APPLICATION EMAIL CONVERSATION:\n
+                                {info.strip()}\n''')
     if len(prompt) > 20:
         prompt += (f'''
                         RELEVANT CANDIDATE INFORMATION:\n
