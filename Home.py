@@ -241,21 +241,40 @@ def remove_blank_lines(text):
     return '\n'.join([line for line in text.split('\n') if line.strip()])
 
 def get_info_summary(client, category, info, job):
+    '''
+     Calls the OpenAI model to summarize the individual candidate information.
+
+    Returns: 
+        str: Summarized version of the candidate information
+    '''
     prompt = f'{category.upper().strip()} \n {info.strip()} \n RECRUITING JOB DESCRIPTION: \n {job.strip()}'
     completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
                           messages=[
                             {"role": "system", "content": f"{prompt}"},
                             {"role": "user", "content": f'''Pick out the relevant information from this {category} that would help to check if 
-                                                            it would suit the job description in a maximum of 50 words. Consider only the candidate
-                                                            information provided.
+                                                            it would suit the job description in a maximum of 100 words. Consider only the provided
+                                                            candidate information.
                                                         '''}
                           ]
                         )
     info_summary = completion.choices[0].message.content
     return info_summary
 
+#########################################################################################################################
+
 def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
+    '''
+     Generates prompt for each candidate. To bypass the word count limit in the OpenAI model
+     each candidate info is summarized separately. Finally, with the limited words (~100 words) per info,
+     all the info can be combined together which would essentially be less than 16K token count.
+
+     Email conversations are unchanged. Resume, Cover letter, Portfolio, Other texts are summarized.
+
+    Returns: 
+        str: Prompt with Summarized candidate info and the Job description
+    '''
+    
     prompt = "CANDIDATE INFORMATION:\n"
     for category, info in candidate.items():
         if category in ['CoverLetter', 'Resume', 'Portfolio', 'Other']:
@@ -276,6 +295,8 @@ def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scr
     prompt = remove_blank_lines(prompt)
     return prompt
 
+#########################################################################################################################
+
 def add_link_info(links, who):
     scraped_content = ''
     comments = ''
@@ -287,13 +308,20 @@ def add_link_info(links, who):
         if not links[0] == '':
             comments = f'We were unable to consider these links on account of technical constraints: \n\n{links}\n'
     return scraped_content, comments 
+
+#########################################################################################################################
         
 
 def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
+    '''
+    Calls the OpenAI model for each candidate to write recommendation.
+
+    Returns: 
+        str: Recommendation for the particular candidate.
+    '''
     prompt = generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
-    st.write(candidate['ID'])
-    st.write(prompt)
-    answer = ""
+
+    recommendation = ""
     if len(prompt) > 20:
         completion = client.chat.completions.create(
                           model="gpt-3.5-turbo",
@@ -307,30 +335,38 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
                                                         '''}
                           ]
                         )
-        answer = completion.choices[0].message.content
-    return answer
+        recommendation = completion.choices[0].message.content
+    return recommendation
 
+#########################################################################################################################
 
 def write_recommendation(client, candidate_df, recruiter):
-    # rec_df = pd.DataFrame(columns = ['Name', 'Title', 'Email',  'ID', 'Recommendation'])
+     '''
+     Main function to write recommendation in about 50 words for each candidate.
+     Iterates through each candidate and creates a dataframe with recommendations.
+
+     Returns: 
+         df: Candidate recommendations
+     '''
     recommendations_info = []
     
     for index, candidate in candidate_df.iterrows():
         single = {}
+        scraped_candidate_content, comments_candidate = add_link_info(candidate['Links'], 'CANDIDATE')
+        scraped_recruiter_content, comments_recruiter = add_link_info([recruiter['FirmWebsite']], 'RECRUITER')
+        recommendation = get_recommendation_ai(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
+        
         single['Name'] = recruiter['Name']
         single['Title'] = recruiter['Title']
         single['ID'] = candidate['ID']
-
-        scraped_candidate_content, comments_candidate = add_link_info(candidate['Links'], 'CANDIDATE')
-        scraped_recruiter_content, comments_recruiter = add_link_info([recruiter['FirmWebsite']], 'RECRUITER')
-        
-        recommendation = get_recommendation_ai(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content)
         single['Recommendation'] = recommendation
         single['Comments'] = (comments_candidate + '\n' +  comments_recruiter)
-        recommendations_info.append(single)
         
+        recommendations_info.append(single)  
     rec_df = pd.DataFrame(recommendations_info)
     return rec_df
+
+#########################################################################################################################
 
 def get_ai_help(client, all_candidates, recruiter, num_candidates):
     answer = ""
