@@ -341,13 +341,13 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
 #########################################################################################################################
 
 def write_recommendation(client, candidate_df, recruiter):
-     '''
-     Main function to write recommendation in about 50 words for each candidate.
-     Iterates through each candidate and creates a dataframe with recommendations.
-
-     Returns: 
-         df: Candidate recommendations
-     '''
+    '''
+    Main function to write recommendation in about 50 words for each candidate.
+    Iterates through each candidate and creates a dataframe with recommendations.
+    
+    Returns: 
+     df: Candidate recommendations
+    '''
     recommendations_info = []
     
     for index, candidate in candidate_df.iterrows():
