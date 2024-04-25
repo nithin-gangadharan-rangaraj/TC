@@ -328,7 +328,7 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
                           messages=[
                             {"role": "system", "content": f"{prompt}"},
                             {"role": "user", "content": f'''You are a recruiter now. Analyse how good the candidate information fits the recruiting job description.
-                                                           You have to provide a recommendation in less than 50 words.
+                                                           You have to provide a recommendation in less than 50 words. Consider only the provided CANDIDATE INFORMATION.
                                                            Answer it in the following format: 
                                                            Recommendation:
                                                         '''}
