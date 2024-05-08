@@ -263,6 +263,32 @@ def get_info_summary(client, category, info, job):
 
 #########################################################################################################################
 
+def get_info_personality(client, category, info):
+
+    information = f'{category.upper().strip()} \n {info.strip()}'
+    completion = client.chat.completions.create(
+                          model="gpt-3.5-turbo",
+                          messages=[
+                            {"role": "user", "content": f"{information}"},
+                            {"role": "system", "content": f'''You are a personality analyser. Given the {category} you should analyse the personality traits of that candidate. You can use different 
+                            personality profiling models - MBTI, DISC assessment, Enneagram, Big Five Personality Traits (OCEAN model), CliftonStrengths (formerly StrengthsFinder) etc. 
+                            Note that you have to write only the personality trait matching. A guide to you:
+                            1. Analyse the given candidate's information.
+                            2. Figure out the personality traits using the analyzed information
+                            3. Combine all traits and write a hybrid personality traits needed for that role.
+                            For example (Answer format):
+                            Different personality traits:
+                            MBTI: ENTJ, ENTP
+                            Big Five: Openness to Experience, Extraversion
+                            CliftonStrengths: Strategic, Input
+                            Hybrid personality: Innovative, Strategic, Analytical'''}
+                          ]
+                        )
+    info_personality = completion.choices[0].message.content
+    return info_personality
+
+#########################################################################################################################
+
 def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scraped_recruiter_content):
     '''
      Generates prompt for each candidate. To bypass the word count limit in the OpenAI model
@@ -280,9 +306,11 @@ def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scr
         if category in ['CoverLetter', 'Resume', 'Portfolio', 'Other']:
             if len(info) > 20:
                 info_summary = get_info_summary(client, category, info, recruiter['JobDescription'])
+                info_personality = get_info_personality(client, category, info)
                 prompt += (f'''\n              
                                 {category.upper().strip()}:\n
-                                {info_summary.strip()}\n''')
+                                {info_summary.strip()}\n
+                                {infor_personality.strip()}''')
         if category == 'EmailText':
             if len(info) > 5:
                 prompt += (f'''\n              
@@ -293,6 +321,7 @@ def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scr
         # prompt += (f"RECRUITING JOB DESCRIPTION: {recruiter['JobDescription']}")
         # prompt += ("RECRUITING JOB WEBSITE: \n" + scraped_recruiter_content if len(scraped_recruiter_content) > 10 else '')
     prompt = remove_blank_lines(prompt)
+    st.write(prompt)
     return prompt
 
 #########################################################################################################################
