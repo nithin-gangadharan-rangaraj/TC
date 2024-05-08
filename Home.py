@@ -357,11 +357,11 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
                           messages=[
                             {"role": "system", "content": f'''You are a recruiter now. Analyse how good the candidate information fits the following recruiting job description.
                                                             {recruiter['JobDescription']}. {("RECRUITING JOB WEBSITE: " + scraped_recruiter_content) if len(scraped_recruiter_content) > 10 else ''}
-                                                           You have to provide a recommendation for this candidate in less than 100 words. Consider only the user provided CANDIDATE INFORMATION.
+                                                           You have to provide a recommendation for this candidate in less than 100 words. Consider ONLY the user provided CANDIDATE INFORMATION.
                                                            Strategically combine the personality traits information given in the candidate information.
                                                            Must answer it in the following format: 
                                                            Recommendation:
-                                                           Personality:
+                                                           Personality traits:
                                                           '''},
                             {"role": "user", "content": f"{prompt}"}
                           ]
