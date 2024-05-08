@@ -310,7 +310,7 @@ def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scr
                 prompt += (f'''\n              
                                 {category.upper().strip()}:\n
                                 {info_summary.strip()}\n
-                                {infor_personality.strip()}''')
+                                {info_personality.strip()}''')
         if category == 'EmailText':
             if len(info) > 5:
                 prompt += (f'''\n              
