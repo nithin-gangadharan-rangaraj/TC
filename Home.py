@@ -321,7 +321,7 @@ def generate_prompt(client, candidate, recruiter, scraped_candidate_content, scr
         # prompt += (f"RECRUITING JOB DESCRIPTION: {recruiter['JobDescription']}")
         # prompt += ("RECRUITING JOB WEBSITE: \n" + scraped_recruiter_content if len(scraped_recruiter_content) > 10 else '')
     prompt = remove_blank_lines(prompt)
-    st.write(prompt)
+    # st.write(prompt)
     return prompt
 
 #########################################################################################################################
