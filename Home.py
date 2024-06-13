@@ -395,7 +395,7 @@ def write_recommendation(client, candidate_df, recruiter):
         single['Comments'] = (comments_candidate + '\n' +  comments_recruiter)
         
         recommendations_info.append(single) 
-        progress_bar.progress((index + 1) / len(candidate_df), text = f"{index + 1}/{len(candidates)} analyzed.")
+        progress_bar.progress((index + 1) / len(candidate_df), text = f"{index + 1}/{len(candidate_df)} analyzed.")
     rec_df = pd.DataFrame(recommendations_info)
     return rec_df
 
