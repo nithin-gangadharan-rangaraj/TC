@@ -380,6 +380,7 @@ def write_recommendation(client, candidate_df, recruiter):
      df: Candidate recommendations
     '''
     recommendations_info = []
+    progress_bar = st.progress(0.0, 'Analyzing candidates, please wait...')
     
     for index, candidate in candidate_df.iterrows():
         single = {}
@@ -393,7 +394,8 @@ def write_recommendation(client, candidate_df, recruiter):
         single['Recommendation'] = recommendation
         single['Comments'] = (comments_candidate + '\n' +  comments_recruiter)
         
-        recommendations_info.append(single)  
+        recommendations_info.append(single) 
+        progress_bar.progress((index + 1) / len(candidate_df), text=progress_text)
     rec_df = pd.DataFrame(recommendations_info)
     return rec_df
 
@@ -553,7 +555,7 @@ if __name__ == "__main__":
             st.subheader("Rank Applicants", divider = 'blue')
             st.write("This is the main part, where the extracted candidate emails are ranked based on the desired criteria.")
             if st.button('Start Ranking', use_container_width = True): 
-                with st.status("Updating Info...", expanded=True) as status:
+                with st.status("Ranking candidates...", expanded=True) as status:
                     if len(candidate_df) > 0:
                         rec_df = write_recommendation(client, candidate_df, recruiter)
                         st.success("Analysed candidates' fitness for the role.")
