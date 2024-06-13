@@ -24,7 +24,7 @@ st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
 
 
-model = "gpt-3.5-turbo"
+model = "gpt-4o"
 
 def get_urls(text):
     extractor = URLExtract()
@@ -421,6 +421,7 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
     return answer
 
 def arrange_df(ranked_candidates, rec_df):
+    st.write(ranked_candidates)
     id_order = eval(ranked_candidates)
     # st.write(id_order)
     try:
