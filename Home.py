@@ -24,7 +24,7 @@ st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
 
 
-model = "gpt-4o"
+model = "gpt-3.5-turbo"
 
 def get_urls(text):
     extractor = URLExtract()
