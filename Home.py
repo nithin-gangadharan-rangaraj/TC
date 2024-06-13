@@ -24,7 +24,7 @@ st.image('cai.png', width = 400)
 st.subheader("Future-Focused Hiring", divider = 'red')
 
 
-
+model = "gpt-4o"
 
 def get_urls(text):
     extractor = URLExtract()
@@ -249,7 +249,7 @@ def get_info_summary(client, category, info, job):
     '''
     prompt = f'{category.upper().strip()} \n {info.strip()} \n RECRUITING JOB DESCRIPTION: \n {job.strip()}'
     completion = client.chat.completions.create(
-                          model="gpt-3.5-turbo",
+                          model=model,
                           messages=[
                             {"role": "user", "content": f"{prompt}"},
                             {"role": "system", "content": f'''Pick out the relevant information from this {category} that would help to check if 
@@ -267,7 +267,7 @@ def get_info_personality(client, category, info):
 
     information = f'{category.upper().strip()} \n {info.strip()}'
     completion = client.chat.completions.create(
-                          model="gpt-3.5-turbo",
+                          model=model,
                           messages=[
                             {"role": "user", "content": f"{information}"},
                             {"role": "system", "content": f'''You are a personality analyser. Given the {category} you should analyse the personality traits of that candidate. You can use different 
@@ -353,7 +353,7 @@ def get_recommendation_ai(client, candidate, recruiter, scraped_candidate_conten
     recommendation = ""
     if len(prompt) > 20:
         completion = client.chat.completions.create(
-                          model="gpt-3.5-turbo",
+                          model=model,
                           messages=[
                             {"role": "system", "content": f'''You are a recruiter now. Analyse how good the user information fits the following recruiting job description.
                                                             Job description: {recruiter['JobDescription']}. {("RECRUITING JOB WEBSITE: " + scraped_recruiter_content) if len(scraped_recruiter_content) > 10 else ''} ####
@@ -403,7 +403,7 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
     answer = ""
     if len(all_candidates) > 20:
         completion = client.chat.completions.create(
-                          model="gpt-3.5-turbo",
+                          model=model,
                           messages=[
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
