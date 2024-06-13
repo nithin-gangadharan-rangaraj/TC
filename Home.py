@@ -380,7 +380,7 @@ def write_recommendation(client, candidate_df, recruiter):
      df: Candidate recommendations
     '''
     recommendations_info = []
-    progress_bar = st.progress(0.0, 'Analyzing candidates, please wait...')
+    progress_bar = st.progress(0.0, 'Starting to analyze...')
     
     for index, candidate in candidate_df.iterrows():
         single = {}
@@ -395,7 +395,7 @@ def write_recommendation(client, candidate_df, recruiter):
         single['Comments'] = (comments_candidate + '\n' +  comments_recruiter)
         
         recommendations_info.append(single) 
-        progress_bar.progress((index + 1) / len(candidate_df), text=progress_text)
+        progress_bar.progress((index + 1) / len(candidate_df), text = f"{index + 1}/{len(candidates)} analyzed.")
     rec_df = pd.DataFrame(recommendations_info)
     return rec_df
 
