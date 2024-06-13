@@ -410,10 +410,10 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                            Arrange ALL the candidates in the order suitable for this job description. Consider the general
                                                            recruiting strategies.
                                                            MUST Include all {num_candidates} candidates.
-                                                           Answer it in the following example format,
+                                                           Answer it in the following list example format,
                                                            ['ID1', 'ID2'] 
                                                            where IDs are found in the candidate information, ID is in the format: Name <Email>.
-                                                           In this example, there are 2 candidates.
+                                                           In this example, there are 2 candidates in the list.
                                                         '''}
                           ]
                         )
