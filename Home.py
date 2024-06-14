@@ -425,10 +425,10 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                                    "reason":"Reason for ID2"
                                                                    \}]
                                                            \}
-                                                           where "candidates" key is a list of candidates ranked in order. The first candidate is the best fit for the job and so on.
+                                                           where "candidates" key is a list of candidates ranked in order. The first candidate in the is the best fit for the job and so on.
                                                            Each item in the list is a dictionary with two keys, "id" and "reason". "id" is the ID of that candidate in the format Name <Email>. 
-                                                           "reason" is of string type which says the reason for the candiate ranked in that particular position. 
-                                                           Do not output anything else apart from the json.
+                                                           "reason" is of string type which says the reason for the candiate ranked in that particular position. In the provided example, there
+                                                           are two candidates. Do not output anything else apart from the json.
                                                         '''}
                           ]
                         )
