@@ -397,6 +397,7 @@ def write_recommendation(client, candidate_df, recruiter):
         
         recommendations_info.append(single) 
         progress_bar.progress((index + 1) / len(candidate_df), text = f"{index + 1}/{len(candidate_df)} analyzed.")
+    progress_bar.progress(1.0, text = "Candidates analyzed, ranking now...")
     rec_df = pd.DataFrame(recommendations_info)
     return rec_df
 
@@ -428,7 +429,7 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                            where "candidates" key is a list of candidates ranked in order. The first candidate in the is the best fit for the job and so on.
                                                            Each item in the list is a dictionary with two keys, "id" and "reason". "id" is the ID of that candidate in the format Name <Email>. 
                                                            "reason" is of string type which says the one-line reason why the candiate ranked in that particular position. In the provided example, there
-                                                           are two candidates. Do not output anything else apart from the json.
+                                                           are two candidates. Do not output anything else apart from the json. The output must be in a valid json format.
                                                         '''}
                           ]
                         )
@@ -436,15 +437,15 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
     return answer
 
 def arrange_df(ranked_candidates, rec_df):
-    st.write(ranked_candidates)
-    candidates_json = json.loads(ranked_candidates)
-    id_order = [each['id'] for each in candidates_json['candidates']]
-    reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
+    # st.write(ranked_candidates)
     try:
+        candidates_json = json.loads(ranked_candidates)
+        id_order = [each['id'] for each in candidates_json['candidates']]
+        reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
         if type(id_order) == list: 
             df_duplicate = rec_df
             df_duplicate['ID_order'] = df_duplicate['ID'].apply(lambda x: id_order.index(x))
-            df_duplicate['Recommendation'] = df_duplicate['Recommendation'] + '\n' + reasons
+            df_duplicate['Recommendation'] = df_duplicate['Recommendation'] + '\n\n' + reasons
             df_sorted = df_duplicate.sort_values(by='ID_order')
             df_sorted = df_sorted.drop(columns='ID_order') 
             rec_df = df_sorted
