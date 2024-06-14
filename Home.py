@@ -17,6 +17,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import docx2txt
+import json
 
     
 st.set_page_config(page_title="Candidate.ai")
@@ -409,13 +410,25 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                           messages=[
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
-                                                           Arrange ALL the candidates in the order suitable for this job description. Consider the general
+                                                           Rank ALL the candidates in the order suitable for this job description. Consider the general
                                                            recruiting strategies.
-                                                           MUST Include all {num_candidates} candidates.
-                                                           You must output in the following list example format,
-                                                           ['ID1', 'ID2'] 
-                                                           where IDs are found in the candidate information, ID is in the format: Name <Email>.
-                                                           In this example, there are 2 candidates in the list. Do not output anything else apart from the list.
+                                                           You MUST Include all {num_candidates} candidates.
+                                                           You must output in the following json example format,
+                                                           \{
+                                                               "candidates":[
+                                                                   \{
+                                                                   "id": "ID1",
+                                                                   "reason":"Reason for ID1"
+                                                                   \},
+                                                                   \{
+                                                                    "id": "ID2",
+                                                                   "reason":"Reason for ID2"
+                                                                   \}]
+                                                           \}
+                                                           where "candidates" key is a list of candidates ranked in order. The first candidate is the best fit for the job and so on.
+                                                           Each item in the list is a dictionary with two keys, "id" and "reason". "id" is the ID of that candidate in the format Name <Email>. 
+                                                           "reason" is of string type which says the reason for the candiate ranked in that particular position. 
+                                                           Do not output anything else apart from the json.
                                                         '''}
                           ]
                         )
@@ -424,8 +437,9 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
 
 def arrange_df(ranked_candidates, rec_df):
     st.write(ranked_candidates)
-    id_order = eval(ranked_candidates)
-    # st.write(id_order)
+    candidates_json = json.loads(ranked_candidates)
+    id_order = [each['id'] for each in candidates_json['candidates']]
+    st.write(candidates_json)
     try:
         if type(id_order) == list: 
             df_duplicate = rec_df
