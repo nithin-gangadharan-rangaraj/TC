@@ -467,17 +467,17 @@ def arrange_df(ranked_candidates, rec_df):
     candidates_json = parse_to_json(ranked_candidates)
     id_order = [each['id'] for each in candidates_json['candidates']]
     reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
-    try:
-        if type(id_order) == list: 
-            df_duplicate = rec_df
-            df_duplicate['ID_order'] = df_duplicate['ID'].apply(lambda x: id_order.index(x))
-            df_duplicate['Recommendation'] = df_duplicate['Recommendation'] + '\n\n' + reasons
-            df_sorted = df_duplicate.sort_values(by='ID_order')
-            df_sorted = df_sorted.drop(columns='ID_order') 
-            rec_df = df_sorted
-            st.success('Ranked the candidates.')
-    except:
-        st.error("Wrote the recommendations, failed to rank them.")
+    # try:
+    if type(id_order) == list: 
+        df_duplicate = rec_df
+        df_duplicate['ID_order'] = df_duplicate['ID'].apply(lambda x: id_order.index(x))
+        df_duplicate['Recommendation'] = df_duplicate['Recommendation'] + '\n\n' + reasons
+        df_sorted = df_duplicate.sort_values(by='ID_order')
+        df_sorted = df_sorted.drop(columns='ID_order') 
+        rec_df = df_sorted
+        st.success('Ranked the candidates.')
+    # except:
+    #     st.error("Wrote the recommendations, failed to rank them.")
     return rec_df
 
 
