@@ -435,12 +435,15 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                         '''}
                           ]
                         )
-        answer = completion['choices'][0]['text']
+        answer = completion.choices[0].message.content
     return answer
 
 def arrange_df(ranked_candidates, rec_df):
     # st.write(str(ranked_candidates))
-    candidates_json = json.loads(str(ranked_candidates).strip())
+    try:
+        candidates_json = json.loads(str(ranked_candidates).strip())
+    except JSONDecodeError:
+        candidates_json = eval(str(ranked_candidates).strip())
     id_order = [each['id'] for each in candidates_json['candidates']]
     reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
     try:
