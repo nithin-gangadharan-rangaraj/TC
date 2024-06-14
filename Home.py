@@ -437,8 +437,8 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
     return answer
 
 def arrange_df(ranked_candidates, rec_df):
-    # st.write(ranked_candidates)
-    candidates_json = json.loads(str(ranked_candidates))
+    st.write(type(ranked_candidates))
+    candidates_json = json.loads(ranked_candidates)
     id_order = [each['id'] for each in candidates_json['candidates']]
     reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
     try:
