@@ -430,6 +430,8 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                            Each item in the list is a dictionary with two keys, "id" and "reason". "id" is the ID of that candidate in the format Name <Email>. 
                                                            "reason" is of string type which says the one-line reason why the candiate ranked in that particular position. In the provided example, there
                                                            are two candidates. Do not output anything else apart from the JSON. And, it should include all the candidates.
+
+                                                           Output a valid JSON string only.
                                                         '''}
                           ]
                         )
@@ -437,8 +439,8 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
     return answer
 
 def arrange_df(ranked_candidates, rec_df):
-    st.write(str(ranked_candidates))
-    candidates_json = json.loads(ranked_candidates)
+    # st.write(str(ranked_candidates))
+    candidates_json = json.loads(str(ranked_candidates))
     id_order = [each['id'] for each in candidates_json['candidates']]
     reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
     try:
