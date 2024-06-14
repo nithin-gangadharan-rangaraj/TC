@@ -438,11 +438,33 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
         answer = completion.choices[0].message.content
     return answer
 
+def parse_to_json(answer):
+    try:
+        if not answer.strip():
+            raise ValueError("The output string is empty. Cannot decode JSON.")
+        
+        # Clean the output to ensure it contains only valid JSON
+        start_idx = answer.find('{')
+        end_idx = answer.rfind('}') + 1
+        if start_idx == -1 or end_idx == -1:
+            raise ValueError("The output string does not contain valid JSON.")
+        
+        json_string = answer[start_idx:end_idx]
+        
+        json_output = json.loads(json_string)
+        return json_output
+    except json.JSONDecodeError as e:
+        st.write(f"JSONDecodeError: {e.msg}")
+        st.write(f"Error at line {e.lineno}, column {e.colno}")
+        st.write(f"Error document: {e.doc}")
+    except ValueError as ve:
+        st.write(ve)
+
 def arrange_df(ranked_candidates, rec_df):
     # st.write(str(ranked_candidates))
     # try:
     st.write(ranked_candidates)
-    candidates_json = json.loads(ranked_candidates.strip())
+    candidates_json = parse_to_json(ranked_candidates)
     id_order = [each['id'] for each in candidates_json['candidates']]
     reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
     try:
