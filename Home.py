@@ -442,7 +442,7 @@ def arrange_df(ranked_candidates, rec_df):
     # st.write(str(ranked_candidates))
     try:
         candidates_json = json.loads(str(ranked_candidates).strip())
-    except JSONDecodeError:
+    except json.JSONDecodeError:
         candidates_json = eval(str(ranked_candidates).strip())
     id_order = [each['id'] for each in candidates_json['candidates']]
     reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
