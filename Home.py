@@ -414,17 +414,17 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                            recruiting strategies.
                                                            You MUST Include all {num_candidates} candidates.
                                                            You must output in the following json example format,
-                                                           \{
+                                                           {{
                                                                "candidates":[
-                                                                   \{
+                                                                   {{
                                                                    "id": "ID1",
                                                                    "reason":"Reason for ID1"
-                                                                   \},
-                                                                   \{
+                                                                   }},
+                                                                   {{
                                                                     "id": "ID2",
                                                                    "reason":"Reason for ID2"
-                                                                   \}]
-                                                           \}
+                                                                   }}]
+                                                           }}
                                                            where "candidates" key is a list of candidates ranked in order. The first candidate in the is the best fit for the job and so on.
                                                            Each item in the list is a dictionary with two keys, "id" and "reason". "id" is the ID of that candidate in the format Name <Email>. 
                                                            "reason" is of string type which says the reason for the candiate ranked in that particular position. In the provided example, there
