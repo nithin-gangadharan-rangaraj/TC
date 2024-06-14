@@ -440,10 +440,9 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
 
 def arrange_df(ranked_candidates, rec_df):
     # st.write(str(ranked_candidates))
-    try:
-        candidates_json = json.loads(str(ranked_candidates).strip())
-    except json.JSONDecodeError:
-        candidates_json = eval(str(ranked_candidates).strip())
+    # try:
+    st.write(ranked_candidates)
+    candidates_json = json.loads(ranked_candidates.strip())
     id_order = [each['id'] for each in candidates_json['candidates']]
     reasons = ["Rank reasoning: " + each['reason'] for each in candidates_json['candidates']]
     try:
@@ -578,7 +577,7 @@ if __name__ == "__main__":
             if st.button('Start Ranking', use_container_width = True): 
                 with st.status("Ranking candidates...", expanded=True) as status:
                     if len(candidate_df) > 0:
-                        rec_df = write_recommendation(client, candidate_df, recruiter)
+                        # rec_df = write_recommendation(client, candidate_df, recruiter)
                         st.success("Analysed candidates' fitness for the role.")
                         rec_df = rank_using_ai(rec_df, recruiter, client)
                         update_worksheet(rec_sheet, rec_df)
