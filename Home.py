@@ -435,7 +435,7 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                         '''}
                           ]
                         )
-        answer = completion.choices[0].message.content
+        answer = completion['choices'][0]['text']
     return answer
 
 def arrange_df(ranked_candidates, rec_df):
