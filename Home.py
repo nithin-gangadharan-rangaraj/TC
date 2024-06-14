@@ -428,7 +428,7 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                                                            }}
                                                            where "candidates" key is a list of candidates ranked in order. The first candidate in the is the best fit for the job and so on.
                                                            Each item in the list is a dictionary with two keys, "id" and "reason". "id" is the ID of that candidate in the format Name <Email>. 
-                                                           "reason" is of string type which says the one-line reason why the candiate ranked in that particular position. In the provided example, there
+                                                           Both Name and Email are case sensitive. Do not change those. "reason" is of string type which says the one-line reason why the candiate ranked in that particular position. In the provided example, there
                                                            are two candidates. Do not output anything else apart from the JSON. And, it should include all the candidates.
 
                                                            Output a valid JSON string only.
