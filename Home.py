@@ -412,7 +412,8 @@ def get_ai_help(client, all_candidates, recruiter, num_candidates):
                           messages=[
                             {"role": "system", "content": f"{all_candidates}"},
                             {"role": "user", "content": f'''You are a recruiter now. Consider this job description {recruiter['JobDescription']}.
-                                                           Rank ALL the candidates in the order suitable for this job description. Consider the general
+                                                           Rank ALL the candidates in the order suitable for this job description. The candidates are delimited by ####.
+                                                           Consider the general
                                                            recruiting strategies.
                                                            You MUST Include all {num_candidates} candidates.
                                                            You must output in the following JSON example format,
@@ -485,7 +486,7 @@ def arrange_df(ranked_candidates, rec_df):
 def rank_using_ai(rec_df, recruiter, client):
     if len(rec_df) > 1:
         all_candidates = f"Total Number of candidates: {len(rec_df)}\n"
-        all_candidates += '\n'.join([candidate['ID'] + "\n" + candidate['Recommendation'] for index, candidate in rec_df.iterrows()])
+        all_candidates += '\n####\n'.join([candidate['ID'] + "\n" + candidate['Recommendation'] for index, candidate in rec_df.iterrows()])
         ranked_candidates = get_ai_help(client, all_candidates, recruiter, len(rec_df))
         rec_df = arrange_df(ranked_candidates, rec_df)
     return rec_df
