@@ -254,8 +254,9 @@ def get_info_summary(client, category, info, job):
                           messages=[
                             {"role": "user", "content": f"{prompt}"},
                             {"role": "system", "content": f'''Pick out the relevant information from this {category} that would help to check if 
-                                                            it would suit the job description in a maximum of 100 words. Consider only the user provided
-                                                            candidate information.
+                                                            it would suit the job description in a maximum of 100 words. Note that skills mentioned with proofs
+                                                            value more than the skills without proofs. Consider only the user provided
+                                                            candidate information. 
                                                         '''}
                           ]
                         )
